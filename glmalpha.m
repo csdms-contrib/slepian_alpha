@@ -358,9 +358,9 @@ if isempty(strfind(TH(:)','demo'))
 	if xver==1 & lp
 	  % This should give the same result, more or less, less accurate 
 	  if sord==1
-	    [a,Vs,c,d,Cs,e,f,g,h,j,D]=sdwcap(TH,L,m,0,-1);
+	    [~,Vs,~,~,Cs,~,~,~,~,~,D]=sdwcap(TH,L,m,0,-1);
 	  else
-	    [a,Vs,c,Cs,e,f,D]=sdwcap2(TH,L,m,0,-1);
+	    [~,Vs,~,Cs,~,~,D]=sdwcap2(TH,L,m,0,-1);
 	  end
 	  % This should give the eigenvalues again, which we'd had from
       % orthocheck 
