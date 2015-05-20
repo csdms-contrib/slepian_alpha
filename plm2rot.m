@@ -37,13 +37,11 @@ function varargout=plm2rot(lmcosi,alp,bta,gam,method,rlcp)
 %                  description... it's AS IF the original axes were
 %                  rotated like the "points", which we use strictly to
 %                  clarify the operations...
-%
 %                  Find the appropriate rotation angles for simple
 %                  geographic location, that is, the former North Pole moves:
 %                  alp=0;        % Around original z axis, "clockwise"
 %                  bta=lat-90;   % To desired latitude, around old y axis
 %                  gam=180-lon;  % To desired longitude, around old z axis 
-%
 %                  which should be consistent with the arguments in PTOSLEP
 %
 % method           'dlmb' using DLMB with bta=90 [default] after decomposition
@@ -71,7 +69,7 @@ function varargout=plm2rot(lmcosi,alp,bta,gam,method,rlcp)
 %
 % SEE ALSO: PTOSLEP, EQPOTENTIAL, SDWTARGET
 %
-% Last modified by fjsimons-at-alum.mit.edu, 11/21/2013
+% Last modified by fjsimons-at-alum.mit.edu, 05/23/2013
 
 % SHOULD BUILD IN SPECIAL CASES FOR 0 ANGLES, AS IN GEOBOXCAP
 

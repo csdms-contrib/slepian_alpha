@@ -61,7 +61,7 @@ function varargout=kernelcp(Lmax,dom,pars,ngl,rotb)
 % See also LOCALIZATION, SDWREGIONS, GLMALPHA, DLMLMP, KERNELC2D, 
 %          PLOTSLEP, PLM2AVG, KERNELC, LEGENDREPRODINT, DLMLMP
 %
-% Last modified by charig-at-princeton.edu, 06/26/2012
+% Last modified by charig-at-princeton.edu, 05/14/2015
 % Last modified by fjsimons-at-alum.mit.edu, 06/26/2012
 
 t0=clock;
@@ -241,13 +241,6 @@ if ~isstr(Lmax)
     else
       % Regular Gauss-Legendre method here (not alternative)  
         
-      % See if we can run this calculation in parallel, and set a flag
-      try
-         matlabpool open
-      catch
-        error('Run KERNELC instead or close your open pool')
-      end
-      
       % Calculating different Gauss-Legendre points for all possible product
       % degrees is not a good idea since they get multiplied by more
       % functions of theta 
@@ -383,9 +376,6 @@ if ~isstr(Lmax)
         Klmlmp(lm1dex,:)=temprow;
       end %parfor
     
-      % Close the matlabpool
-      matlabpool close
-      
       % Symmetrize the Kernel
       Klmlmp = Klmlmp + Klmlmp' - eye(size(Klmlmp)).*Klmlmp;
 	

@@ -81,8 +81,7 @@ elseif strcmp(data,'demo1')
   disp('User PAINTERS')
 elseif strcmp(data,'demo2')
   clf
-  % [E,V,Lmax,TH,C,K,V0,unc,sqz]=wieczorek(40,5,0,180/5,1);
-  [E,V]=sdwcap(40,22,0,180/5);
+  [E,V,Lmax,TH,C,K,V0,unc,sqz]=wieczorek(40,5,0,180/5,1);
   ah=krijetem(subnum(1,5));
   axes(ah(1))
   plotonsphere(repmat(E(:,1),1,length(E(:,1))*2),0.2); shading faceted

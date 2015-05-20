@@ -13,7 +13,7 @@ function [w,wl,wr]=fhanning(n)
 % wl      The left half of the window for lowpass
 % wr      The right half of the window for lowpass
 %
-% Last modified by fjsimons-at-alum.mit.edu, 08/05/2014
+% Last modified by fjsimons-at-alum.mit.edu, March 22nd, 2003
 
 if ~rem(n,2)
    % Even length window

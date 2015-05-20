@@ -17,6 +17,8 @@ function varargout=kernelc(Lmax,dom,pars,ngl,rotb)
 %            'africa', 'samerica', 'amazon', 'orinoco', 'gpsnamerica',
 %            'antarctica', 'alloceans', with specs in 'pars'
 %            OR: [lon lat] an ordered list defining a closed curve [degrees]
+%            OR: {'region' buf} where buf is the distance in degrees that 
+%            the region outline will be enlarged by BUFFERM
 % pars       [th0,ph0,thR] for 'patch'
 %                 th0  Colatitude of the cap center, in radians
 %                 ph0  Longitude of the cap center, in radians
@@ -60,7 +62,7 @@ function varargout=kernelc(Lmax,dom,pars,ngl,rotb)
 %          PLOTSLEP, PLM2AVG, KERNELCP, LEGENDREPRODINT, DLMLMP
 %
 % Last modified by fjsimons-at-alum.mit.edu, 03/14/2012
-% Last modified by charig-at-princeton.edu, 03/14/2012
+% Last modified by charig-at-princeton.edu, 01/22/2014
 
 t0=clock;
 defval('Lmax',18); 
@@ -68,6 +70,7 @@ defval('dom','patch')
 defval('ngl',200)
 defval('rotb',0)
 defval('K1',NaN)
+defval('pars',10);
 
 if ~isstr(Lmax)
   % Generic path name that I like
@@ -93,6 +96,14 @@ if ~isstr(Lmax)
 	 fnpl=sprintf('%s/WREG-%s-%i-%i.mat',filoc,dom,Lmax,rotb);
        end
     end
+  elseif iscell(dom)
+    % We have a cell, and we expect the format to be {'greenland' 1.0}
+    % where we have a region and want to add a buffer region around it.
+    % However, if dom{2} turns out to be zero, we should ignore it.
+    if dom{2}==0; h=dom{1}; else h=[dom{1} num2str(dom{2})]; end
+    buf=dom{2};
+    % However, if dom{2} turns out to be zero, we should ignore it.
+    fnpl=sprintf('%s/WREG-%s-%i.mat',filoc,h,Lmax);
   else
     % If, instead of a string, we have closed form coordinates, then make a
     % hash from the coordinates and use it as the filename.
@@ -129,30 +140,31 @@ if ~isstr(Lmax)
       XY=[phW pi/2-thN ; phW pi/2-thS ; phE pi/2-thS ; ...
 	  phE pi/2-thN ; phW pi/2-thN]*180/pi;
     else
-      % Haven't set pars by now, need to initialize it to nothing
-      defval('pars',[])
+      defval('buf',0);
       if isstr(dom)
-	% If it's a named geographical region or a coordinate boundary
-	defval('pars',10);
+	% If it's a named geographical region (+buffer?) or a coordinate boundary
 	% Run the named function to return the coordinates
 	if strcmp(dom,'antarctica') && rotb==1
 	  % Return the rotation parameters also, to undo later
 	  [XY,lonc,latc]=eval(sprintf('%s(%i)',dom,pars));
-	else
+        else
 	  % Don't, the result will be the kernel for the rotated dom
 	  XY=eval(sprintf('%s(%i)',dom,pars));
 	end
       elseif isstr(pars)
+	   defval('pars','supplyyourownfilename');
 	XY=dom;
 	% Use the input to define the file name that will be created
 	fnpl=sprintf('%s/WREG-%s-%i.mat',filoc,pars,Lmax);
+      elseif iscell(dom)
+        XY=eval(sprintf('%s(%i,%f)',dom{1},pars,buf));
       else
 	XY=dom;
       end
       thN=90-max(XY(:,2)); thN=thN*pi/180;
       thS=90-min(XY(:,2)); thS=thS*pi/180;
     end
-    
+
     % No more set-up after this point
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Introduce and dimensionalize variables and arrays
@@ -329,7 +341,7 @@ if ~isstr(Lmax)
 	end
       else
 	% Now we may have multiple pairs
-	phint=dphregion(acos(x)*180/pi,[],dom);
+	phint=dphregion(acos(x)*180/pi,[],XY); % Changed "dom" to "XY" here CTH
 	phint=phint*pi/180;
       end
       

@@ -5,10 +5,11 @@ function C=cellnan(J,M,N)
 %
 % INPUT:
 %
-% J      The number of cells (if a scalar) or the cell dimension
-% M,N    The number of rows and columns of each element of this cell;
-%        if these are vectors, every element (if J is a scalar) or every
-%        row (if J has two entries) can have a different dimension
+% J      Number of COLUMNS (if J a scalar), or ROWS and COLUMNS [J(1) J(2)]
+% M,N    The number of rows and columns of each element of this cell structure;
+%        if these are vectors, they will be applied to every element in
+%        each of the ROWs. Check the behavior, the dimensions are
+%        somewhat nonintuitively expanded. 
 %
 % OUTPUT:
 %
@@ -29,7 +30,7 @@ function C=cellnan(J,M,N)
 %
 % STRUCTEMPTY
 %
-% Last modified by fjsimons-at-alum.mit.edu, 03/18/2011
+% Last modified by fjsimons-at-alum.mit.edu, 02/05/2015
 
 % Defaults
 defval('J',3)
@@ -38,6 +39,7 @@ defval('N',5)
 
 % Do it!
 if isscalar(J)
+  % Now you're making J COLUMNS
   C=cell(1,J);
 else
   C=cell(J(1),J(2));
@@ -47,7 +49,7 @@ if isscalar(M) && isscalar(N)
   % If all of them have the same number of dimensions
   [C{:}]=deal(nan(M,N));
 else
-  % Now every row gets the same initialization and there must be one M
+  % Now every ROW gets the same initialization and there must be one M
   % and one N for each of the rows. Later on, can extend this.
   for ind=1:J(1)
     [C{ind,:}]=deal(nan(M(ind),N(ind)));

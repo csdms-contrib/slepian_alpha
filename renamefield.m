@@ -11,10 +11,6 @@ function S=renamefield(S,name1,name2)
 %
 % S         The new structure array
 %
-% SEE ALSO:
-%
-% STRUCT2STR
-%
 % Last modified by fjsimons-at-alum.mit.edu, 05/29/2013
 
 [S.(name2)]=S.(name1);

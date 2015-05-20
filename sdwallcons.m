@@ -19,6 +19,7 @@ function [F,V,K,Vc,Kc]=sdwallcons(dom,L,mkmov)
 % Kc      The complement of K
 %
 % Last modified by fjsimons-at-alum.mit.edu, 08/27/2009
+% Last modified by charig-at-princeton.edu, 05/14/2015
 
 defval('dom',...
        {'africa','eurasia','namerica','australia','greenland', ...
@@ -34,7 +35,7 @@ end
 K=repmat(0,(L+1)^2,(L+1)^2);
 for index=1:length(dom)
   disp(sprintf('Working on %s',dom{index}))
-  [Klmlmp,XY]=kernelc(L,dom{index});
+  [Klmlmp,XY]=kernelcp(L,dom{index});
   K=K+Klmlmp;
   clear Klmlmp
 end
@@ -80,7 +81,7 @@ if mkmov==1
 end
 for index=1:(L+1)^2
   fnpl=sprintf('%s/SDWALLCONS-%i-%i.mat',...
-	       fullfile(getenv('IFILES'),'KERNELC'),L,index);
+	       fullfile(getenv('IFILES'),'KERNELCP'),L,index);
   if exist(fnpl,'file')==2
     FF=load(fnpl);
     F=F+FF.F;

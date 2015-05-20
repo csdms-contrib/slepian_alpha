@@ -6,7 +6,7 @@ function x=indeks(y,in)
 % INPUT:
 %
 % y         Some vector
-% in        Some set of indices [default: 1]
+% in        Some set of running linear indices [default: 1]
 %
 % EXAMPLES:
 % 
@@ -16,7 +16,7 @@ function x=indeks(y,in)
 %
 % Works for logical and numeric indices.
 %
-% Last modified by fjsimons-at-alum.mit.edu, 01/04/2012
+% Last modified by fjsimons-at-alum.mit.edu, 11/15/2014
 
 defval('in',1)
 

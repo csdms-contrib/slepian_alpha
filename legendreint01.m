@@ -16,7 +16,7 @@ function varargout=legendreint01(l,m,x0)
 %
 % SEE ALSO:
 %
-% LIBBRECHT, PAUL, LEGENDREPRODINT
+% LIBBRECHT, PAUL, LEGENREPRODINT
 %
 % EXAMPLE:
 %
@@ -25,7 +25,7 @@ function varargout=legendreint01(l,m,x0)
 % legendreint01('demo3') Evaluates Gauss-Legendre integration errors 
 %
 % Last modified by plattner-at-princeton.edu, 05/17/2011
-% Last modified by fjsimons-at-alum.mit.edu, 10/23/2014
+% Last modified by fjsimons-at-alum.mit.edu, 06/01/2011
 
 % Calculates the integral of a single Legendre function between x0 and 1
 if ~isstr(l)
