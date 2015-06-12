@@ -3,10 +3,16 @@ function boxmid=boxmid(boxes,indo)
 % boxmid=boxmid(boxes,1)
 % boxmid=boxmid(boxes,2)
 %
-% 'boxes' being a lrtb matrix good for fillbox
-% 'boxmid' is a good text location with 'HorizontalAlignment','Center'
+% INPUT:
+% 
+% boxes     a lrtb matrix suitable for FILLBOX
+% indo      the index of the output coordinate if you want only one
 %
-% Last modified by fjsimons-at-alum.mit.edu, Feb 11th, 2003
+% OUTPUT:
+%
+% boxmid    good text location with 'HorizontalAlignment','Center'
+%
+% Last modified by fjsimons-at-alum.mit.edu, 08/08/2014
 
 defval('indo',0)
 boxmid=[boxes(:,1)+(boxes(:,2)-boxes(:,1))/2 ...
