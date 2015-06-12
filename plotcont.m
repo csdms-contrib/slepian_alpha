@@ -16,6 +16,7 @@ function varargout=plotcont(c11,cmn,res,ofs,pcol)
 %        8 The world's coastlines from the NOAA>NESDIS>NGDC>MGGD database
 %        9 Plot this on the two-dimensional cubed sphere
 %        10 Global Mollweide projection centered on Greenwich
+%        11 Three-dimensional coordinates, Southern hermisphere only
 % ofs    Longitude offset, e.g. 360 degrees [only for 0,1,5,6,7]
 % pcol   The patch color in case option 7 is chosen [default: grey]
 %
@@ -36,7 +37,8 @@ function varargout=plotcont(c11,cmn,res,ofs,pcol)
 %
 % SEE ALSO: MAPROTATE, SPHAREA, PHICURVE, RCENTER
 %
-% Last modified by fjsimons-at-alum.mit.edu, 06/28/2010
+% Last modified by fjsimons-at-alum.mit.edu, 09/24/2010
+% Last modified by charig-at-princeton.edu, 07/01/2013
 
 % Saved matrix as space-saving unsigned integer 
 % - but that translates the NaN's into some  high number - take that out.
@@ -72,7 +74,7 @@ switch res
   fid=fopen(fullfile(ddir,'cont.mtl'),'r','b');
   cont=fread(fid,[5217 2],'uint16');
   fclose(fid);
- case {1,3,4}
+ case {1,3,4,11}
   fid=fopen(fullfile(ddir,'cost.mtl'),'r','b');  
   cont=fread(fid,[9598 2],'uint16');
   fclose(fid);
@@ -103,7 +105,7 @@ end
 
 % Recast data in good form
 switch res
-  case {0,1,3,4,7,9}
+  case {0,1,3,4,7,9,11}
    cont=cont/100-90;
    cont(cont==max(max(cont)))=NaN;
 end
@@ -159,7 +161,7 @@ switch res
   fill(lon(beg:end),lat(beg:end),pcol)
   hold off
   axlim=[0 360 -90 90];
- case {3,4}
+ case {3,4,11}
   % Convert to spherical coordinates
   lon=cont(:,1)/180*pi;
   lat=cont(:,2)/180*pi;
@@ -169,9 +171,23 @@ switch res
   XYZ=[xx yy zz];
   if res==4
     XYZ=XYZ(zz>0,:);
+  elseif res==11
+    [xx,yy,zz]=sph2cart(lon-pi/2,lat,rad);
+    XYZ=[xx -yy zz];
+    XYZ=XYZ(zz<0,:);
   end
   % Now need to take out the annoying connecting lines
-  XYZ=penlift(XYZ);
+  % Distance between two consecutive points
+  xx=XYZ(:,1); yy=XYZ(:,2); zz=XYZ(:,3);
+  d=sqrt((xx(2:end)-xx(1:end-1)).^2+(yy(2:end)-yy(1:end-1)).^2);
+  % D-level: minimum distance to lift pen... variable
+  dlev=3;
+  p=find(d>dlev*nanmean(d));
+  % Now right after each of these positions need to insert a NaN;
+  nx=insert(xx,NaN,p+1);
+  ny=insert(yy,NaN,p+1);
+  nz=insert(zz,NaN,p+1);
+  XYZ=[nx(:) ny(:) nz(:)];
   
   % And plot this, too
   handl=plot3(XYZ(:,1),XYZ(:,2),XYZ(:,3),'k');
@@ -189,15 +205,16 @@ switch res
   hold on
   % Protect against unsightly junks
   for in=1:6
-    [nx{in},ny{in}]=penlift(xic{in},etac{in});
+    d=sqrt((xic{in}(2:end)-xic{in}(1:end-1)).^2+...
+	   (etac{in}(2:end)-etac{in}(1:end-1)).^2);
+    dlev=3; pp=find(d>dlev*nanmean(d));
+    nx{in}=insert(xic{in},NaN,pp+1); ny{in}=insert(etac{in},NaN,pp+1); 
   end
   [pc,pgc]=plotonchunk(nx,ny);
   hold off; set(pc,'Color','k','lines','-','marker','none')
   delete(cat(1,pgc{:})) 
   handl=pc;
-  % XYZ=[lon+ofs lat];
-  % Rather return the processed coordinates
-  XYZ=[nx ; ny];
+  XYZ=[lon+ofs lat];
 end
 
 % Generate output

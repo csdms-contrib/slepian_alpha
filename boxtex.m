@@ -23,14 +23,14 @@ function varargout=boxtex...
 %
 % OUTPUT:
 %
-% bcor         Coordinates of box, and
-% tcor         Coordinates of text, OR
-% bhan         Handle to box, and
+% bcor         Coordinates of box
+% tcor         Coordinates of text
+% bhan         Handle to box
 % than         Handle to text
 % 
 % EXAMPLE I:
 %
-% plot([-2:10],[-4:8])
+% plot(1:10)
 % boxtex('lr',gca,3,10)
 %
 % EXAMPLE II:
@@ -41,7 +41,7 @@ function varargout=boxtex...
 % 
 % See also: LABEL, FILLBOX
 %
-% Last modified by fjsimons-at-alum.mit.edu, 08/08/2014
+% Last modified by fjsimons-at-alum.mit.edu, 09/19/2007
 
 defval('posi','ll')
 defval('index',1)
@@ -65,29 +65,26 @@ if isstr(index)
 else
   watis= 'M';
 end
-a=text(0,0,watis,'fonts',fontsize); 
-% FJS Note that the EXTENT function is buggy... for huge dataaspectratios
-% etc, so you better work in scaled coordinates. Watch if it's off
-ext=get(a,'Extent'); delete(a)
+a=text(0,0,watis,'fonts',fontsize); ext=get(a,'Extent');
+delete(a)
 [wid,hit]=deal(ext(3),ext(4));
-disp(sprintf('Property EXTENT width and height are %f and %f',wid,hit))
 hit=hit*hitmul;
 wid=wid*widmul;
 xmrg=0.025; % Margin as ratio of xlim
 ymrg=0.025; % Margin as ratio of ylim
 % Actually, this needs to be updated depending on the data aspect ratio
-da=get(handel,'dataaspectratio'); 
+da=get(handel,'dataaspectratio'); % This is the 09/19/07 update!!
 if da(1)>da(2)
   defval('posxmul',da(2)/da(1)*2)
   defval('posymul',1)
-elseif da(2)>da(2)
+elseif da(1)>da(2)
   defval('posxmul',1)
   defval('posymul',da(1)/da(2)*2)
 else
   defval('posxmul',1)
   defval('posymul',1)
 end
-% But not always... FORCE to 1 sometimes
+% BUT NOT ALWAYS... FORCE TO 1 SOMETIMES
 
 % Make these adjustments
 xmrg=xmrg*posxmul;

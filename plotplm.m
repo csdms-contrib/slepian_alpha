@@ -22,11 +22,12 @@ function varargout=plotplm(data,lon,lat,meth,degres,th0,sres,cax)
 %                3  Plots the spectrum (only if lmcosi specified)
 %                4  Flat rectangular projection for entire globe
 %                5  Plot looking down on the North Pole; longitudes off
+%                6  Plot looking down on the South Pole; longitudes off
 % degres         Resolution in degree (checked for Nyquist) [default: Nyquist]
 % th0            Plot small circle at colatitude th0, in degrees
 % sres           0 Take default for polar projection [default]
 %                1 Preserve resolution (loosely) for polar projection
-% cax            Put in color saturation for options 2 and 5
+% cax            Put in color saturation for options 2, 5, and 6
 %
 % 'lon' and 'lat' are in radians.
 %
@@ -48,13 +49,14 @@ function varargout=plotplm(data,lon,lat,meth,degres,th0,sres,cax)
 % See also PLOTONSPHERE, PLOTONEARTH, CPX2RSH, RSH2CPX, ADDCB.
 %
 % Last modified by fjsimons-at-alum.mit.edu, 02/20/2012
+% Last modified by charig-at-princeton.edu, 05/14/2015
 
 defval('meth',1)
 defval('degres',[])
 defval('th0',[])
 defval('sres',0)
 
-if (size(data,2)==4 | size(data,2)==6) & meth<6 & meth~=3
+if (size(data,2)==4 | size(data,2)==6) & meth<7 & meth~=3
   [data,lon,lat]=plm2xyz(data,degres);
   lon=lon*pi/180;
   lat=lat*pi/180;
@@ -188,10 +190,57 @@ switch meth
   hold on
   ch=plot(XYZ(:,1),XYZ(:,2),'k-','LineWidth',1);
   data=Z;
- otherwise
+ case 6
+  % Project southern hemisphere only
+  data = flipud(data);
+  data = fliplr(data);
+  lon=linspace(0,2*pi,size(data,2));
+  lat=linspace(pi/2,0,floor(size(data,1)/2));
+  [LON,LAT]=meshgrid(lon,lat);
+  % Radius from 0 to 1; longitude is azimuth
+  r=cos(LAT);
+  x=r.*cos(LON+pi/2);
+  y=r.*sin(LON+pi/2);
+  % Resolution of upper hemispheric projection
+  if sres==0
+    % Only project the upper hemisphere
+    X=linspace(-1,1,500);
+    Y=linspace(1,-1,500);
+  else
+    X=linspace(-1,1,length(lat));
+    Y=linspace(1,-1,length(lat));
+  end
+  warning off MATLAB:griddata:DuplicateDataPoints
+  % Watch out: the POLE is a new problem with the latest version of
+  % Matlab; need to fake this entirely
+  y(1,:)=y(2,:)/2;
+  x(1,:)=x(2,:)/2;
+  Z=griddata(x,y,data(1:length(lat),:),X,Y(:));
+  disp('Data gridded by PLOTPLM')
+  warning on MATLAB:griddata:DuplicateDataPoints
+  % imagefnan([-1 1],[1 -1],Z,gray(10),minmax(Z(:)))  
+  % colormap(gray(10)); hold on
+  % IMAGEFNAN indexes the color map directly
+  defval('cax',minmax(Z(:)));
+  imagefnan([-1 1],[1 -1],Z,kelicol,cax)
+  colormap(kelicol); hold on
+  ph(1)=circ(1); 
+  ph(2)=circ(sin(th0*pi/180));
+  set(ph(1:2),'LineW',1)
+  set(ph(2),'LineS','--')
+  axis([-1.0100    1.0100   -1.0100    1.0100])
+  axis off
+  [axlim,handl,XYZ]=plotcont([0 90],[360 -90],11);
+  delete(handl)
+  hold on
+  ch=plot(XYZ(:,1),XYZ(:,2),'k-','LineWidth',1);
+  data=Z;
+
+otherwise
   error('Not a valid method')
 end
 
 % Prepare desired output
 varns={data,ch,ph,lon,lat};
 varargout=varns(1:nargout);
+

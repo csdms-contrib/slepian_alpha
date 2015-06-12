@@ -13,6 +13,7 @@ function [Ao4p,varargout]=spharea(c11,cmn)
 %           All coordinates are given in degrees.
 %           Both inputs may be matrices of size (Mx2); OR
 % region    A string name with an approved region such as 'africa', OR
+%           a cell array containing the region name and buffer such as {'greenland' 0.5}
 % XY        its coordinates (such as supplied from 'africa' etc), OR
 % TH        A colatitudinal radius [in degrees]
 % sord      0 Allowable option for region string
@@ -51,7 +52,7 @@ function [Ao4p,varargout]=spharea(c11,cmn)
 %
 % RCENTER, AREAINT
 %
-% Last modified by charig-at-princeton.edu, 07/21/2014
+% Last modified by charig-at-princeton.edu, 05/14/2015
 % Last modified by fjsimons-at-alum.mit.edu, 07/21/2014
 
 defval('XY',NaN)
@@ -85,7 +86,7 @@ if nargin==2 && ~all(cmn(:)==0)
     end    
   end
 else
-  defval('ngl',32)
+  defval('ngl',200)
   if isstr(c11)
     % Specify the region by name
     defval('N',10);

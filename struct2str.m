@@ -36,7 +36,8 @@ if nargout==0
   else
     for index=1:length(fn)
       fni=fn{index};
-      fprintf(fid,'%22s:%20s\n',fni,num2str(strux.(fni)));
+      % fprintf(fid,'%20s:%20s\n',fni,num2str(strux.(fni)));
+      fprintf(fid,'%20s:%20s\n',fni,strux.(fni));
     end
   end
 end

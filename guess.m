@@ -11,6 +11,10 @@ function guesses=guess(n)
 %
 % guesses      A bunch of n random integers
 %
+% SEE ALSO: 
+%
+% RANDIJ
+%
 % Last modified by fjsimons-at-alum.mit.edu, 2/6/2009
 
 defval('n',10)

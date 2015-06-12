@@ -14,7 +14,10 @@ function XYb=bezier(XY,N)
 % http://mathworld.wolfram.com/CubicSpline.html
 %
 % Last modified by fjsimons-at-alum.mit.edu, June 4rd, 2004
+% Last modified by charig-at-princeton.edu, April 24th, 2015
 
+
+if ~any(isnan(XY)) % There are no nans (i.e. one line)
 n=size(XY,1);
 
 % Calculate cumulative distance between these points
@@ -26,5 +29,14 @@ t=t/t(n);
 tb=linspace(0,1,n*N);
 
 XYb=spline(t,XY',tb)';
+
+else % There was a NaN (i.e. we have a multi segment line)
+    [latcell,loncell] = polysplit(XY(:,2),XY(:,1));
+    XYb = [];
+    for i=1:max(size(latcell))
+        newxy = bezier([loncell{i} latcell{i}],N);
+        XYb = [XYb; NaN NaN; newxy];
+    end
+end
 
 

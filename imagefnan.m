@@ -1,6 +1,6 @@
 function varargout=imagefnan(c11,cmn,matrix,colmap,cax,nancol,invo,setnan)
-% [h,cax,Xrgb,c11,cmn]=IMAGEFNAN(c11,cmn,matrix,colmap,cax,nancol,invo,setnan)
-% [h,cax,Xrgb,c11,cmn]=IMAGEFNAN(matrix)
+% [h,sax]=IMAGEFNAN(c11,cmn,matrix,colmap,cax,nancol,invo,setnan)
+% [h,sax]=IMAGEFNAN(matrix)
 % 
 % Uses IMAGE to plot data in a proper geographic reference
 %
@@ -22,12 +22,10 @@ function varargout=imagefnan(c11,cmn,matrix,colmap,cax,nancol,invo,setnan)
 %
 % h           The axis handle to the image being plotted
 % cax         The color limits being used
-% Xrgb        The RGB matrix being plotted
-% c11,cmn     The physical coordinates
 %
 % See IMAGEF, IMAGEFDIR, JOINCOLMAP, ADDCB, HALVERANGE
 %
-% Last modified by fjsimons-at-alum.mit.edu, 06/24/2014
+% Last modified by fjsimons-at-alum.mit.edu, 03/18/2013
 
 if nargin==1
   % Then the variable "c11" really is the variable "matrix"
@@ -88,10 +86,11 @@ end
 
 X=reshape(X,[size(matrix),3]);
 
-% This is the call in case you want to substitute specific values
-% Of course you could get X from get(gcf,'CData')
-%h=image([c11(1) cmn(1)],[cmn(2) c11(2)],flipdim(X,1));
-h=image([c11(1) cmn(1)],[c11(2) cmn(2)],X);
+cm1=[c11(1) cmn(2)];
+c1n=[cmn(1) c11(2)];
+
+h=image([cm1(1) c1n(1)],[cm1(2) c1n(2)],flipdim(X,1)); 
+
 axis xy image
 
 if nargin>4
@@ -101,5 +100,5 @@ if nargin>4
 end
 
 % Prepare output
-varns={h,cax,X,c11,cmn};
+varns={h,cax};
 varargout=varns(1:nargout);

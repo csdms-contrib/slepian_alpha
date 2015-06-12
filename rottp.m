@@ -22,7 +22,7 @@ function varargout=rottp(theta,phi,alfa,bita,gama)
 %                     bita (0<=pi) around new y increasing from x to z, then
 %                     alfa (0<2pi) around new z increasing from y to x.
 %                  Or equivalently, rotates POINTS over
-%                     gama-pi/2 around z increasing from y to x, then
+%                     gama-pi/2 around new z increasing from y to x, then
 %                          pi/2 around new y increasing from x to z, then
 %                          0    around new z increasing from y to x.
 %                  followed by a second rotation of the POINTS,
@@ -40,14 +40,11 @@ function varargout=rottp(theta,phi,alfa,bita,gama)
 %                  description... it's AS IF the original axes were
 %                  rotated like the "points", which we use strictly to
 %                  clarify the operations...
-%
 %                  Find the appropriate rotation angles for simple
 %                  geographic location, that is, the former North Pole moves:
-%
-%                  alp=0;        % Around original z axis, "clockwise"
-%                  bta=lat-90;   % To desired latitude, around old y axis
-%                  gam=180-lon;  % To desired longitude, around old z axis 
-%
+%                  alp=0;      % Around original z axis, "clockwise"
+%                  bta=lat-90; % To desired latitude, around old y axis
+%                  gam=180-lon;   % To desired longitude, around old z axis 
 %                  which should be consistent with the arguments in PTOSLEP
 %
 % OUTPUT:
@@ -90,7 +87,7 @@ function varargout=rottp(theta,phi,alfa,bita,gama)
 % plot3(X,Y,Z,'v','MarkerF','r','MarkerE','r'); hold off
 % xlabel('x'); ylabel('y'); zlabel('z')
 % 
-% Last modified by fjsimons-at-alum.mit.edu, 11/21/2013
+% Last modified by fjsimons-at-alum.mit.edu, 03/11/2010
 
 % Supply defaults
 defval('theta',linspace(0,pi,30))

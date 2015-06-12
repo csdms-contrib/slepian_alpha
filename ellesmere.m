@@ -2,7 +2,7 @@ function varargout=ellesmere(res,buf)
 % XY=ELLESMERE(res,buf)
 % ELLESMERE(...) % Only makes a plot
 %
-% Finds the coordinates of Ellesmere Island, potentially buffered by some amount.
+% Finds the coordinates of Ellesmere, potentially buffered by some amount.
 %
 % INPUT:
 %
@@ -17,15 +17,18 @@ function varargout=ellesmere(res,buf)
 % XY       Closed-curved coordinates of the continent
 %
 % Last modified by fjsimons-at-alum.mit.edu, 09/23/2014
+% Last modified by charig-at-princeton.edu, 04/28/2015
 
-defval('res',0)
+defval('res',10)
 defval('buf',0)
 
 % Parameters that make this the region in question
 regn='ellesmere';
 c11=[267 85];
-cmn=[300 76];
-xunt=[82:207];
+%cmn=[300 76];
+cmn=[300 74];
+xunt=[61:245];
+
 
 % Do it! Make it, load it, save it
 XY=regselect(regn,c11,cmn,xunt,res,buf);

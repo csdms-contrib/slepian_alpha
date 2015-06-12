@@ -1,9 +1,8 @@
-function varargout=greenland(res,buf)   
-% XY=GREENLAND(res,buf)
+function varargout=greenland(res,buf,nearby)   
+% XY=GREENLAND(res,buf,nearby)
 % GREENLAND(...) % Only makes a plot
 %
-% Finds the coordinates of Greenland, potentially buffered by some
-% amount, and perhaps diminished by Ellesmere and Baffin islands
+% Finds the coordinates of Greenland, potentially buffered by some amount.
 %
 % INPUT:
 %
@@ -12,16 +11,15 @@ function varargout=greenland(res,buf)
 % buf      Distance in degrees that the region outline will be enlarged
 %          by BUFFERM, not necessarily integer, possibly negative
 %          [default: 0]
-% nearby   1 Subtract the glacial coordinates of the nearby islands of
-%            Ellesmere and Baffin from your coordinates, or else:
-%          0 don't [default]
+% nearby   Subtract the nearby islands of Ellesmere and Baffin
+%          from your coordinates [default: 1] or 0
 %
 % OUTPUT:
 %
 % XY       Closed-curved coordinates of the continent
 %
 % Last modified by charig-at-princeton.edu, 07/10/2014
-% Last modified by fjsimons-at-alum.mit.edu, 09/23/2014
+% Last modified by fjsimons-at-alum.mit.edu, 11/23/2011
 
 defval('res',0)
 defval('buf',0)
@@ -36,21 +34,26 @@ xunt=1:352;
 % Do it! Make it, load it, save it
 XY=regselect(regn,c11,cmn,xunt,res,buf);
 
-% Subtract the nearby island of Ellsemere
-if nearby
-  XY2 = ellesmereg(10,buf);
-  [x,y] = polybool('subtraction',XY(:,1),XY(:,2),XY2(:,1),XY2(:,2));
-  XY = [x y];
-  if buf>2
-    XY2 = baffing(10,2);
-    [x,y] = polybool('subtraction',XY(:,1),XY(:,2),XY2(:,1),XY2(:,2));
-    XY = [x y];
-  end
-end
-
 if nargout==0
   plot(XY(:,1),XY(:,2),'k-'); axis image; grid on
 end
+
+% Subtract the nearby island of Ellsemere
+if nearby
+    % NOTE: if you don't have the nearby stuff made at the desired buffer
+    % then this will just end in a recursive error. i.e. You should make
+    % Ellesmere first before trying to subtract it.
+    XY2 = ellesmereg(10,buf);
+    [x,y] = polybool('subtraction',XY(:,1),XY(:,2),XY2(:,1),XY2(:,2));
+    XY = [x y];
+    if buf>=2
+        XY2 = baffing(10,1.5);
+        [x,y] = polybool('subtraction',XY(:,1),XY(:,2),XY2(:,1),XY2(:,2));
+        XY = [x y];
+    end
+end
+
+
 
 % Prepare optional output
 varns={XY};

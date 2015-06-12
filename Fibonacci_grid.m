@@ -1,23 +1,13 @@
 function varargout = Fibonacci_grid(N)
-% varargout=FIBONACCI_GRID(N)
-%
-% INPUT:
-%
-% N           How many? The number of points equals: 2N + 1.
-%
-% OUTPUT:
-%
-% [lon,lat]
-%
+
 % Construct Fibonacci grid, see Álvaro González, "Measurement of
 % Areas on a Sphere Using Fibonacci and Latitude–Longitude Lattices",
 % Mathematical Geosciences (2010) 42: 49–64
-%
-% Written by somebody else, not sure I recall who.
-% Might have been Cornelis Slobbe (Delft)
-% Last modified by fjsimons-at-alum.mit.edu, 07/12/2012
 
-defval('N',7000);
+
+% The number of points equals: 2N + 1.
+
+defval('N',1000);
 defval('WhichAngle','ComplGoldenAngle')
 %Golden ratio
 Phi = (1+sqrt(5))/2;
@@ -41,3 +31,4 @@ lon(lon > 360) = lon(lon > 360) - 360;
 vars={lon,lat};
 varargout=vars(1:nargout);
 
+end
