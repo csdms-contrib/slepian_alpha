@@ -11,14 +11,14 @@ function defstruct(name,fields,values)
 %
 % OUTPUT:
 %
-%      None. The variables appear as if by magic into your workspace or
+%      None. The variable appears as if by magic into your workspace or
 %      will be available inside your function.
 %
 % SEE ALSO: 
 %
 % CELLNAN, STRUCTNAN, STRUCT
 %
-% Last modified by fjsimons-at-alum.mit.edu, 07/08/2013
+% Last modified by fjsimons-at-alum.mit.edu, 07/02/2014
 
 if ~ischar(name),
   error(sprintf(['The first argument of DEFSTRUCT',...
