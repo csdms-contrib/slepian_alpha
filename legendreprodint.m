@@ -37,7 +37,7 @@ function varargout=legendreprodint(L1,m1,L2,m2,x0,method)
 % legendreprodint('demo5') Verify some analytical formulas
 %
 % Last modified by plattner-at-princeton.edu, 05/24/2011
-% Last modified by fjsimons-at-alum.mit.edu, 06/01/2011
+% Last modified by fjsimons-at-alum.mit.edu, 06/12/2015
 
 if ~isstr(L1)
   defval('L1',1)
@@ -236,8 +236,10 @@ elseif strcmp(L1,'demo1')
   set(p{2}(2),'MarkerF','k','MarkerE','k')
   set(ah(2),'YScale','lin')
   l=legend('Wigner 3{\it{j}}','Gauss-Legendre',4);
-  grid on; longticks(ah); figdisp('legendreprodint3')
+  grid on; longticks(ah); 
   set([xl yl tl],'FontS',12)
+  figna=figdisp('legendreprodint1',[],[],1);
+  system(sprintf('epstopdf %s.eps',figna));
 elseif strcmp(L1,'demo2')
   % For unequal L and m=0, Byerlee's formula vs Gauss-Legendre 
   L1=ceil(20*rand(20,1))+1;
@@ -269,8 +271,10 @@ elseif strcmp(L1,'demo2')
   set(p{2}(2),'MarkerF','k','MarkerE','k')
   set(ah(2),'YScale','lin')
   l=legend('Byerlee','Gauss-Legendre',4);
-  grid on; longticks(ah); figdisp('legendreprodint1')
+  grid on; longticks(ah); 
   set([xl yl tl],'FontS',12)
+  figna=figdisp('legendreprodint2',[],[],1);
+  system(sprintf('epstopdf %s.eps',figna));
 elseif strcmp(L1,'demo3')
   % For equal L and m=0, Dumb summation formula vs Gauss-Legendre 
   L1=ceil(20*rand(20,1))+1;
@@ -299,8 +303,10 @@ elseif strcmp(L1,'demo3')
   set(p{2}(2),'MarkerF','k','MarkerE','k')
   set(ah(2),'YScale','Log')
   l=legend('Semi-analytical','Gauss-Legendre',2);
-  grid on; longticks(ah); figdisp('legendreprodint2')
+  grid on; longticks(ah); 
   set([xl yl tl],'FontS',12)
+  figna=figdisp('legendreprodint3',[],[],1);
+  system(sprintf('epstopdf %s.eps',figna));
 elseif strcmp(L1,'demo4')
   x0=linspace(-1,1,30);
   
@@ -341,6 +347,8 @@ elseif strcmp(L1,'demo4')
   plot(x0,err)
   xlabel('lower bound')
   ylabel('difference')  
+  figna=figdisp('legendreprodint4',[],[],1);
+  system(sprintf('epstopdf %s.eps',figna));
 elseif strcmp(L1,'demo5')
   L=7; m=0; x1=-0.3;
   I1=legendreprodint(7,0,0,0,-0.3);
