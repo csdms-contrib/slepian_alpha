@@ -14,11 +14,11 @@ function varargout=circ(radius,sectorwidth,origin,np,varargin)
 %
 % OUTPUT:
 %
-% H               Plot handle(s), to the circle and its origin
+% H               Plot handles to the circle and its origin
 % cords           Coordinates plotted
 % theta           Angles plotted, in radians
 %
-% Last modified by fjsimons-at-alum.mit.edu, 11/29/2010
+% Last modified by fjsimons-at-alum.mit.edu, 12/01/2013
 
 defval('radius',1)
 defval('sectorwidth',2*pi)
@@ -40,8 +40,9 @@ y=(radius'*sin(theta))';
 
 x=x+origin(1);
 y=y+origin(2);
-
 hands=plot(x,y,'Color','k');
+
+hold on
 
 if nargin>2
   hands=[hands ;  plot(origin(1),origin(2),'k+')];
@@ -52,12 +53,6 @@ cords=[x y];
 varns={hands,cords,theta};
 varargout=varns(1:nargout);
 
-%disp('set axis equal')
-
 if nargin>=5
   set(hands,varargin{1},varargin{2})
 end
-
-
-  
-  

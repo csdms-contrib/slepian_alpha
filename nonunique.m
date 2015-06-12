@@ -3,16 +3,16 @@ function [C,IA] = nonunique(A,varargin)
 % [C,AI] = NONUNIQUE(A,'sorted')
 % [C,AI] = NONUNIQUE(A,'stable')
 %
-% A complement to MATLAB's UNIQUE function. For a given vector or cell
+% A complement to MATLAB's UNIQUE function. For a given matrix or cell
 % array of strings, this function finds its nonunique members, including 
 % the first occurence of each nonunique element (which, under a strict
 % definition of nonuniqueness, might be exluded), as well as an index
 % vector to input "A" such that C = A(IA). This function mirrors UNIQUE
-% in terms of sorted/stable output.
+% in terms of sorted/stable output and the output's orientation.
 %
 % INPUT:
 %
-% A          Vector/cell array from which to find nonunique members
+% A          Matrix/cell array from which to find nonunique members
 % varargin   Control on how the output nonunique values are sorted
 %               <empty>: Nonunique values are sorted
 %               'sorted': Same as the <empty>
@@ -26,10 +26,15 @@ function [C,IA] = nonunique(A,varargin)
 %
 % See also ISMEMBER, SORT, UNIQUE
 %
-% Last modified by gleggers-at-alumni.princeton.edu, 05/20/2014
+% Last modified by gleggers-at-alumni.princeton.edu, 05/21/2014
+
+% If "A" is a matrix, vectorize it and find nonunique values of the new "A"
+if ~any(size(A) == 1)
+    A = A(:);
+end
 
 % Make an index vector for all the elements of "A"
-indA = 1:length(A);
+indA = (1:length(A))';
 
 % Get the unique values of "A" and their linear indices
 [uA,iuA] = unique(A);
@@ -48,7 +53,7 @@ inboth = iuA(ismember(uA,nuA));
 % Combine the previous indices of nonunique values with the indices of 
 % unique values which are repeated, and use this new index array to find
 % the loosely defined nonunique values
-IA = sort([inuA(:) ; inboth(:)]);
+IA = sort([inuA(:); inboth(:)]);
 C = A(IA);
 
 % To match the UNIQUE function, if the 'sorted' flag or no flag is given,

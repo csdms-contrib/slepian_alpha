@@ -16,7 +16,7 @@ function cls=ls2cell(ddir,fullpath)
 %
 % NOTE: Remember that directories end with a "filesep" and files do not.
 % So if you want a fullpath and submit a directory, it needs to end in
-% filesep to be correct.
+% filesep to be correct. Otherwise, you get the "non-exist" error. 
 %
 % EXAMPLE:
 %
@@ -26,7 +26,7 @@ function cls=ls2cell(ddir,fullpath)
 % names=ls2cell([pwd '/*SAC'],1)
 %
 % Last modified by fjsimons-at-alum.mit.edu, 09/10/2014
-% Last modified by charig-at-princeton.edu, 09/10/2014
+% Last modified by charig-at-princeton.edu, 09/23/2014
 
 defval('fullpath',0);
 
