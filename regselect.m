@@ -22,8 +22,8 @@ function XY=regselect(regn,c11,cmn,xunt,res,buf,ofs)
 %
 % XY       The requested coordinates
 % 
-% Last modified by fjsimons-at-alum.mit.edu, 05/06/2013
 % Last modified by charig-at-princeton.edu, 05/14/2015
+% Last modified by fjsimons-at-alum.mit.edu, 06/13/2015
 
 % The directory where you keep the coordinates
 whereitsat=fullfile(getenv('IFILES'),'COASTS');
@@ -35,6 +35,9 @@ Regn=[upper(regn(1)) regn(2:end)];
 defval('ofs',0)
 defval('res',0)
 defval('buf',0)
+
+% Curve speed... when doing interactive mode
+defval('spd',0.1)
 
 % Revert to original name if unbuffered
 if res==0 && buf==0
@@ -130,7 +133,6 @@ else
         XY=reshape(XY,[],2); 
     end
 
-    
     % And definitely make this go clockwise
     [X2,Y2]=poly2cw(XY(:,1),XY(:,2));
     XY=[X2 Y2]; clear X2 Y2
@@ -139,7 +141,7 @@ else
     axis equal 
 
     % Check this out %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    hold on ; curvecheck(XY(:,1),XY(:,2),0.01); hold off
+    hold on ; curvecheck(XY(:,1),XY(:,2),spd); hold off
   else
     XY=bezier(eval(sprintf('%s(0)',regn)),res);
   end
@@ -184,6 +186,7 @@ else
     % Definitely get rid of the NaNs again? Should be overkill at this point
     %XY=XY(~isnan(XY(:,1)) & ~isnan(XY(:,2)),:);
   end
+
   % Save the file
   save(fnpl,'XY')
 end
