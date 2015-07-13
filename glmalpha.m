@@ -69,7 +69,7 @@ function varargout=glmalpha(TH,L,sord,blox,upco,resc,J,anti,rotb)
 %
 % GLMALPHAPTO, ADDMOUT, ADDMON, KERNELC, LOCALIZATION, GALPHA, DLMLMP, GLM2LMCOSI
 %
-% Last modified charig-at-princeton.edu, 06/01/2015
+% Last modified charig-at-princeton.edu, 06/16/2015
 % Last modified by fjsimons-at-alum.mit.edu, 06/05/2013
 
 % Should be able to update this to retain the rank order per m as well as
@@ -80,7 +80,7 @@ function varargout=glmalpha(TH,L,sord,blox,upco,resc,J,anti,rotb)
 
 defval('TH',30)
 
-if ~(ischar(TH) && isempty(strfind(TH(:)','demo')))
+if ~(ischar(TH) && ~isempty(strfind(TH(:)','demo')))
 
   defval('L',18)
   defval('dom',[]);
