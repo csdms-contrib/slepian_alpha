@@ -33,10 +33,12 @@ defval('form','epsc')
 
 % Calls itself and cleans up afterward
 if act==2
-  figna=figdisp(name,ext,opt,1,'epsc');
-  system(sprintf('degs %s.eps',figna));
-  system(sprintf('epstopdf %s.eps',figna));
-  system(sprintf('rm -f %s.eps',figna));
+  [fname,pstring]=figdisp(name,ext,opt,1,'epsc');
+  system(sprintf('degs %s.eps',fname));
+  system(sprintf('epstopdf %s.eps',fname));
+  system(sprintf('rm -f %s.eps',fname));
+  varns={fname,pstring};
+  varargout=varns(1:nargout);
   return
 end
 
@@ -64,4 +66,3 @@ end
 
 varns={fname,pstring};
 varargout=varns(1:nargout);
-
