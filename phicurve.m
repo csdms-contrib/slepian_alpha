@@ -32,6 +32,7 @@ function varargout=phicurve(thph,th)
 % DPHREGION, DPHPATCH, DPHSQUARE, CURVECHECK
 %
 % Last modified by fjsimons-at-alum.mit.edu, 07/11/2012
+% Last modified by charig-at-princeton.edu, 08/14/2015
 
 if ~isstr(thph)
   % For every th, find the relevant phint
@@ -104,13 +105,14 @@ elseif strcmp(thph,'demo1')
   region=th;
   eval(sprintf('XY=%s(%i);',region,N));
   thph=[90-XY(:,2) XY(:,1)];
-  Nth=rand*300;
+  Nth=ceil(rand*300);
   th=linspace(min(thph(:,1)),max(thph(:,1)),Nth);
   [phint,thp,php]=phicurve(thph,th);
   plot(php,90-thp,'k-'); hold on
   plot(thph(:,2),90-thph(:,1),'k-');
   hold off
   axis equal; grid on
+  title(sprintf('Number of crossings %i',Nth))
 elseif strcmp(thph,'demo2')
   [x,y]=blob(1,1);
   thph=[y(:) x(:)];
