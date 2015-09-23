@@ -13,6 +13,7 @@ function varargout=figdisp(name,ext,opt,act,form)
 % opt           An option string, e.g. '-zbuffer'
 % act           1 Actually print the figure
 %               0 Don't print the figure [default]
+%               2 Makes a PDF from an EPS which it removes
 % form          A graphics format [pdf, png, etc: default: epsc]
 %
 % OUTPUT:
@@ -20,7 +21,7 @@ function varargout=figdisp(name,ext,opt,act,form)
 % fname         The full file name
 % pstring       The plot string
 %
-% Last modified by fjsimons-at-alum.mit.edu, 01/4/2012
+% Last modified by fjsimons-at-alum.mit.edu, 07/13/2015
 
 [p,n]=star69;
 
@@ -29,6 +30,17 @@ defval('ext',[])
 defval('opt',[])
 defval('act',0)
 defval('form','epsc')
+
+% Calls itself and cleans up afterward
+if act==2
+  [fname,pstring]=figdisp(name,ext,opt,1,'epsc');
+  system(sprintf('degs %s.eps',fname));
+  system(sprintf('epstopdf %s.eps',fname));
+  system(sprintf('rm -f %s.eps',fname));
+  varns={fname,pstring};
+  varargout=varns(1:nargout);
+  return
+end
 
 if ~isstr(ext)
   ext=num2str(ext);
@@ -48,10 +60,9 @@ end
 
 disp(pstring)
 
-if act==1
+if act>=1
   eval(pstring)
 end
 
 varns={fname,pstring};
 varargout=varns(1:nargout);
-
