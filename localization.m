@@ -207,7 +207,7 @@ elseif strcmp(L,'demo1')
   % Must get nargout to force running KERNELCP
   [V,C,dels,dems,XY,Klmlmp]=localization(L,'africa',[],[],[],1);
   subplot(121)
-  plotplm([dels dems C{1}],[],[],4,1)
+  plotplm([dels dems C{1}],[],[],[],1)
   % They look weird - you are in a degenerate eigenspace
   % While we had them (just didn't return them) let us reconstruct the
   % original eigenfunctions of the localization matrix by undoing the
@@ -225,7 +225,7 @@ elseif strcmp(L,'demo2')
 elseif strcmp(L,'demo3')
   th0=114; ph0=134; thR=40;
   [V,C,dels,dems,XY,Klmlmp]=localization(6,'patch',[th0 ph0 thR]*pi/180);
-  plotplm([dels dems C{1}],[],[],4,2); hold on; plot(ph0,90-th0,'w')
+  plotplm([dels dems C{1}],[],[],[],2); hold on; plot(ph0,90-th0,'w')
 elseif strcmp(L,'demo4')
   L=60/3; J=100; rotb=1;
   [V,C,dels,dems,XY,Klmlmp]=localization(L,'antarctica',[],J,rotb);
@@ -265,9 +265,10 @@ elseif strcmp(L,'demo6')
   % Make some plots
   for index=1:10:size(C,2)
     clf
-    [d,c,p]=plotplm([dels dems C{index}],[],[],4,1);
+    [d,c,p]=plotplm([dels dems C{index}],[],[],[],1);
     delete(p)
     title(sprintf('Slepian function %i',index))
+    disp('Press enter to continue...')
     pause
   end
 
@@ -294,8 +295,6 @@ elseif strcmp(L,'demo6')
   imagefnan(G(N+1:end,N+1:end)'*G(N+1:end,N+1:end))
 elseif strcmp(L,'demo7')
   L=18;
-  % Do this in parallel - so much faster!
-  if matlabpool('size')==0 ; matlabpool open; end
   % Computes all Slepian functions for the continental shelves
   [V,C,dels,dems,XY,Klmlmp,G]=localization(L,'contshelves',[],[],1);
 
@@ -304,7 +303,6 @@ elseif strcmp(L,'demo7')
   parfor index=2:size(C,2)
     F=F+plm2xyz([dels dems C{index}],1,[],[],[],Plms).^2*V(index);
   end
-  % matlabpool close
   
   % Then plot it all
   clf
