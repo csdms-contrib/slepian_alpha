@@ -50,7 +50,7 @@ function varargout=localization(L,dom,N,J,rotb,anti)
 % LOCALIZATION2D, PLOTPLM, PLM2XYZ, PLOTSLEP, KLMLMP2ROT, GLMALPHA,
 % ROTATEGP 
 % 
-% Last modified by fjsimons-at-alum.mit.edu, 05/03/2013
+% Last modified by fjsimons-at-alum.mit.edu, 09/23/2015
 
 % Study covariance at some point?
 
@@ -92,8 +92,11 @@ if ~isstr(L)
         end
       end
     end
-    
     defval('J',length(Klmlmp))
+  else
+    defval('XY',NaN)
+    defval('Klmlmp',NaN)
+    defval('G',NaN)
   end
   defval('J',(L+1)^2)
   
@@ -103,7 +106,7 @@ if ~isstr(L)
   else
     doms=dom;
   end
-  
+
   % See if the diagonalization has been done before
   switch doms
    case 'sqpatch'
@@ -120,32 +123,35 @@ if ~isstr(L)
     fnpl=sprintf('%s/%s-%i-%i-%i.mat',...
 		 fullfile(getenv('IFILES'),'LOCALIZE'),doms,L,N,J);
   end
-  
   if anti==1
     Klmlmp=eye(size(Klmlmp))-Klmlmp;
     fnpl=sprintf('%s/%s-%i-%i-%i-%i.mat',...
 		 fullfile(getenv('IFILES'),'LOCALIZE'),doms,L,N,J,anti);
     disp(sprintf('Remember that you requested the anti-%s region',doms))
   end
-
+  
   if exist(fnpl,'file')==2
     disp(sprintf('Loading %s',fnpl))
     load(fnpl)
   else
-    % Calculates the eigenfunctions/values for this localization problem
-    if J<length(Klmlmp)-1 & 1==3
-      % Note that this often does not work very well at all, so don't try
-      OPTS.disp=0;
-      [C,V]=eigs(Klmlmp,J,'LA',OPTS);
-      [V,isrt]=sort(sum(real(V),1),'descend');
-      C=C(:,isrt(1:J));
-    else
-      % This is slow but better
-      [C,V]=eig(Klmlmp);
-      [V,isrt]=sort(sum(real(V),1),'descend');
-      % Global sorting
-      C=C(:,isrt(1:J));
-      save(fnpl,'C','V','dom','L','N','J')
+    try
+      % Calculates the eigenfunctions/values for this localization problem
+      if J<length(Klmlmp)-1 & 1==3
+	% Note that this often does not work very well at all, so don't try
+	OPTS.disp=0;
+	[C,V]=eigs(Klmlmp,J,'LA',OPTS);
+	[V,isrt]=sort(sum(real(V),1),'descend');
+	C=C(:,isrt(1:J));
+      else
+	% This is slow but better
+	[C,V]=eig(Klmlmp);
+	[V,isrt]=sort(sum(real(V),1),'descend');
+	% Global sorting
+	C=C(:,isrt(1:J));
+	save(fnpl,'C','V','dom','L','N','J')
+      end
+    catch
+      error('Better call KERNELC or KERNELCP so that you have a saved kernel')
     end
   end
   
@@ -197,8 +203,9 @@ if ~isstr(L)
   varns={V,CC,dels,dems,XY,Klmlmp,C};
   varargout=varns(1:nargout);
 elseif strcmp(L,'demo1')
-  L=36;
-  [V,C,dels,dems]=localization(L,'africa',[],[],[],1);
+  L=36/2;
+  % Must get nargout to force running KERNELCP
+  [V,C,dels,dems,XY,Klmlmp]=localization(L,'africa',[],[],[],1);
   subplot(121)
   plotplm([dels dems C{1}],[],[],4,1)
   % They look weird - you are in a degenerate eigenspace
@@ -213,15 +220,15 @@ elseif strcmp(L,'demo1')
   end
   imagefnan(bigc'*bigc)
 elseif strcmp(L,'demo2')
-  [V,C,dels,dems]=localization(18,'amazon');
+  [V,C,dels,dems,XY,Klmlmp]=localization(18,'amazon');
   plotplm([dels dems C{1}])
 elseif strcmp(L,'demo3')
   th0=114; ph0=134; thR=40;
-  [V,C,dels,dems]=localization(6,'patch',[th0 ph0 thR]*pi/180);
+  [V,C,dels,dems,XY,Klmlmp]=localization(6,'patch',[th0 ph0 thR]*pi/180);
   plotplm([dels dems C{1}],[],[],4,2); hold on; plot(ph0,90-th0,'w')
 elseif strcmp(L,'demo4')
-  L=60; J=100; rotb=1;
-  [V,C,dels,dems]=localization(L,'antarctica',[],J,rotb);
+  L=60/3; J=100; rotb=1;
+  [V,C,dels,dems,XY,Klmlmp]=localization(L,'antarctica',[],J,rotb);
   subplot(121)
   plotplm([dels dems C{12}],[],[],2,0.5)
   view(145,-35)
@@ -243,7 +250,7 @@ elseif strcmp(L,'demo5')
   % It's only a matter of indexing and ordering
   difer(GG(R1,:)-G)
 elseif strcmp(L,'demo6')
-  L=72;
+  L=72/3;
   % What will be the Shannon number in this construction?
   N=[spharea('alloceans')-spharea('africa')-spharea('samerica')-...
     spharea('australia')]*(L+1)^2;
