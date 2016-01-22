@@ -27,7 +27,7 @@ function varargout=localization(L,dom,N,J,rotb,anti)
 %             this function) and LOCALIZATION is called with, is preferred
 %             for these regions here. You might notice the difference.
 % anti      1 Get the region complementary to the requested region
-%           0 Don't, proceed as usual
+%           0 Do not, proceed as usual
 %
 % OUTPUT:
 %
@@ -50,7 +50,7 @@ function varargout=localization(L,dom,N,J,rotb,anti)
 % LOCALIZATION2D, PLOTPLM, PLM2XYZ, PLOTSLEP, KLMLMP2ROT, GLMALPHA,
 % ROTATEGP 
 % 
-% Last modified by fjsimons-at-alum.mit.edu, 10/06/2015
+% Last modified by fjsimons-at-alum.mit.edu, 1/22/2016
 
 % Study covariance at some point?
 
