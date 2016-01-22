@@ -50,7 +50,7 @@ function varargout=localization(L,dom,N,J,rotb,anti)
 % LOCALIZATION2D, PLOTPLM, PLM2XYZ, PLOTSLEP, KLMLMP2ROT, GLMALPHA,
 % ROTATEGP 
 % 
-% Last modified by fjsimons-at-alum.mit.edu, 1/22/2016
+% Last modified by fjsimons-at-alum.mit.edu, 1/22/2016 
 
 % Study covariance at some point?
 
