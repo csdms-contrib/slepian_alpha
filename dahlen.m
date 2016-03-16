@@ -18,18 +18,21 @@ function [ap1,th0]=dahlen(L,m,X,norma)
 % ap1        The approximation due to DT (B.84)
 % th0        The validity range is [th0 pi-th0]
 %
+% See Dahlen and Tromp (1998), Theoretical Global Seismology, p. 855.
+% DT (X.NN) refer to their numbered equations.
+%
 % EXAMPLE:
 %
 % dahlen('demo1')
 %
 % See also BACKUS, HILBXLM.
 %
-% By fjsimons-at-alum.mit.edu, Feb 12th, 2004
+% Last modified by fjsimons-at-alum.mit.edu, 03/16/2016
 
 if ~isstr(L)
   defval('norma','fnc')
 
-  % DT Eq.(B80)
+  % DT B.80)
   th0=asin(abs(m)/(sqrt(L*(L+1))));
 
   if any(X>=1 | X<=-1)
@@ -53,7 +56,7 @@ if ~isstr(L)
     error('Specify valid normalization')
   end
 
-  % The approximation DT Eq. B. 84
+  % The approximation DT (B. 84)
   warning off
   ap1=fac/pi*(sin(th).^2-sin(th0)^2).^(-1/4).*...
       cos((L+1/2).*acos(cos(th)/cos(th0))-...
