@@ -18,7 +18,7 @@ function [ap1,th0]=dahlen(L,m,X,norma)
 % ap1        The approximation due to DT (B.84)
 % th0        The validity range is [th0 pi-th0]
 %
-% See Dahlen and Tromp (1998), Theoretical Global Seismology, p. 855.
+% See Dahlen and Tromp (1998), Theoretical Global Seismology,
 % DT (X.NN) refer to their numbered equations.
 %
 % EXAMPLE:

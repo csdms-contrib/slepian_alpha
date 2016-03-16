@@ -5,7 +5,7 @@ function [l,m,mu,check,tol]=pxyerh(l,m,mu,check,tol)
 %
 % Not a stand-alone program. See PLM, XLM, and YLM.
 %
-% Last modified by fjsimons-at-alum.mit.edu, 03/10/2009
+% Last modified by fjsimons-at-alum.mit.edu, 03/16/2016
 
 % Input error catching
 if (prod(size(m))~=1 | isempty(m)) & prod(size(l))~=1

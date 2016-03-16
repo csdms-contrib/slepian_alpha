@@ -6,7 +6,10 @@ function norms=pxynrm(l,m,tol,fcn)
 %
 % Not a stand-alone program. See PLM, XLM, and YLM.
 %
-% Last modified by fjsimons-at-alum.mit.edu, 06/05/2007
+% See Dahlen and Tromp (1998), Theoretical Global Seismology,
+% DT (X.NN) refers to their numbered equations.
+
+% Last modified by fjsimons-at-alum.mit.edu, 03/16/2016
 
 norms=repmat(NaN,max(length(m),length(l)),max(length(m),length(l)));
 
@@ -15,7 +18,7 @@ if prod(size(m))==1
   % Check fixed-order normalization DT (B.49/B.59)
   for index=1:length(l)
     for ondex=index:length(l)
-      % Check fixed-order normalization DT (B.49/59)
+      % Check fixed-order normalization DT (B.49/B.59)
       [w,x]=gausslegendrecof(l(index)+l(ondex));
       switch fcn
        case 'P'
