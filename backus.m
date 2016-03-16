@@ -49,7 +49,7 @@ switch norma
   error('Specify valid normalization')
 end
 
-% The approximation DT Eq. B. 86
+% The approximation DT (B.86)
 arg=[(L+1/2)*th-pi/4];
 ap1=fac/pi./sqrt(sin(th)).*(cos(arg));
 ap2=fac/pi./sqrt(sin(th)).*(cos(arg)+1/8/(L+1/2).*cot(th).*sin(arg));
