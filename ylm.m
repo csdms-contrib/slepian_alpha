@@ -1,7 +1,8 @@
 function [Y,theta,phi,dems,dels]=ylm(l,m,theta,phi,check,tol,blox,irr)
 % [Y,theta,phi,dems,dels]=YLM(l,m,theta,phi,check,tol,blox,irr)
 %
-% Calculates unit-normalized real spherical harmonics, DT (B.72).
+% Calculates unit-normalized real spherical harmonics, 
+% Dahlen and Tromp (1998), Theoretical Global Seismology, eq. (B.72).
 % Here, Y00=1/sqrt(4*pi), i.e. difer(indeks(ylm(0,0),1)*sqrt(4*pi)-1)
 %
 % INPUT:
