@@ -19,7 +19,8 @@ function [ap1,th,th0,ap2]=backus(L,N,norma)
 % th0        The validity range is [th0 pi-th0]
 % ap2        A better approximation due to DT (B.87)
 %
-% See Dahlen and Tromp, Appendix B p 855.
+% See Dahlen and Tromp (1998), Theoretical Global Seismology, p. 855.
+% DT (X.NN) refer to their numbered equations.
 %
 % EXAMPLE:
 %
@@ -27,12 +28,12 @@ function [ap1,th,th0,ap2]=backus(L,N,norma)
 %
 % See also DAHLEN, HILBXLM.
 %
-% By fjsimons-at-alum.mit.edu, Feb 11th, 2004
+% Last modified by fjsimons-at-alum.mit.edu, 03/16/2016
 
 defval('norma','sch')
 defval('N',1000);
 
-% DT Eq. B. 80
+% DT (B.80)
 th0=asin(1/(sqrt(L*(L+1))));
 th=linspace(0+eps,pi-eps,N);
 
