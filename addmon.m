@@ -46,9 +46,11 @@ function [dems,dels,mz,lmcosi,mzi,mzo,bigm,bigl,rinm,ronm,demin]=addmon(L,m)
 % [dems,dels,mz,lmcosi,mzi,mzo,bigm,bigl,rinm,ronm,demin]=addmon(L,m);
 % dems(demin)
 %
-% Last modified by fjsimons-at-alum.mit.edu, 1/20/2011
-
-defval('m',NaN)
+% Previously modified by fjsimons-at-alum.mit.edu, 1/20/2011
+% Minor changes by pfaff-at-kit.edu, 10/04/2016
+if nargin==1
+    m=NaN;
+end
 
 matr=(repmat(0:L,2,1)'*diag([0 1]))';
 dems=matranges(matr(:)')';
@@ -82,7 +84,7 @@ if nargout>=3
 	      if  L>=2
 		% Must do the first couple of degrees myself since gamini(x,0) is bad
 		lopos=cumsum(2*els(1:end-1)+1)+1; 
-		ka=[repmat(1,1,L-1) ; els(3:end)-1 ; repmat(1,1,L-1); els(3:end)];
+		ka=[ones(1,L-1) ; els(3:end)-1 ; ones(1,L-1); els(3:end)];
 		ko=[[1 0 -1 2] gamini(repmat([0 -2 -1 2],1,L-1),ka(:)')]';
 		ko(lopos)=[2:2:2*L];
 		rinm=cumsum(ko);  

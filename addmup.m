@@ -23,7 +23,8 @@ function nrmorl=addmup(nr,drk)
 %
 % See also ADDMOFF, ADDMOUT
 %
-% Last modified by fjsimons-at-alum.mit.edu, 05/17/2011
+% Previously modified by fjsimons-at-alum.mit.edu, 05/17/2011
+% Last modified by Florian Pfaff for libDirectional, 10/04/2016
 
 % Calculates the number of real spherical harmonic orders
 % that belong to an expansion from degree l=0 to L - or vice versa. 
@@ -34,9 +35,12 @@ function nrmorl=addmup(nr,drk)
 % scalars. Note: degrees 0 and 1 are of course included.
 
 % Check the behavior for the negatives should you ever need those
-
-defval('nr',3)
-defval('drk','a')
+if nargin==0
+    nr=3;
+    drk='a';
+elseif nargin==1
+    drk='a';
+end
 
 switch  drk
   case 'a'
