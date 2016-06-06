@@ -69,6 +69,7 @@ function varargout=glmalpha(TH,L,sord,blox,upco,resc,J,anti,rotb)
 %
 % GLMALPHAPTO, ADDMOUT, ADDMON, KERNELC, LOCALIZATION, GALPHA, DLMLMP, GLM2LMCOSI
 %
+% Last modified by plattner-at-alumni.ethz.ch, 6/5/2016  
 % Last modified charig-at-princeton.edu, 06/16/2015
 % Last modified by fjsimons-at-alum.mit.edu, 06/05/2013
 
