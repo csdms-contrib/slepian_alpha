@@ -65,7 +65,7 @@ if isstr(index)
 else
   watis= 'M';
 end
-a=text(0,0,watis,'fonts',fontsize); 
+a=text(0,0,watis,'fontsize',fontsize); 
 % FJS Note that the EXTENT function is buggy... for huge dataaspectratios
 % etc, so you better work in scaled coordinates. Watch if it's off
 ext=get(a,'Extent'); delete(a)
