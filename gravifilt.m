@@ -41,7 +41,7 @@ if ~isstr(L)
   defval('pono',1)
   defval('wat',3)
   
-  % If the variable doesn't exist
+  % If the variable doesn't exist or is empty
   if isempty(lmcosi) 
   % Read the file
     fnpl=fullfile(getenv('IFILES'),...
@@ -73,11 +73,11 @@ if ~isstr(L)
   lmcosif=plmfilt(lmcosi,L,wlen);
 
   % Plot the spectrum to be sure
-%  clf
-%  [sdl,l]=plm2spec(lmcosif);
-%  semilogy(l,sdl)
-%  set(gca,'xtick',unique([0 1 2 L]),'xgrid','on')
-%  pause(1)
+  % clf
+  % [sdl,l]=plm2spec(lmcosif);
+  % semilogy(l,sdl)
+  % set(gca,'xtick',unique([0 1 2 L]),'xgrid','on')
+  % pause(1)
     
   % Perform the expansion and/or plot
   if pono==0
@@ -102,7 +102,8 @@ if ~isstr(L)
     vmd=prctile(data(:),percs);
     tix=unique([0 vmd([1 find(percs==50) length(vmd)])]);
     %set(cb(1),'xtick',tix,'xtickl',round(tix),...
-	%      'xlim',vmd([1 length(vmd)]))
+    %      'xlim',vmd([1 length(vmd)]))
+
     % Cosmetics
     fig2print(gcf,'landscape')
     movev(cb,-0.075)
@@ -145,13 +146,13 @@ elseif strcmp(L,'demo3')
   c11cmn=[175 30 220 10];
   wat=2;
   [data,ah,cb,t]=gravifilt([2 360],[],[],wat);
-  %axes(ah); pause(3); axis(c11cmn([1 3 4 2]))
-  %shrink(ah); caxis([-60 60]); delete(cb)
-  %cb=colorbar('hor'); undeggies(ah)
-  %set(ah,'xtick',c11cmn([1 3]),'xtickl',c11cmn([1 3]),...
-%	 'ytick',c11cmn([4 2]),'ytickl',c11cmn([4 2]))
-  %deggies(ah); shrink(cb); movev(cb,0.1);
-  %axes(cb); t=xlabel(get(t,'string'));
+  axes(ah); pause(3); axis(c11cmn([1 3 4 2]))
+  shrink(ah); caxis([-60 60]); delete(cb)
+  cb=colorbar('hor'); undeggies(ah)
+  set(ah,'xtick',c11cmn([1 3]),'xtickl',c11cmn([1 3]),...
+  	 'ytick',c11cmn([4 2]),'ytickl',c11cmn([4 2]))
+  deggies(ah); shrink(cb); movev(cb,0.1);
+  axes(cb); t=xlabel(get(t,'string'));
 elseif strcmp(L,'demo4')
   c11cmn=[175 30 220 10];
   wat=2;
@@ -260,6 +261,7 @@ elseif strcmp(L,'demo7')
     moveh(cb,.02)
     cb.XLabel.String = '[mgal]';
     cb.FontSize = 16;
-    myf=gcf; myf.InvertHardcopy='off';
+    myf=gcf; 
+    myf.InvertHardcopy='off';
     %myf.Color='none';
 end
