@@ -121,14 +121,14 @@ elseif [length(parm)==1 && parm==1] || [length(parm)==1 && parm==2] || ...
 	([isstr(parm) && strcmp(poso,'hor')] || poso(3)>poso(4))
   % New length addition to skip for BW
   xtcb=get(cb,'xtick'); 
-  xlcb=get(cb,'xtickl');
+  xlcb=get(cb,'xtickLabel');
   set(cb,'xtick',xtcb(1:2:end))
-  set(cb,'xtickl',cellstr(xlcb(1:2:end,:)))
+  set(cb,'xtickLabel',cellstr(xlcb(1:2:end,:)))
 elseif [isstr(parm) & strcmp(poso,'vert') || poso(4)>poso(3)]
   ytcb=get(cb,'ytick'); 
-  ylcb=get(cb,'ytickl');
+  ylcb=get(cb,'ytickLabel');
   set(cb,'ytick',ytcb(1:2:end))
-  set(cb,'ytickl',cellstr(ylcb(1:2:end,:)))
+  set(cb,'ytickLabel',cellstr(ylcb(1:2:end,:)))
 end
 
 if ~isstr(parm) && length(parm)==1

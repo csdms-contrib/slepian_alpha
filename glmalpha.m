@@ -69,6 +69,7 @@ function varargout=glmalpha(TH,L,sord,blox,upco,resc,J,anti,rotb)
 %
 % GLMALPHAPTO, ADDMOUT, ADDMON, KERNELC, LOCALIZATION, GALPHA, DLMLMP, GLM2LMCOSI
 %
+% Last modified by plattner-at-alumni.ethz.ch, 6/5/2016  
 % Last modified charig-at-princeton.edu, 06/16/2015
 % Last modified by fjsimons-at-alum.mit.edu, 06/05/2013
 
@@ -317,7 +318,11 @@ if ~(ischar(TH) && ~isempty(strfind(TH(:)','demo')))
       % Truncate to the smaller amount of eigenfunctions and -values
       G=G(:,1:J);
       V=V(1:J);
-      save(fname,'-v7.3','G','V','EL','EM','N')
+      if exist('octave_config_info') % If it's octave
+	save(fname,'G','V','EL','EM','N')
+      else % It's Matlab
+	save(fname,'-v7.3','G','V','EL','EM','N')
+      end
     else
       % For AXISYMMETRIC REGIONS
       if blox~=0 && blox~=1
@@ -451,7 +456,11 @@ if ~(ischar(TH) && ~isempty(strfind(TH(:)','demo')))
         % Save the results if it isn't a geographical region
         % If the variable is HUGE you must use the -v7.3 flag, if not, you
         % can safely omit it and get more backwards compatibility
-        save(fname,'-v7.3','G','V','EL','EM','N','GM2AL','MTAP','IMTAP')
+	if exist('octave_config_info') % If it's octave 
+          save(fname,'G','V','EL','EM','N','GM2AL','MTAP','IMTAP')
+	else % It's Matlab
+	  save(fname,'-v7.3','G','V','EL','EM','N','GM2AL','MTAP','IMTAP')
+	end
       end
     end
   end

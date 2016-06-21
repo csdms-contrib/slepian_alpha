@@ -29,9 +29,12 @@ function varargout=gravifilt(L,wlen,pono,wat,lmcosi,degres)
 % gravifilt('demo6',[2 100])
 %
 % Last modified by fjsimons-at-alum.mit.edu, 02/20/2012
+% Last modified by charig-at-princeton.edu, 06/17/2016
+
 
 % Supply defaults
 defval('L',[20 50])
+defval('lmcosi',[])
 
 if ~isstr(L)
   defval('wlen',5)
@@ -40,8 +43,9 @@ if ~isstr(L)
   defval('wat',3)
   
   % If the variable doesn't exist
-  if exist('lmcosi','var')~=1
-    % Read the file
+  %if exist('lmcosi','var')~=1
+  if isempty(lmcosi) 
+  % Read the file
     fnpl=fullfile(getenv('IFILES'),...
 		  'EARTHMODELS','EGM2008','EGM2008_zerotide_720.mat');
     % If the file doesn't exist
@@ -71,11 +75,11 @@ if ~isstr(L)
   lmcosif=plmfilt(lmcosi,L,wlen);
 
   % Plot the spectrum to be sure
-  clf
-  [sdl,l]=plm2spec(lmcosif);
-  semilogy(l,sdl)
-  set(gca,'xtick',unique([0 1 2 L]),'xgrid','on')
-  pause(1)
+%  clf
+%  [sdl,l]=plm2spec(lmcosif);
+%  semilogy(l,sdl)
+%  set(gca,'xtick',unique([0 1 2 L]),'xgrid','on')
+%  pause(1)
     
   % Perform the expansion and/or plot
   if pono==0
@@ -87,7 +91,7 @@ if ~isstr(L)
     
     % Plot the topography
     axes(ah(1))
-    data=plotplm(lmcosif,[],[],4,degres);
+    data=plotplm(lmcosif,[],[],1,degres);
     if length(L)==2
       t(1)=title(sprintf(...
 	  '%s filtered between L = %i and %i',...
@@ -99,14 +103,14 @@ if ~isstr(L)
     cb(1)=colorbar('hor');
     vmd=prctile(data(:),percs);
     tix=unique([0 vmd([1 find(percs==50) length(vmd)])]);
-    set(cb(1),'xtick',tix,'xtickl',round(tix),...
-	      'xlim',vmd([1 length(vmd)]))
+    %set(cb(1),'xtick',tix,'xtickl',round(tix),...
+	%      'xlim',vmd([1 length(vmd)]))
     % Cosmetics
     fig2print(gcf,'landscape')
     movev(cb,-0.075)
     movev(t,0.075)
-    set(t,'FontS',15)
-    longticks([ah cb],2)
+    %set(t,'FontS',15)
+    %longticks([ah cb],2)
     if length(L)==1
       figdisp([],sprintf('%i_%i',wat,L(1)))
     else
@@ -130,8 +134,8 @@ elseif strcmp(L,'demo1')
   axes(cb); t=xlabel(get(t,'string'));
 elseif strcmp(L,'demo2')
   c11cmn=[175 30 220 10];
-  wat=3;
-  [data,ah,cb,t]=gravifilt([20 60],[],[],wat);
+  wat=2;
+  [data,ah,cb,t,lmcosif]=gravifilt([2 40],[],[],wat,[]);
   axes(ah); pause(3); axis(c11cmn([1 3 4 2]))
   shrink(ah); caxis([-5 5]); delete(cb)
   cb=colorbar('hor'); undeggies(ah)
@@ -143,13 +147,13 @@ elseif strcmp(L,'demo3')
   c11cmn=[175 30 220 10];
   wat=2;
   [data,ah,cb,t]=gravifilt([2 360],[],[],wat);
-  axes(ah); pause(3); axis(c11cmn([1 3 4 2]))
-  shrink(ah); caxis([-60 60]); delete(cb)
-  cb=colorbar('hor'); undeggies(ah)
-  set(ah,'xtick',c11cmn([1 3]),'xtickl',c11cmn([1 3]),...
-	 'ytick',c11cmn([4 2]),'ytickl',c11cmn([4 2]))
-  deggies(ah); shrink(cb); movev(cb,0.1);
-  axes(cb); t=xlabel(get(t,'string'));
+  %axes(ah); pause(3); axis(c11cmn([1 3 4 2]))
+  %shrink(ah); caxis([-60 60]); delete(cb)
+  %cb=colorbar('hor'); undeggies(ah)
+  %set(ah,'xtick',c11cmn([1 3]),'xtickl',c11cmn([1 3]),...
+%	 'ytick',c11cmn([4 2]),'ytickl',c11cmn([4 2]))
+  %deggies(ah); shrink(cb); movev(cb,0.1);
+  %axes(cb); t=xlabel(get(t,'string'));
 elseif strcmp(L,'demo4')
   c11cmn=[175 30 220 10];
   wat=2;
@@ -239,4 +243,25 @@ elseif strcmp(L,'demo6')
     figna=figdisp([],sprintf('%i_%i_%i',wat,ELS(1),ELS(2)),popts,1);
   end
   system(sprintf('epstopdf %s.eps',figna));
+  
+elseif strcmp(L,'demo7')
+    wat=2;
+    [data,ah,cb,t,lmcosif]=gravifilt([2 40],[],0,wat,[]);
+    clf
+    plotonsphere(data,0.1,[15 15],1)
+    caxis([-80 80])
+    %view(100,30)
+    colormap jet
+    hold on
+    axes('position',[0,0,1,1]);  % Define axes for the text.
+    htext = text(0.52,0.92,['Free-air anomaly filtered between L = 2 and 40'], 'FontSize', 18  );
+    set(htext,'HorizontalAlignment','center');
+    set(gca,'Visible','off');
+    [cb,xcb]=addcb('hor',[-80 80],[-80 80],'jet',20);
+    shrink(cb); movev(cb,0.05);
+    moveh(cb,.02)
+    cb.XLabel.String = '[mgal]';
+    cb.FontSize = 16;
+    myf=gcf; myf.InvertHardcopy='off';
+    %myf.Color='none';
 end

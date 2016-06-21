@@ -22,7 +22,7 @@ function XY=regselect(regn,c11,cmn,xunt,res,buf,ofs)
 %
 % XY       The requested coordinates
 % 
-% Last modified by charig-at-princeton.edu, 05/14/2015
+% Last modified by charig-at-princeton.edu, 09/30/2015
 % Last modified by fjsimons-at-alum.mit.edu, 06/13/2015
 
 % The directory where you keep the coordinates
@@ -176,6 +176,8 @@ else
       elseif ~isempty(strfind(version,'2011a')) || ~isempty(strfind(version,'2012a'))
 	LonB=LonB(1:find(isnan(LonB))-1);
 	LatB=LatB(1:find(isnan(LatB))-1);
+      elseif ~isempty(strfind(version,'2015a'))
+         % Should not need to do anything here
       end
     catch
       disp('BUFFERM failed to buffer as expected. Version update?')

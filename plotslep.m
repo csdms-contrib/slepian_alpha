@@ -20,7 +20,7 @@ function varargout=plotslep(G,i,fmt,degres)
 % SEE ALSO: GLM2LMCOSI, KLM2LMCOSI
 %
 % Last modified by fjsimons-at-alum.mit.edu, 07/11/2012
-
+fd
 % Set defaults
 defval('i',1)
 defval('fmt',1)
