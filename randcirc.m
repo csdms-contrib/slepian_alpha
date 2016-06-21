@@ -24,7 +24,8 @@ function [x,y]=randcirc(xm,ym,r,dr,N)
 %
 % BLOB
 %
-% Last modified by fjsimons-at-alum.mit.edu, 10/06/2008
+% Tested on 8.3.0.532 (R2014a) and 9.0.0.341360 (R2016a)
+% Last modified by fjsimons-at-alum.mit.edu, 06/21/2016
 
 defval('xm',0)
 defval('ym',0)
@@ -43,9 +44,13 @@ t=[t-2*pi;t;t+2*pi];
 
 tt=linspace(0,2*pi,nr);
 
-rr=interp1(t,r,tt,'cubic');
+if verLessThan('matlab','6')
+  rr=interp1(t,r,tt,'cubic');
+else
+  % rr=interp1(t,r,tt,'v5cubic');
+  rr=interp1(t,r,tt,'pchip');
+end
 
 x=xm+rr.*cos(tt);
 y=ym+rr.*sin(tt);
-
 

@@ -4,7 +4,8 @@ function sdwdiagram
 % Makes a diagram of the spherical set-up of the program
 % Simons, Dahlen and Wieczorek, Figure 1.
 %
-% Last modified by fjsimons-at-alum.mit.edu, August 19th, 2004
+% Tested on 8.3.0.532 (R2014a)
+% Last modified by fjsimons-at-alum.mit.edu, 06/21/2016
 
 % Which vector to plot
 ang=40;

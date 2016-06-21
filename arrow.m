@@ -15,9 +15,9 @@ function varargout=arrow(X,Y,U,V,ori,sca,rot,tran)
 %
 % OUTPUT:
 %
-% arro      
-% arroperp
-% cend
+% arro      An object, or a handle, to the arrow
+% arroperp  Coordinates defining the perpendicular to the stalk
+% cend      Some idea of the extent of this picture
 %
 % EXAMPLE:
 %
