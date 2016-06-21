@@ -16,6 +16,7 @@ function cbarticks(cb,cax,tint,pos)
 % ADDCB, IMAGEF, IMAGEFDIR, IMAGEFNAN
 % 
 % Last modified by fjsimons-at-alum.mit.edu, 06/19/2008
+% Last modified by charig-at-princeton.edu, 02/05/2016
 
 defval('tint',20)
 defval('pos','hor')
@@ -25,10 +26,10 @@ tix=unique([cax(1):tint:cax(2) cax(2)]);
 
 if strcmp(pos,'hor')
   set(cb,'Xtick',scale(tix,get(cb,'xlim')))
-  set(cb,'XtickL',tix)
+  set(cb,'XtickLabel',tix)
 elseif strcmp(pos,'vert')
   set(cb,'Ytick',scale(tix,get(cb,'ylim')))
-  set(cb,'YtickL',tix)
+  set(cb,'YtickLabel',tix)
 else
   error('Specify valid orientation')
 end
