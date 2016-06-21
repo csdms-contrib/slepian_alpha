@@ -25,12 +25,11 @@ function varargout=gravifilt(L,wlen,pono,wat,lmcosi,degres)
 %
 % EXAMPLE:
 %
-% gravifilt('demoX'), where X=1,2,3,4,5
+% gravifilt('demoX'), where X=1,2,3,4,5,6,7
 % gravifilt('demo6',[2 100])
 %
-% Last modified by fjsimons-at-alum.mit.edu, 02/20/2012
 % Last modified by charig-at-princeton.edu, 06/17/2016
-
+% Last modified by fjsimons-at-alum.mit.edu, 06/21/2016
 
 % Supply defaults
 defval('L',[20 50])
@@ -43,7 +42,6 @@ if ~isstr(L)
   defval('wat',3)
   
   % If the variable doesn't exist
-  %if exist('lmcosi','var')~=1
   if isempty(lmcosi) 
   % Read the file
     fnpl=fullfile(getenv('IFILES'),...
