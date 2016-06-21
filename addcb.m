@@ -1,10 +1,9 @@
 function varargout=addcb(pos,caxcon,caxoc,parm,tint,invt)
 % [cb,xcb]=addcb(pos,caxcon,caxoc,parm,tint,invt)
 %
-% Adds an explicit colorbar - suitable for use with multiple or
-% complicated color maps, or with directly indexed RGB maps, as in
-% IMAGEFNAN. Remember, only the tick LABELS are meaningful; their actual
-% positions are not. 
+% Adds an explicit colorbar - suitable for use with multiple or complicated
+% color maps, or with directly indexed RGB maps, as in IMAGEFNAN. Remember,
+% only the tick LABELS are meaningful; their actual positions are not.
 %
 % INPUT:
 %
@@ -37,7 +36,7 @@ function varargout=addcb(pos,caxcon,caxoc,parm,tint,invt)
 %
 % PLOTTOPO, PLOTGRAV, JOINCOLMAP, CAX2DEM, SERGEICOL, DEMMAP, IMAGEFDIR
 %
-% Last modified by fjsimons-at-alum.mit.edu, 10/10/2011
+% Last modified by fjsimons-at-alum.mit.edu, 06/21/2016
 
 defval('caxcon',[0 1500]);
 defval('caxoc',[-7000 0]);
@@ -107,28 +106,28 @@ longticks(cb)
 
 if [~isstr(parm) && strcmp(poso,'hor')]
   % New if for BW
-  xtcb=get(cb,'xtick'); 
-  xlcb=get(cb,'xtickl');
-  set(cb,'xtick',xtcb(1:2:end))
-  set(cb,'xtickl',cellstr(xlcb(1:2:end,:)))
+  xtcb=get(cb,'XTick'); 
+  xlcb=get(cb,'XTicklabel');
+  set(cb,'XTick',xtcb(1:2:end))
+  set(cb,'XTicklabel',cellstr(xlcb(1:2:end,:)))
 elseif [~isstr(parm) && strcmp(poso,'hor')]
   % New if for BW
-  ytcb=get(cb,'ytick'); 
-  ylcb=get(cb,'ytickl');
-  set(cb,'ytick',ytcb(1:2:end))
-  set(cb,'ytickl',cellstr(ylcb(1:2:end,:)))
+  ytcb=get(cb,'YTick'); 
+  ylcb=get(cb,'YTicklabel');
+  set(cb,'YTick',ytcb(1:2:end))
+  set(cb,'YTicklabel',cellstr(ylcb(1:2:end,:)))
 elseif [length(parm)==1 && parm==1] || [length(parm)==1 && parm==2] || ...
 	([isstr(parm) && strcmp(poso,'hor')] || poso(3)>poso(4))
   % New length addition to skip for BW
-  xtcb=get(cb,'xtick'); 
-  xlcb=get(cb,'xtickLabel');
-  set(cb,'xtick',xtcb(1:2:end))
-  set(cb,'xtickLabel',cellstr(xlcb(1:2:end,:)))
+  xtcb=get(cb,'XTick'); 
+  xlcb=get(cb,'XTickLabel');
+  set(cb,'XTick',xtcb(1:2:end))
+  set(cb,'XTickLabel',cellstr(xlcb(1:2:end,:)))
 elseif [isstr(parm) & strcmp(poso,'vert') || poso(4)>poso(3)]
-  ytcb=get(cb,'ytick'); 
-  ylcb=get(cb,'ytickLabel');
-  set(cb,'ytick',ytcb(1:2:end))
-  set(cb,'ytickLabel',cellstr(ylcb(1:2:end,:)))
+  ytcb=get(cb,'YTick'); 
+  ylcb=get(cb,'YTickLabel');
+  set(cb,'YTick',ytcb(1:2:end))
+  set(cb,'YTickLabel',cellstr(ylcb(1:2:end,:)))
 end
 
 if ~isstr(parm) && length(parm)==1
