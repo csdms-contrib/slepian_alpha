@@ -28,7 +28,7 @@ function varargout=arrow(X,Y,U,V,ori,sca,rot,tran)
 % GETX, SETX
 %
 % Tested on 8.3.0.532 (R2014a) and 9.0.0.341360 (R2016a)
-% Last modified by fjsimons-at-alum.mit.edu, 06/21/2016
+% Last modified by fjsimons-at-alum.mit.edu, 06/22/2016
 
 defval('X',0)
 
