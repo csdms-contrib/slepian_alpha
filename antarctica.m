@@ -52,7 +52,8 @@ if ~isstr(res)
   XY2=XY2(~isnan(XY2(:,1)) & ~isnan(XY2(:,2)),:);
   % Get rid of common NaNs
   XY2=XY2(~isnan(XY2(:,1)) & ~isnan(XY2(:,2)),:);
-  % Find the geographical center and the area
+  % Find the geographical center and the area to use for rotation
+  % Note: this is based on the unbuffered region and does not change
   [lonc,latc,A]=rcenter([XY2(:,1) XY2(:,2)]);
   lonc=-45;
 
