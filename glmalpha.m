@@ -1,4 +1,4 @@
-function varargout=glmalpha(TH,L,sord,blox,upco,resc,J,anti,rotb)
+function varargout=glmalpha(TH,L,sord,blox,upco,resc,J,anti)
 % [G,V,EL,EM,N,GM2AL,MTAP,IMTAP]=GLMALPHA(TH,L,sord,blox,upco,resc,J,anti,rotb)
 %
 % Returns an (lm)X(alpha) matrix with unit-normalized spherical harmonic
@@ -41,11 +41,6 @@ function varargout=glmalpha(TH,L,sord,blox,upco,resc,J,anti,rotb)
 % J        The number of eigenfunctions that are being asked (and saved);
 % anti     1 get the opposite of the region you specify 
 %          0 get exactly the region that you specify [default]
-% rotb     0 nothing special happens
-%          1 eigenfunctions of rotated kernels are rotated back to the
-%          correct positions, as recommended for 'antarctica',
-%          'contshelves'. This does not need to be recorded by the
-%          filename as this is what any reasonable person should want
 %
 % OUTPUT:
 %
@@ -69,8 +64,13 @@ function varargout=glmalpha(TH,L,sord,blox,upco,resc,J,anti,rotb)
 %
 % GLMALPHAPTO, ADDMOUT, ADDMON, KERNELC, LOCALIZATION, GALPHA, DLMLMP, GLM2LMCOSI
 %
+% Note: rotb as input was deprecated (06/24/2016). Region functions such as ANTARCTICA
+% now have a default behavior to indicate if their eigenfunctions should be
+% rotated (e.g. back to a pole). If you want eigenfunctions for the region
+% at the equator then rotate them back after the fact using ROTATEGP.
+%
 % Last modified by plattner-at-alumni.ethz.ch, 6/5/2016  
-% Last modified charig-at-princeton.edu, 06/16/2015
+% Last modified charig-at-princeton.edu, 06/24/2016
 % Last modified by fjsimons-at-alum.mit.edu, 06/05/2013
 
 % Should be able to update this to retain the rank order per m as well as
@@ -272,35 +272,25 @@ if ~(ischar(TH) && ~isempty(strfind(TH(:)','demo')))
         end
       end
     
-      % If it's various parts of Antarctica or ContShelves, need to rotate 
-      % it back in shape
-      % Note: currently the "serial" version of ROTATEGP is itself since it
-      % defaults to a regular for loop
-      if [strcmp(dom,'antarctica') || strcmp(dom,'eantarctica')...
-            || strcmp(dom,'eantarcticaCoasts1') || strcmp(dom,'eantarcticaCoasts2')...
-            || strcmp(dom,'eantarcticaInt') || strcmp(dom,'eantarcticaIntG')...
-            ] && rotb==1
-        defval('pars',10)
-        % Return the rotation parameters also, to rotate G
-        % Each of these coordinate files return lonc and latc which are not
-        % necessarilly the center of the region, but are appropriate centers
-        % for rotation (e.g. [0 -90])
-        [~,lonc,latc]=eval(sprintf('%s(%i,%f)',dom,pars,buf));
-        [Grot] = rotateGp(G,lonc,latc);
-        G = Grot;
-      elseif [strcmp(dom,'antarcticaGP') || strcmp(dom,'eantarcticaCoasts1OceanBuf')...
-            || strcmp(dom,'eantarcticaCoasts2OceanBuf')...
-            || strcmp(dom,'eantarcticaIntGOceanBuf')] && rotb==1
-        defval('pars',0)
-        [~,lonc,latc]=eval(sprintf('%s(%i,%f)',dom,pars,buf));
-        [Grot] = rotateGp(G,lonc,latc);
-        G = Grot;
-      elseif strcmp(dom,'contshelves') && rotb==1
-        defval('pars',10)
-        [~,lonc,latc]=eval(sprintf('%s()',dom));
-        [Grot] = rotateGp(G,lonc,latc);
-        G = Grot;
+      % Lets check if we need to do a rotation. The function for your
+      % coordinates should have this functionality if its needed.
+      try
+          rotb = eval(sprintf('%s(''rotated'')',dom));         
+      catch
+          rotb = 0;
       end
+      
+      % Now do the rotation
+      if rotb
+          % Get the rotation parameters to rotate G. Note, the region 
+          % rotation angles that we return from the functions (lonc, latc) are the
+          % same regardless of if we did a buffer, as they pertain to the
+          % original region
+          [~,lonc,latc]=eval(sprintf('%s()',dom));
+          [Grot] = rotateGp(G,lonc,latc);
+          G = Grot;
+      end
+      
       % You can plot this here, if you want, by doing, e.g.
       % cosi = lmcosi(:,3:4);
       % cosi(ronm)=Grot(:,1);
