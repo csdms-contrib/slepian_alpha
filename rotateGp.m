@@ -21,7 +21,7 @@ function varargout=rotateGp(G,lonc,latc)
 %
 % KLMLMP2ROT, PLM2ROT, ADDMOUT, ADDMON, KERNELC, LOCALIZATION, GALPHA, DLMLMP
 %
-% Last modified by charig-at-princeton.edu, 06/26/2012
+% Last modified by charig-at-princeton.edu, 06/24/2016
 % Last modified by fjsimons-at-alum.mit.edu, 07/13/2012
 
 defval('G','glmalpha(''antarctica'',20)');
@@ -40,13 +40,8 @@ end
 defval('L',(sqrt(size(G,2))-1));
 defval('J',size(G,2))
 
-% See if we can run this calculation in parallel
-try
-  matlabpool open
-  disp('Running rotateGp in parallel')
-catch
-  error('Run ROTATEG instead or close your open pool')
-end
+% If we have the ability to run this calculation in parallel, then do it.
+% If we don't then the parfor loop will default to a for loop.
 
 % Prepare for differently-ordered degree and order output
 [dems,dels,mz,lmcosi,mzin,mzo,bigm,bigl,rinm,ronm,demin]=addmon(L);
@@ -85,7 +80,7 @@ end
 % You can plot this here, if you want, by doing, e.g.
 % plotplm([dels dems CC{1}],[],[],2,1); view(145,-35)
 
-% Now we go back to the G matrix format
+% Now we go back to the G matrix format (reorder)
 for j=1:size(G,2)
   % Get the coefficients
   cosi = CC{j};
@@ -93,11 +88,6 @@ for j=1:size(G,2)
   cosinozero = cosi(mzo);
   % Reorder from [0 0-11 0-11-22] to [0 -101 -2-1012]
   Grot(:,j) = cosinozero(rinm);
-end
-
-% Close your matlab pool
-try
-  matlabpool close
 end
 
 % Collect output
