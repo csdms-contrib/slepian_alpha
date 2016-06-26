@@ -9,6 +9,10 @@ function varargout=antarctica(res,buf,rotb)
 %
 % res      0 The standard, default values
 %          N Splined values at N times the resolution
+%          'rotated' Use this feature to determine if this region is
+%          rotated (it is). We use this in e.g. GLMALPHA to determine
+%          whether to rotate the eigenfunctions after finding them. You
+%          will get a logical as output.
 % buf      Distance in degrees that the region outline will be enlarged
 %          by BUFFERM, not necessarily integer, possibly negative
 %          [default: 0]
@@ -23,53 +27,61 @@ function varargout=antarctica(res,buf,rotb)
 % lonc     The amount by which you need to rotate it back over z
 % latc     The amount by which you need to rotate it back over y
 %
-% See also PLM2ROT, GEOBOXCAP, KLMLMP2ROT
+% See also PLM2ROT, GEOBOXCAP, KLMLMP2ROT, GLMALPHA
 % 
-% Last modified by charig@princeton.edu, 03/29/2012
+% Last modified by charig@princeton.edu, 06/24/2016
 
 defval('res',0)
 defval('buf',0)
 defval('rotb',0)
 
 
-% First part %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-c11=[0 -62];
-cmn=[360 -83];
+if ~isstr(res)
     
-% Do it! Make it, load it, save it
-XY=regselect('antarctica',c11,cmn,[],res,buf);
+  % Some setup
+  c11=[0 -62];
+  cmn=[360 -83];
+    
+  % Do it! Make it, load it, save it
+  XY=regselect('antarctica',c11,cmn,[],res,buf);
      
-% Do some extra here to get the lonc latc
-    
-[~,~,XY2]=plotcont(c11(:),cmn(:),[],0);
-close
-% Get rid of common NaNs
-XY2=XY2(~isnan(XY2(:,1)) & ~isnan(XY2(:,2)),:);
-% Get rid of common NaNs
-XY2=XY2(~isnan(XY2(:,1)) & ~isnan(XY2(:,2)),:);
-% Find the geographical center and the area
-[lonc,latc,A]=rcenter([XY2(:,1) XY2(:,2)]);
-lonc=-45;
+  % Do some extra here to get the lonc latc
+  [~,~,XY2]=plotcont(c11(:),cmn(:),[],0);
+  close
+  % Get rid of common NaNs
+  XY2=XY2(~isnan(XY2(:,1)) & ~isnan(XY2(:,2)),:);
+  % Get rid of common NaNs
+  XY2=XY2(~isnan(XY2(:,1)) & ~isnan(XY2(:,2)),:);
+  % Find the geographical center and the area to use for rotation
+  % Note: this is based on the unbuffered region and does not change
+  [lonc,latc,A]=rcenter([XY2(:,1) XY2(:,2)]);
+  lonc=-45;
 
+  % Do we return rotated coordinates?
+  if rotb==1
+     [thetap,phip,rotmats]=rottp((90-XY(:,2))*pi/180,XY(:,1)/180*pi,-lonc*pi/180,latc*pi/180,0);
+     XY = [phip*180/pi 90-thetap*180/pi];
+  end
 
-if nargout==0
-  plot(XY(:,1),XY(:,2),'k-'); axis equal; grid on
-  axis([-30-lonc 30-lonc -30 20])
-end
-
-% Do we return rotated coordinates?
-if rotb==1
-   [thetap,phip,rotmats]=rottp((90-XY(:,2))*pi/180,XY(:,1)/180*pi,-lonc*pi/180,latc*pi/180,0);
-   XY = [phip*180/pi 90-thetap*180/pi];
-end
-
-% Make sure the coordinates make sense
-XY(:,1)=XY(:,1)-360*[XY(:,1)>360];
-XY(:,1)=XY(:,1)+360*[XY(:,1)<0];
+  % Make sure the coordinates make sense
+  XY(:,1)=XY(:,1)-360*[XY(:,1)>360];
+  XY(:,1)=XY(:,1)+360*[XY(:,1)<0];
         
-% Prepare Output
-varns={XY,lonc,latc};
-varargout=varns(1:nargout);
+  % Prepare Output
+  varns={XY,lonc,latc};
+  varargout=varns(1:nargout);
+
+elseif strcmp(res,'rotated')
+    % Return a 1 flag as output, indicating the region is a rotated region
+    varargout={1};
+
+elseif strcmp(res,'demo1')
+    % Make a simple plot
+    XY=antarctica();
+    plot(XY(:,1),XY(:,2),'k-'); axis equal; grid on
+    axis([-30-lonc 30-lonc -30 20])
+
+end
 
 
 
