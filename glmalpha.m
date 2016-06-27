@@ -18,7 +18,7 @@ function varargout=glmalpha(TH,L,sord,blox,upco,resc,J,anti,rotb)
 %          'england', 'eurasia',  'namerica', 'australia', 'greenland', 
 %          'africa', 'samerica', 'amazon', 'orinoco', 'antarctica', 
 %          'contshelves', 'alloceans',
-%          OR: [lon lat] an ordered list defining a closed curve [degrees]
+%          OR: [lon lat] an ordered list defining a closed curve [degrees],
 %          OR: {'region' buf} where buf is the distance in degrees that 
 %          the region outline will be enlarged by BUFFERM
 % L        Bandwidth (maximum angular degree), or passband (two degrees)
@@ -69,9 +69,9 @@ function varargout=glmalpha(TH,L,sord,blox,upco,resc,J,anti,rotb)
 %
 % GLMALPHAPTO, ADDMOUT, ADDMON, KERNELC, LOCALIZATION, GALPHA, DLMLMP, GLM2LMCOSI
 %
-% Last modified by plattner-at-alumni.ethz.ch, 6/5/2016  
+% Last modified by plattner-at-alumni.ethz.ch, 06/05/2016  
 % Last modified charig-at-princeton.edu, 06/16/2015
-% Last modified by fjsimons-at-alum.mit.edu, 06/05/2013
+% Last modified by fjsimons-at-alum.mit.edu, 06/27/2016
 
 % Should be able to update this to retain the rank order per m as well as
 % the global ordering. Does this work for the whole-sphere? In that case,
@@ -81,7 +81,7 @@ function varargout=glmalpha(TH,L,sord,blox,upco,resc,J,anti,rotb)
 
 defval('TH',30)
 
-if ~(ischar(TH) && ~isempty(strfind(TH(:)','demo')))
+if ~[ischar(TH) && ~isempty(strfind(TH(:)','demo'))]
 
   defval('L',18)
   defval('dom',[]);
@@ -106,8 +106,10 @@ if ~(ischar(TH) && ~isempty(strfind(TH(:)','demo')))
 
   % Just get the file names here
   if upco==0 && resc==0
-    if ~isstr(TH) && ~iscell(TH) && length(TH)==1 % POLAR CAPS
-      defval('sord',1) % SINGLE OR DOUBLE CAP
+    % POLAR CAPS
+    if ~isstr(TH) && ~iscell(TH) && length(TH)==1 
+      % SINGLE OR DOUBLE CAP
+      defval('sord',1) 
       if lp
         fname=fullfile(getenv('IFILES'),'GLMALPHA',...
 	      sprintf('glmalpha-%i-%i-%i-%i.mat',TH,L,sord,blox));
@@ -122,40 +124,52 @@ if ~(ischar(TH) && ~isempty(strfind(TH(:)','demo')))
       % Initialize ordering matrices
       MTAP=repmat(0,1,ldim);
       IMTAP=repmat(0,1,ldim);
-    else % GEOGRAPHICAL REGIONS and XY REGIONS
-      defval('sord',10) % SPLINING SMOOTHNESS
-      defval('buf',0) % BUFFER REGION
+    else 
+      % GEOGRAPHICAL REGIONS and XY REGIONS
+      % SPLINING SMOOTHNESS
+      defval('sord',10) 
+      % BUFFER REGION
+      defval('buf',0) 
       % We'll put in a Shannon number based on the area only, not based on
       % an actual sum of the eigenvalues
       defval('J',ldim)
-      % Not the next line, though we can change our minds
-      % defval('J',ldim*spharea(TH)) % beware, this currently breaks for buffers
-      if isstr(TH) % Geographic (keep the string)
+      % Note the next line, though we can change our minds
+      % beware, this currently breaks for buffers
+      % defval('J',ldim*spharea(TH)) 
+      % Geographic (keep the string)
+      if isstr(TH)
         h=TH; dom=TH;
-      elseif iscell(TH) % Geographic + buffer
+      elseif iscell(TH) 
+	% Geographic + buffer
         if TH{2}==0; h=TH{1}; else h=[TH{1} num2str(TH{2})]; end
         %h=[TH{1} num2str(TH{2})];
         dom=TH{1}; buf=TH{2};
-      else % Coordinates (make a hash)
-        h=hash(TH,'sha1');
+      else
+	% Coordinates (make a hash)
+	h=hash(TH,'sha1');
       end
       if lp
         fname=fullfile(getenv('IFILES'),'GLMALPHA',...
-		     sprintf('glmalpha-%s-%i-%i.mat',h,L,J));
+		       sprintf('glmalpha-%s-%i-%i.mat',h,L,J));
       elseif bp
         fname=fullfile(getenv('IFILES'),'GLMALPHA',...
-		     sprintf('glmalphabl-%s-%i-%i-%i.mat',h,L(1),L(2),J));
+		       sprintf('glmalphabl-%s-%i-%i-%i.mat',h,L(1),L(2),J));
       else
         error('The degree range is either one or two numbers')       
       end
-      defval('GM2AL',NaN) % If not, calculate order per taper
-      defval('MTAP',NaN) % If not, calculate order per taper
-      defval('IMTAP',NaN) % And rank ordering within that taper
-      defval('xver',0) % For excessive verification of the geographical case
+      % If not, calculate order per taper
+      defval('GM2AL',NaN)
+      % If not, calculate order per taper
+      defval('MTAP',NaN) 
+      % And rank ordering within that taper
+      defval('IMTAP',NaN) 
+      % For excessive verification of the geographical case
+      defval('xver',0) 
     end
   else
     fname='neveravailable';
-    defval('xver',1) % For excessive verification of the upco'd case
+    % For excessive verification of the upco'd case
+    defval('xver',1) 
   end
 
   if anti==1
@@ -182,29 +196,30 @@ if ~(ischar(TH) && ~isempty(strfind(TH(:)','demo')))
     %   		gamini(L(2-lp)-bp*(L(1)-1):-1:1,2)]);
     % This should be the same for L and [0 L]
     alpha=cumsum([1 L(2-lp)-bp*L(1)+1 ...
-      gamini(L(2-lp)-bp*(L(1)-1),bp*2*L(1)) ...
-      gamini(L(2-lp)-bp*L(1):-1:1,2)]);
+		  gamini(L(2-lp)-bp*(L(1)-1),bp*2*L(1)) ...
+		  gamini(L(2-lp)-bp*L(1):-1:1,2)]);
     
     % For GEOGRAPHICAL REGIONS or XY REGIONS
     if isstr(TH) || length(TH)>1
       % Calculates the localization kernel for this domain
       % See if we can run this calculation in parallel
-      tl = license('test','distrib_computing_toolbox'); % license?
+      % license?
+      tl = license('test','distrib_computing_toolbox'); 
       if tl
         if verLessThan('matlab', '8.2')
-            % For MATLAB older than MATLAB 8.2, we need to check if the pool is open
-            s = matlabpool('size');
-            if s
-              disp('Running KERNELCP (parallel)');
-              [Klmlmp,XY]=kernelcp(maxL,TH,sord);
-            else
-              disp('No open matlabpool.  Running KERNELC (non-parallel).');
-              [Klmlmp,XY]=kernelc(maxL,TH,sord);
-            end    
+	  % For MATLAB older than MATLAB 8.2, we need to check if the pool is open
+	  s = matlabpool('size');
+	  if s
+	    disp('Running KERNELCP (parallel)');
+	    [Klmlmp,XY]=kernelcp(maxL,TH,sord);
+	  else
+	    disp('No open matlabpool.  Running KERNELC (non-parallel).');
+	    [Klmlmp,XY]=kernelc(maxL,TH,sord);
+	  end    
         else
-            % For MATLAB 8.2 and newer, a parpool should start automatically
-            disp('Running KERNELCP (parallel)');
-            [Klmlmp,XY]=kernelcp(maxL,TH,sord);
+	  % For MATLAB 8.2 and newer, a parpool should start automatically
+	  disp('Running KERNELCP (parallel)');
+	  [Klmlmp,XY]=kernelcp(maxL,TH,sord);
         end
       else
         disp('No Parallel Computing License.  Running KERNELC (non-parallel).');
@@ -236,10 +251,11 @@ if ~(ischar(TH) && ~isempty(strfind(TH(:)','demo')))
         G(L(1)^2+1:end,:) = Gbp;
       end
       [V,isrt]=sort(sum(real(V),1));
+
       V=fliplr(V);
       G=G(:,fliplr(isrt));
     
-      [~,~,~,~,~,~,ems,els,R1,ronm]=addmon(maxL);
+      [~,~,~,~,~,~,ems,els,R1,R2]=addmon(maxL);
       % This indexes the orders of G back as 0 -101 -2-1012 etc
       G=G(R1,:);
       % Check indexing
@@ -259,14 +275,14 @@ if ~(ischar(TH) && ~isempty(strfind(TH(:)','demo')))
       % Check if the expansion of a basis function is indeed either 1 or 0
       if xver==1
         disp('Excessive verification')
-        % Is the area right?
+        % Is the area right? Don't be too demanding
         difer(Klmlmp(1)-spharea(TH),4,[],mesg)
 
         % This is a bit double up... but it's only for excessive verification
         [V1,C]=localization(L,TH,sord);
         difer(V-V1',[],[],mesg)
         for index=1:length(C)
-	  salpha=G'*C{index}(ronm);
+	  salpha=G'*C{index}(R2);
 	  % Only one of these functions should get "hit"
 	  difer(sum(abs(salpha)>1e-9)-1,[],[],mesg)
         end
@@ -283,27 +299,24 @@ if ~(ischar(TH) && ~isempty(strfind(TH(:)','demo')))
         defval('pars',10)
         % Return the rotation parameters also, to rotate G
         % Each of these coordinate files return lonc and latc which are not
-        % necessarilly the center of the region, but are appropriate centers
+        % necessarily the center of the region, but are appropriate centers
         % for rotation (e.g. [0 -90])
         [~,lonc,latc]=eval(sprintf('%s(%i,%f)',dom,pars,buf));
-        [Grot] = rotateGp(G,lonc,latc);
-        G = Grot;
+        G=rotateGp(G,lonc,latc);
       elseif [strcmp(dom,'antarcticaGP') || strcmp(dom,'eantarcticaCoasts1OceanBuf')...
             || strcmp(dom,'eantarcticaCoasts2OceanBuf')...
             || strcmp(dom,'eantarcticaIntGOceanBuf')] && rotb==1
         defval('pars',0)
         [~,lonc,latc]=eval(sprintf('%s(%i,%f)',dom,pars,buf));
-        [Grot] = rotateGp(G,lonc,latc);
-        G = Grot;
+        G=rotateGp(G,lonc,latc);
       elseif strcmp(dom,'contshelves') && rotb==1
         defval('pars',10)
         [~,lonc,latc]=eval(sprintf('%s()',dom));
-        [Grot] = rotateGp(G,lonc,latc);
-        G = Grot;
+        G=rotateGp(G,lonc,latc);
       end
       % You can plot this here, if you want, by doing, e.g.
       % cosi = lmcosi(:,3:4);
-      % cosi(ronm)=Grot(:,1);
+      % cosi(R2)=G(:,1);
       % plotplm([lmcosi(:,1:2) cosi],[],[],2,0.5); view(145,-35)
       % This now does show up in the right spot
 
@@ -318,7 +331,8 @@ if ~(ischar(TH) && ~isempty(strfind(TH(:)','demo')))
       % Truncate to the smaller amount of eigenfunctions and -values
       G=G(:,1:J);
       V=V(1:J);
-      if exist('octave_config_info') % If it's octave
+      % If it's octave
+      if exist('octave_config_info')
 	save(fname,'G','V','EL','EM','N')
       else % It's Matlab
 	save(fname,'-v7.3','G','V','EL','EM','N')
@@ -336,16 +350,16 @@ if ~(ischar(TH) && ~isempty(strfind(TH(:)','demo')))
 	    [E,Vg,th,C,T,Vp]=grunbaum(TH,L,m,0);
 	  elseif bp
 	    % Note that the small-eigenvalue eigenfunctions might be
-        % numerically degenerate and thus not as using Grunbaum - if
-        % you need to compare, compare where the eigenvalues are "big"
+	    % numerically degenerate and thus not as using Grunbaum - if
+	    % you need to compare, compare where the eigenvalues are "big"
 	    [E,Vp,Np,th,C]=sdwcap(TH,L,m,0,-1);
-      end
+	  end
         elseif sord==2
 	  if lp
-	  [E,Vg,th,C,T,Vp]=grunbaum2(TH,L,m,0);
+	    [E,Vg,th,C,T,Vp]=grunbaum2(TH,L,m,0);
 	  elseif bp
-	  error('Bandpass double-cap tapers not ready yet')
-      end
+	    error('Bandpass double-cap tapers not ready yet')
+	  end
         else
 	  error('Specify single or double polar cap')
         end
@@ -363,9 +377,9 @@ if ~(ischar(TH) && ~isempty(strfind(TH(:)','demo')))
 	if xver==1 & lp
 	  % This should give the same result, more or less, less accurate 
 	  if sord==1
-	    [a,Vs,c,d,Cs,e,f,g,h,j,D]=sdwcap(TH,L,m,0,-1);
+	    [~,Vs,~,~,Cs,~,~,~,~,~,D]=sdwcap(TH,L,m,0,-1);
 	  else
-	    [a,Vs,c,Cs,e,f,D]=sdwcap2(TH,L,m,0,-1);
+	    [~,Vs,~,Cs,~,~,D]=sdwcap2(TH,L,m,0,-1);
 	  end
 	  % This should give the eigenvalues again, which we'd had from
       % orthocheck 
@@ -456,9 +470,11 @@ if ~(ischar(TH) && ~isempty(strfind(TH(:)','demo')))
         % Save the results if it isn't a geographical region
         % If the variable is HUGE you must use the -v7.3 flag, if not, you
         % can safely omit it and get more backwards compatibility
-	if exist('octave_config_info') % If it's octave 
+	if exist('octave_config_info') 
+	  % If it's Octave 
           save(fname,'G','V','EL','EM','N','GM2AL','MTAP','IMTAP')
-	else % It's Matlab
+	else 
+	  % It's Matlab
 	  save(fname,'-v7.3','G','V','EL','EM','N','GM2AL','MTAP','IMTAP')
 	end
       end
