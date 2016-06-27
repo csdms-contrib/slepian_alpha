@@ -7,8 +7,8 @@ function varargout=antarctica(res,buf,rotb)
 %
 % INPUT:
 %
-% res      0 The standard, default values
-%          N Splined values at N times the resolution
+% res      0 The standard, default values,
+%          N Splined values at N times the resolution,
 %          'rotated' Use this feature to determine if this region is
 %          rotated (it is). We use this in e.g. GLMALPHA to determine
 %          whether to rotate the eigenfunctions after finding them. You
