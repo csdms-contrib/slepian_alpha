@@ -1,5 +1,5 @@
-function varargout=figdisp(name,ext,opt,act,form)
-% FIGDISP(name,ext,opt,act,form)
+function varargout=figdisp(name,ext,opt,act,form,convo)
+% FIGDISP(name,ext,opt,act,form,convo)
 % [fname,pstring]=FIGDISP(...)
 %
 % Suggests print command for figures.
@@ -8,20 +8,22 @@ function varargout=figdisp(name,ext,opt,act,form)
 %
 % INPUT:
 %
-% name          Filename (default: calling function)
-% ext           Extension (number or string)
+% name          Filename root (default: calling function)
+% ext           An extra extension (number or string)
 % opt           An option string, e.g. '-zbuffer'
 % act           1 Actually print the figure
 %               0 Don't print the figure [default]
 %               2 Makes a PDF from an EPS which it removes
 % form          A graphics format [pdf, png, etc: default: epsc]
+% convo         A graphics converter string [default: 'ps2raster -Tf']
+%               such as 'epstopdf' or 'ps2raster' or ...
 %
 % OUTPUT:
 %
 % fname         The full file name
 % pstring       The plot string
 %
-% Last modified by fjsimons-at-alum.mit.edu, 07/13/2015
+% Last modified by fjsimons-at-alum.mit.edu, 07/01/2016
 
 [p,n]=star69;
 
@@ -29,13 +31,14 @@ defval('name',n)
 defval('ext',[])
 defval('opt',[])
 defval('act',0)
+defval('convo','ps2raster -Tf')
 defval('form','epsc')
 
 % Calls itself and cleans up afterward
 if act==2
   [fname,pstring]=figdisp(name,ext,opt,1,'epsc');
   system(sprintf('degs %s.eps',fname));
-  system(sprintf('epstopdf %s.eps',fname));
+  system(sprintf('%s %s',convo,fname));
   system(sprintf('rm -f %s.eps',fname));
   varns={fname,pstring};
   varargout=varns(1:nargout);
@@ -64,5 +67,6 @@ if act>=1
   eval(pstring)
 end
 
+% Optional output
 varns={fname,pstring};
 varargout=varns(1:nargout);
