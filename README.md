@@ -5,4 +5,4 @@ SIAM Review., 48 (3), 504-536, 2006, <a href="http://dx.doi.org/10.1137/S0036144
 
 ##Official releases
 
-[![https://zenodo.org/badge/6548/csdms-contrib/slepian_alpha.svg] Latest Release] (https://zenodo.org/badge/latestdoi/6548/csdms-contrib/slepian_alpha)<br>
+[![Latest Release](https://zenodo.org/badge/6548/csdms-contrib/slepian_alpha.svg)] (https://zenodo.org/badge/latestdoi/6548/csdms-contrib/slepian_alpha)<br>
