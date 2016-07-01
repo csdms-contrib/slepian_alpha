@@ -4,4 +4,6 @@ Spherical harmonics and Slepian functions as developed by:<br>
 SIAM Review., 48 (3), 504-536, 2006, <a href="http://dx.doi.org/10.1137/S0036144504445765">doi: 10.1137/S0036144504445765</a><br>
 
 ## Releases
-<img src="https://zenodo.org/badge/6548/csdms-contrib/slepian_alpha.svg" alt="latest release">
+[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.56825.svg)](http://dx.doi.org/10.5281/zenodo.56825)
+
+
