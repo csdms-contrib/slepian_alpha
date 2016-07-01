@@ -8,8 +8,8 @@ function varargout=figdisp(name,ext,opt,act,form,convo)
 %
 % INPUT:
 %
-% name          Filename root (default: calling function)
-% ext           An extra extension (number or string)
+% name          Filename root, no extension (default: calling function)
+% ext           An optional additional extension (number or string)
 % opt           An option string, e.g. '-zbuffer'
 % act           1 Actually print the figure
 %               0 Don't print the figure [default]
@@ -36,9 +36,9 @@ defval('form','epsc')
 
 % Calls itself and cleans up afterward
 if act==2
-  [fname,pstring]=figdisp(name,ext,opt,1,'epsc');
+  [fname,pstring]=figdisp(name,ext,opt,1,'epsc')
   system(sprintf('degs %s.eps',fname));
-  system(sprintf('%s %s',convo,fname));
+  system(sprintf('%s %s.eps',convo,fname));
   system(sprintf('rm -f %s.eps',fname));
   varns={fname,pstring};
   varargout=varns(1:nargout);
