@@ -24,6 +24,7 @@ function varargout=figdisp(name,ext,opt,act,form,convo)
 % fname         The full file name, but definitely no graphics extension
 % pstring       The plot string
 %
+% Tested on 8.3.0.532 (R2014a) and 9.0.0.341360 (R2016a)
 % Last modified by fjsimons-at-alum.mit.edu, 07/01/2016
 
 [p,n]=star69;
