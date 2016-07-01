@@ -8,7 +8,8 @@ function varargout=figdisp(name,ext,opt,act,form,convo)
 %
 % INPUT:
 %
-% name          Filename root, no extension (default: calling function)
+% name          Filename, preferably without graphics extension or any
+%               dots in the filename, really [default: calling function]
 % ext           An optional additional extension (number or string)
 % opt           An option string, e.g. '-zbuffer'
 % act           1 Actually print the figure
@@ -20,7 +21,7 @@ function varargout=figdisp(name,ext,opt,act,form,convo)
 %
 % OUTPUT:
 %
-% fname         The full file name
+% fname         The full file name, but definitely no graphics extension
 % pstring       The plot string
 %
 % Last modified by fjsimons-at-alum.mit.edu, 07/01/2016
@@ -36,10 +37,23 @@ defval('form','epsc')
 
 % Calls itself and cleans up afterward
 if act==2
-  [fname,pstring]=figdisp(name,ext,opt,1,'epsc')
-  system(sprintf('degs %s.eps',fname));
-  system(sprintf('%s %s.eps',convo,fname));
-  system(sprintf('rm -f %s.eps',fname));
+  [fname,pstring]=figdisp(name,ext,opt,1,'epsc');
+  % PRINT will keep ANY extension, defined as any period in the filename,
+  % but also it will make a GRAPHICS extension if the filename had no
+  % periods in it...  so if you GIVE it an extension coming in, careful!
+  % What normally comes out of FIGDISP as 'fname' has no extension
+  if ~any(fname==46) ; xtra='.eps'; else xtra=[]; end
+  system(sprintf('degs %s%s',fname,xtra));
+  system(sprintf('%s %s%s',convo,fname,xtra));
+  % Now, depending on the behavior of the conversion, fix ITS extension;
+  % epstopdf and ps2raster appear to STRIP ANY extension reading from the
+  % BACK and substitute the right extension in (overwriting a file that
+  % may have come in with the wrong extension!), so keep on fixing,
+  % remove the original UNLESS it had the .pdf at the end at this point
+  if ~all(fname(end-3:end)=='.pdf')
+    system(sprintf('rm -f %s%s',fname,xtra));
+  end
+  % Shortcut and get out
   varns={fname,pstring};
   varargout=varns(1:nargout);
   return
