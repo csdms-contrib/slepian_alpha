@@ -9,10 +9,9 @@ function varargout=contshelves(res,rotb)
 %
 % res      0 The standard, default values,
 %          N Splined values at N times the resolution,
-%          'rotated' Use this feature to determine if this region is
-%          rotated (it is). We use this in e.g. GLMALPHA to determine
-%          whether to rotate the eigenfunctions after finding them. You
-%          will get a logical as output.
+%          'rotated' to determine if this region is rotated (it is). We
+%          use this in e.g. GLMALPHA to determine whether to rotate the
+%          eigenfunctions after finding them. You get a logical as output.
 % rotb     0 The rotated version [default] needed by e.g. KERNELCP
 %          1 The unrotated version suitable for geographic plots 
 %
