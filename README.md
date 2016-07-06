@@ -5,6 +5,7 @@ SIAM Review., 48 (3), 504-536, 2006, <a href="http://dx.doi.org/10.1137/S0036144
 which you may cite if you find any of these routines useful! 
 
 ## Latest official release
-[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.56825.svg)](http://dx.doi.org/10.5281/zenodo.56825)
+[![DOI](https://zenodo.org/badge/6548/csdms-contrib/slepian_alpha.svg)](https://zenodo.org/badge/latestdoi/6548/csdms-contrib/slepian_alpha)
+
 
 
