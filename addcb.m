@@ -36,7 +36,8 @@ function varargout=addcb(pos,caxcon,caxoc,parm,tint,invt)
 %
 % PLOTTOPO, PLOTGRAV, JOINCOLMAP, CAX2DEM, SERGEICOL, DEMMAP, IMAGEFDIR
 %
-% Last modified by fjsimons-at-alum.mit.edu, 06/21/2016
+% Tested on 8.3.0.532 (R2014a) and 9.0.0.341360 (R2016a)
+% Last modified by fjsimons-at-alum.mit.edu, 07/06/2016
 
 defval('caxcon',[0 1500]);
 defval('caxoc',[-7000 0]);
@@ -49,20 +50,29 @@ fpos=getpos(ah);
 
 poso=pos;
 if isstr(pos)
+  % We temporarily use Matlab's colorbar
   cb=colorbar(pos);
+  % It changes the parent's axes positions
   npos=getpos(ah);
+  % Grab the colorbar positions
   pos=getpos(cb);
+  % Get rid of the temporary colorbar
   delete(cb)
+  % And hard-set the axis positions
   set(ah,'position',npos)
 end
+% And now I am ready to make a whole new colorbar!
 cb=axes('position',pos);
 
+% Figure out the values etc
 miC=min([caxoc caxcon]);
 maC=max([caxoc caxcon]);
 cbd=linspace(miC,maC,500);
 
+% Tick mark interval
 defval('tint',(maC-miC)/10)
 
+% Some flag to control 'hor' vs 'ver'
 wis=2;
 if length(parm)==1 && parm==1
   % Not quite right if it turns out to be vertical 
