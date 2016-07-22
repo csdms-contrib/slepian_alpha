@@ -23,7 +23,8 @@ function varargout=imagef(c11,cmn,matrix,dlat)
 %
 % See also: IMAGEFDIR, ADDCB, IMAGEFNAN
 %
-% Last modified by fjsimons-at-alum.mit.edu, 07/24/2010
+% Tested on 8.3.0.532 (R2014a) and 9.0.0.341360 (R2016a)
+% Last modified by fjsimons-at-alum.mit.edu, 07/22/2016
 
 if nargin==1
   h=imagef([],[],c11);
@@ -45,7 +46,9 @@ defval('dlat',45)
 if all(c11==[0 90]) & all(cmn==[360 -90])
   set(gca,'ytick',[-90:dlat:90])
   set(gca,'xtick',[0:90:360])
-  deggies(gca)
+  if verLessThan('matlab', '8.4')
+    deggies(gca)
+  end
 end
 
 varns={h};
