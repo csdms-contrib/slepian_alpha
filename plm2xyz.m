@@ -196,8 +196,13 @@ if ~isstr(lmcosi)
 	delete(h)
       end
       if length(c11cmn)==4 && all(c11cmn==[0 90 360 -90])
-	save(fnpl,'Plm','-v7.3')
-	disp(sprintf('Saved %s',fnpl))
+        % If it is Octave, do not use the Matlab -v7.3 option  
+        if exist('octave_config_info')             
+          save(fnpl,'Plm')
+        else
+          save(fnpl,'Plm','-v7.3')
+        end
+          disp(sprintf('Saved %s',fnpl))
       end
     end
 
