@@ -81,8 +81,8 @@ function varargout=glmalpha(TH,L,sord,blox,upco,resc,J,anti)
 
 defval('TH',30)
 
-if isempty(strfind(TH(:)','demo'))
-
+if ~(ischar(TH) && ~isempty(strfind(TH(:)','demo')))
+    
   defval('L',18)
   defval('dom',[]);
   % This is only relevant for the axisymmetric cap
