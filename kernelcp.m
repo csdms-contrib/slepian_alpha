@@ -61,7 +61,7 @@ function varargout=kernelcp(Lmax,dom,pars,ngl,rotb)
 % See also LOCALIZATION, SDWREGIONS, GLMALPHA, DLMLMP, KERNELC2D, 
 %          PLOTSLEP, PLM2AVG, KERNELC, LEGENDREPRODINT, DLMLMP
 %
-% Last modified by charig-at-princeton.edu, 05/14/2015
+% Last modified by charig-at-princeton.edu, 09/23/2016
 % Last modified by fjsimons-at-alum.mit.edu, 06/26/2012
 
 t0=clock;
@@ -70,29 +70,31 @@ defval('dom','greenland')
 defval('ngl',200)
 defval('rotb',0)
 defval('K1',NaN)
+defval('pars',10);
 
 if ~isstr(Lmax)
   % Generic path name that I like
-  filoc=fullfile(getenv('IFILES'),'KERNELCP');
+  filoc1=fullfile(getenv('IFILES'),'KERNELC');
+  filoc2=fullfile(getenv('IFILES'),'KERNELCP');
   if isstr(dom)
     switch dom
       % If the domain is a square patch
      case 'sqpatch'
-      fnpl=sprintf('%s/%s-%i-%i-%i-%i-%i.mat',filoc,dom,Lmax,...
+      filnam=sprintf('%s-%i-%i-%i-%i-%i.mat',dom,Lmax,...
 		   round(pars(1)*180/pi),round(pars(2)*180/pi),...
 		   round(pars(3)*180/pi),round(pars(4)*180/pi));
       % If the domain is a spherical patch
      case 'patch'
-      fnpl=sprintf('%s/%s-%i-%i-%i-%i.mat',filoc,dom,Lmax,...
+      filnam=sprintf('%s-%i-%i-%i-%i.mat',dom,Lmax,...
 		   round(pars(1)*180/pi),round(pars(2)*180/pi),...
 		   round(pars(3)*180/pi));
       % If the domain is a named region or a closed contour
      otherwise
-      fnpl=sprintf('%s/WREG-%s-%i.mat',filoc,dom,Lmax);
+      filnam=sprintf('WREG-%s-%i.mat',dom,Lmax);
       % For some of the special regions it makes sense to distinguish
       % It it gets rotb=1 here, it doesn't in LOCALIZATION
        if [strcmp(dom,'antarctica') || strcmp(dom,'contshelves')] && rotb==1 
-	 fnpl=sprintf('%s/WREG-%s-%i-%i.mat',filoc,dom,Lmax,rotb);
+	 filnam=sprintf('WREG-%s-%i-%i.mat',dom,Lmax,rotb);
        end
     end
   elseif iscell(dom)
@@ -102,18 +104,26 @@ if ~isstr(Lmax)
     if dom{2}==0; h=dom{1}; else h=[dom{1} num2str(dom{2})]; end
     buf=dom{2};
     % However, if dom{2} turns out to be zero, we should ignore it.
-    fnpl=sprintf('%s/WREG-%s-%i.mat',filoc,h,Lmax);
+    filnam=sprintf('WREG-%s-%i.mat',h,Lmax);
   else
     % If, instead of a string or cell, we have closed form coordinates, 
     % then make a hash from the coordinates and use it as the filename.
     h=hash(dom,'sha1');
-    fnpl=sprintf('%s/%s-%i.mat',filoc,h,Lmax);  
+    filnam=sprintf('%s-%i.mat',h,Lmax);  
   end
   
-  if exist(fnpl,'file')==2 && ~isstr(ngl)
-    load(fnpl)
-    disp(sprintf('%s loaded by KERNELCP',fnpl))
- else
+  fnpl1=sprintf('%s/%s',filoc1,filnam);
+  fnpl2=sprintf('%s/%s',filoc2,filnam);
+  
+  if exist(fnpl1,'file')==2 && ~isstr(ngl)
+    % Check the KERNELC directory
+    load(fnpl1)
+    disp(sprintf('%s loaded by KERNELCP',fnpl1))
+  elseif exist(fnpl2,'file')==2 && ~isstr(ngl)
+    % Check if you have a file in the old KERNELCP directory
+    load(fnpl2)
+    disp(sprintf('%s loaded by KERNELCP. Consider moving your kernel files back to the KERNELC directory',fnpl2))
+  else
     if strcmp(dom,'patch')
       defval('pars',[90 75 30]*pi/180);
       % For future reference 
@@ -155,9 +165,9 @@ if ~isstr(Lmax)
 	defval('pars','supplyyourownfilename');
 	XY=dom;
 	% Use the input to define the file name that will be created
-	fnpl=sprintf('%s/WREG-%s-%i.mat',filoc,pars,Lmax);
+	fnpl1=sprintf('%s/WREG-%s-%i.mat',filoc1,pars,Lmax);
       elseif iscell(dom)
-    XY=eval(sprintf('%s(%i,%f)',dom{1},pars,buf));
+XY=eval(sprintf('%s(%i,%f)',dom{1},pars,buf));
       else
 	XY=dom;
       end
@@ -237,7 +247,7 @@ if ~isstr(Lmax)
       end
       
       % Do not save this way of calculating the kernels
-      fnpl='neveravailable';
+      fnpl1='neveravailable';
     else
       % Regular Gauss-Legendre method here (not alternative)  
         
@@ -442,8 +452,8 @@ if ~isstr(Lmax)
     end
     
      % This is only saved when it's not the alternative calculation method
-     if ~strcmp(fnpl,'neveravailable')
-       save(fnpl,'Lmax','Klmlmp','dom','ngl','XY',...
+     if ~strcmp(fnpl1,'neveravailable')
+       save(fnpl1,'Lmax','Klmlmp','dom','ngl','XY',...
  	   'lonc','latc','K1','K')
      end
   end
