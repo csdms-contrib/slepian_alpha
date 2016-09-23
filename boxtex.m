@@ -1,32 +1,34 @@
 function varargout=boxtex...
-    (posi,handel,index,fontsize,kees,hitmul,widmul,posxmul,posymul)
+    (posi,handel,index,fs,kees,hitmul,widmul,posxmul,posymul,xver)
 % [bcor,tcor]=BOXTEX(posi,handel)
-% BOXTEX(posi,handel,index,fontsize)
+% BOXTEX(posi,handel,index,fs)
 % [bhan,than]=BOXTEX...
-%   (posi,handel,index,fontsize,kees,hitmul,widmul,posxmul,posymul)
+%   (posi,handel,index,fs,kees,hitmul,widmul,posxmul,posymul,xver)
 %
-% Puts an intelligent text box on a plot
+% Puts a smart text box on a plot
 %
 % INPUT:
 %
-% posi         'll','lr','ul','ur','um','lm', OR two coordinates
-% handel       Axis handle on which you'll put the legend
-% index        Plotnumber, as letter of the alphabet, OR text string
-% fontsize     Font size [default: 20]
-% kees         1 Upper case [default]
-%              0 or Anything else: Lower case
-%              2 Actual numbers
-% hitmul       Multiplies height by this factor [default: 1]
-% widmul       Multiplies width by this factor [default: 1]
-% posxmul      Multiplies x-margin [default: dataaspectratio]
-% posymul      Multiplies y-margin [default: dataaspectratio]
+% posi      'll','lr','ul','ur','um','lm', OR (x,y) coordinates
+% handel    Axis handle on which you want to put the textbox
+% index     And scalar index into the alphabet, OR, a string with text
+% fs        Label font size [default: 20]
+% kees      1 Upper-case [default] alphabet will be indexed
+%           0 or anything else: Lower case
+%           2 Actual numbers instead of letters from the alphabet
+% hitmul    Box height multiplier [default: 1]
+% widmul    Box width multiplier [default: 1]
+% posxmul   Distance from x-axis margin multiplier [default: dataaspectratio]
+% posymul   Distance from y-axis margin multiplier [default: dataaspectratio]
+% xver      1 Excessive verification, produces some extra output
+%           0 None of that
 %
 % OUTPUT:
 %
-% bcor         Coordinates of box, and
-% tcor         Coordinates of text, OR
-% bhan         Handle to box, and
-% than         Handle to text
+% bcor      Coordinates of box, and
+% tcor      Coordinates of text, OR
+% bhan      Handle to box, and
+% than      Handle to text
 % 
 % EXAMPLE I:
 %
@@ -41,15 +43,17 @@ function varargout=boxtex...
 % 
 % See also: LABEL, FILLBOX
 %
-% Last modified by fjsimons-at-alum.mit.edu, 08/08/2014
+% Tested on 8.3.0.532 (R2014a) and 9.0.0.341360 (R2016a)
+% Last modified by fjsimons-at-alum.mit.edu, 09/22/2016
 
 defval('posi','ll')
 defval('index',1)
-defval('fontsize',20)
+defval('fs',20)
 defval('handel',gca)
 defval('kees',1)
 defval('hitmul',1)
 defval('widmul',1)
+defval('xver',0)
 
 axes(handel)
 xl=get(handel,'xlim');
@@ -59,22 +63,27 @@ ryl=range(yl);
 
 %-----------------------------------------------
 % Specify height and width of box and margins
-% in proportion of the FONTSIZE (default 20)
+% in proportion of the FS (default 20)
 if isstr(index)
   watis=index;
 else
   watis= 'M';
 end
-a=text(0,0,watis,'fontsize',fontsize); 
+a=text(0,0,watis,'FontSize',fs); 
 % FJS Note that the EXTENT function is buggy... for huge dataaspectratios
 % etc, so you better work in scaled coordinates. Watch if it's off
 ext=get(a,'Extent'); delete(a)
 [wid,hit]=deal(ext(3),ext(4));
-disp(sprintf('Property EXTENT width and height are %f and %f',wid,hit))
+if xver==1
+  disp(sprintf('%s Property ''extent'' width and height are %f and %f',...
+               upper(mfilename),wid,hit))
+end
+
 hit=hit*hitmul;
 wid=wid*widmul;
 xmrg=0.025; % Margin as ratio of xlim
 ymrg=0.025; % Margin as ratio of ylim
+
 % Actually, this needs to be updated depending on the data aspect ratio
 da=get(handel,'dataaspectratio'); 
 if da(1)>da(2)
@@ -136,15 +145,15 @@ if nargin>2
   hold on
   bhan=fillbox(bcor,[1 1 1],1);  
   if isstr(index)
-    than=text(tcor(1),tcor(2),1.1,index,'FontSize',fontsize,...
+    than=text(tcor(1),tcor(2),1.1,index,'FontSize',fs,...
 	'HorizontalAlignment','Center');
   else
     if kees>=2
       than=text(tcor(1),tcor(2),1.1,num2str(index),...
-		'FontSize',fontsize,'HorizontalAlignment','Center'); 
+		'FontSize',fs,'HorizontalAlignment','Center'); 
     else
       than=text(tcor(1),tcor(2),1.1,letter(index,kees),...
-		'FontSize',fontsize,'HorizontalAlignment','Center'); 
+		'FontSize',fs,'HorizontalAlignment','Center'); 
     end
   end
   if nargout
@@ -157,4 +166,3 @@ else
     varargout{2}=tcor;
   end
 end
-
