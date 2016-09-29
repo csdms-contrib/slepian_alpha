@@ -59,7 +59,7 @@ if evalin('caller',[ 'exist(''' name ''',''var'')']) == 1 ...
 else
   si=logical(0);
 end
-keyboard
+
 % Assign this function's 'value' cell (modified or not) to variable 'name'
 % in the calling function, replacing any existing variable of that name
 if si
