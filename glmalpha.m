@@ -294,7 +294,7 @@ if ~(ischar(TH) && ~isempty(strfind(TH(:)','demo')))
       end
       
       % Now do the rotation
-      if length(rotb)==1
+      if length(rotb)==1 && rotb
           % Get the rotation parameters to rotate G. Note, the region
           % rotation angles that we return from the functions (lonc, latc)
           % are the same regardless of if we did a buffer, as they pertain
