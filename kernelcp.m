@@ -70,7 +70,6 @@ defval('dom','greenland')
 defval('ngl',200)
 defval('rotb',0)
 defval('K1',NaN)
-defval('pars',10);
 
 if ~isstr(Lmax)
   % Generic path name that I like
@@ -80,11 +79,13 @@ if ~isstr(Lmax)
     switch dom
       % If the domain is a square patch
      case 'sqpatch'
+      defval('pars',[30 90 10 90]*pi/180);
       filnam=sprintf('%s-%i-%i-%i-%i-%i.mat',dom,Lmax,...
 		   round(pars(1)*180/pi),round(pars(2)*180/pi),...
 		   round(pars(3)*180/pi),round(pars(4)*180/pi));
       % If the domain is a spherical patch
      case 'patch'
+      defval('pars',[90 75 30]*pi/180);
       filnam=sprintf('%s-%i-%i-%i-%i.mat',dom,Lmax,...
 		   round(pars(1)*180/pi),round(pars(2)*180/pi),...
 		   round(pars(3)*180/pi));
@@ -125,7 +126,6 @@ if ~isstr(Lmax)
     disp(sprintf('%s loaded by KERNELCP. Consider moving your kernel files back to the KERNELC directory',fnpl2))
   else
     if strcmp(dom,'patch')
-      defval('pars',[90 75 30]*pi/180);
       % For future reference 
       th0=pars(1); ph0=pars(2); thR=pars(3);
       if th0==0
@@ -144,7 +144,6 @@ if ~isstr(Lmax)
       thS=(th0+thR);
       XY=[lon lat];
     elseif strcmp(dom,'sqpatch')
-      defval('pars',[30 90 10 90]*pi/180);
       thN=pars(1); thS=pars(2); phW=pars(3); phE=pars(4);
       XY=[phW pi/2-thN ; phW pi/2-thS ; phE pi/2-thS ; ...
 	  phE pi/2-thN ; phW pi/2-thN]*180/pi;
@@ -167,7 +166,7 @@ if ~isstr(Lmax)
 	% Use the input to define the file name that will be created
 	fnpl1=sprintf('%s/WREG-%s-%i.mat',filoc1,pars,Lmax);
       elseif iscell(dom)
-XY=eval(sprintf('%s(%i,%f)',dom{1},pars,buf));
+        XY=eval(sprintf('%s(%i,%f)',dom{1},pars,buf));
       else
 	XY=dom;
       end
