@@ -69,7 +69,7 @@ function varargout=glmalpha(TH,L,sord,blox,upco,resc,J,anti)
 % eigenfunctions for the region at the equator then rotate them back after
 % the fact using ROTATEGP.
 %
-% Last modified by plattner-at-alumni.ethz.ch, 06/05/2016  
+% Last modified by plattner-at-alumni.ethz.ch, 10/09/2016  
 % Last modified charig-at-princeton.edu, 06/27/2016
 % Last modified by fjsimons-at-alum.mit.edu, 06/27/2016
 
@@ -294,7 +294,7 @@ if ~(ischar(TH) && ~isempty(strfind(TH(:)','demo')))
       end
       
       % Now do the rotation
-      if rotb
+      if length(rotb)==1 && rotb
           % Get the rotation parameters to rotate G. Note, the region
           % rotation angles that we return from the functions (lonc, latc)
           % are the same regardless of if we did a buffer, as they pertain
