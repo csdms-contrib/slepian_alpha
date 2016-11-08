@@ -62,7 +62,7 @@ function varargout=kernelcp(Lmax,dom,pars,ngl,rotb)
 %          PLOTSLEP, PLM2AVG, KERNELC, LEGENDREPRODINT, DLMLMP
 %
 % Last modified by charig-at-princeton.edu, 09/23/2016
-% Last modified by fjsimons-at-alum.mit.edu, 06/26/2012
+% Last modified by fjsimons-at-alum.mit.edu, 11/08/2016
 
 t0=clock;
 defval('Lmax',12); 
