@@ -50,7 +50,7 @@ function varargout=localization(L,dom,N,J,rotb,anti)
 % LOCALIZATION2D, PLOTPLM, PLM2XYZ, PLOTSLEP, KLMLMP2ROT, GLMALPHA,
 % ROTATEGP 
 % 
-% Last modified by fjsimons-at-alum.mit.edu, 1/22/2016 
+% Last modified by fjsimons-at-alum.mit.edu, 11/09/2016 
 
 % Study covariance at some point?
 
@@ -151,7 +151,9 @@ if ~isstr(L)
 	save(fnpl,'C','V','dom','L','N','J')
       end
     catch
-      error('Better call KERNELC or KERNELCP so that you have a saved kernel')
+      [~,b,~]=star69;
+      error(sprintf(['%s: change the call in %s to have at least 5 outputs so ' ...
+                     'kernels do get made'],upper(mfilename),upper(b))
     end
   end
   
