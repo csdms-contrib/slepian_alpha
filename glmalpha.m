@@ -71,7 +71,7 @@ function varargout=glmalpha(TH,L,sord,blox,upco,resc,J,anti)
 %
 % Last modified by plattner-at-alumni.ethz.ch, 10/09/2016  
 % Last modified charig-at-princeton.edu, 06/27/2016
-% Last modified by fjsimons-at-alum.mit.edu, 06/27/2016
+% Last modified by fjsimons-at-alum.mit.edu, 11/11/2016
 
 % Should be able to update this to retain the rank order per m as well as
 % the global ordering. Does this work for the whole-sphere? In that case,
@@ -274,7 +274,7 @@ if ~(ischar(TH) && ~isempty(strfind(TH(:)','demo')))
       if xver==1
         disp('Excessive verification')
         % Is the area right?
-        difer(Klmlmp(1)-spharea(TH),4,[],mesg)
+        difer(Klmlmp(1)-(anti-spharea(TH)),4,[],mesg)
 
         % This is a bit double up... but it's only for excessive verification
         [V1,C]=localization(L,TH,sord);
