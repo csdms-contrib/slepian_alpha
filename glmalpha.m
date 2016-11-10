@@ -69,7 +69,7 @@ function varargout=glmalpha(TH,L,sord,blox,upco,resc,J,anti)
 % eigenfunctions for the region at the equator then rotate them back after
 % the fact using ROTATEGP.
 %
-% Last modified by plattner-at-alumni.ethz.ch, 10/09/2016  
+% Last modified by plattner-at-alumni.ethz.ch, 10/11/2016  
 % Last modified charig-at-princeton.edu, 06/27/2016
 % Last modified by fjsimons-at-alum.mit.edu, 11/09/2016
 
