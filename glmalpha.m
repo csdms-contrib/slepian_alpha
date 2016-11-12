@@ -71,7 +71,7 @@ function varargout=glmalpha(TH,L,sord,blox,upco,resc,J,anti)
 %
 % Last modified by plattner-at-alumni.ethz.ch, 10/11/2016  
 % Last modified charig-at-princeton.edu, 06/27/2016
-% Last modified by fjsimons-at-alum.mit.edu, 11/09/2016
+% Last modified by fjsimons-at-alum.mit.edu, 11/10/2016
 
 % Should be able to update this to retain the rank order per m as well as
 % the global ordering. Does this work for the whole-sphere? In that case,
