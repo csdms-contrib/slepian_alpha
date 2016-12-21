@@ -210,19 +210,19 @@ if ~(ischar(TH) && ~isempty(strfind(TH(:)','demo')))
             s=matlabpool('size');
             if s
               disp('Running KERNELCP (parallel)');
-              [Klmlmp,XY]=kernelcp(maxL,TH,sord);
+              [Klmlmp]=kernelcp(maxL,TH,sord);
             else
               disp('No open matlabpool. Running KERNELC (non-parallel).');
-              [Klmlmp,XY]=kernelc(maxL,TH,sord);
+              [Klmlmp]=kernelc(maxL,TH,sord);
             end    
         else
             % For MATLAB 8.2 and newer, a parpool should start automatically
             disp('Running KERNELCP (parallel)');
-            [Klmlmp,XY]=kernelcp(maxL,TH,sord);
+            [Klmlmp]=kernelcp(maxL,TH,sord);
         end
       else
         disp('No Parallel Computing License. Running KERNELC (non-parallel).');
-        [Klmlmp,XY]=kernelc(maxL,TH,sord);  
+        [Klmlmp]=kernelc(maxL,TH,sord);  
       end
       
       if anti==1
