@@ -25,7 +25,14 @@ if ~isempty(ent)
   
   stronk= ' ';
   for index=1:length(beg)-1
-    stronk=str2mat(stronk,strink(beg(index):ent(index)));
+    % Depending on Matlab version we need to use char instead of str2mat
+    date2016a=datetime(2016,2,11);
+    [~,dateme]=version;
+    if dateme<date2016a
+        stronk=str2mat(stronk,strink(beg(index):ent(index)));
+    else
+        stronk=char(stronk,strink(beg(index):ent(index)));        
+    end  
   end
   stronk=stronk(2:end,:);
 else %  Take the whole thing
