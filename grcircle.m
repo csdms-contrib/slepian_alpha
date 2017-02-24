@@ -29,9 +29,17 @@ function [longclatgc,delta]=grcircle(lon1lat1,lon2lat2,longr,latgr)
 %% or calculate just a number of points
 % [lola,delta]=grcircle(LaJolla,StLouis,100);
 % plot(lola(:,1)*180/pi,lola(:,2)*180/pi,'ro');
-% plotcont([220 60],[320 20]); hold off; axis image; axis([220 320 20 60])
+% plotcont([220 60],[320 20]); hold off; axis image; axis([220 320 20
+% 60])
 %
-% Last modified by fjsimons-at-alum.mit.edu, 03/10/2009
+% EXAMPLE:
+%
+%%Compare with:
+% [LAT,LON]=track2(LaJolla(2)*180/pi,LaJolla(1)*180/pi,...
+%                  StLouis(2)*180/pi,StLouis(1)*180/pi,[],'degrees',100);
+% norm(norm([LON+360 LAT]-[ lola*180/pi]))
+%
+% Last modified by fjsimons-at-alum.mit.edu, 02/24/2017
 
 defval('longr',100);
 
