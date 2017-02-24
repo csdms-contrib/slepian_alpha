@@ -35,8 +35,16 @@ d=dir(ddir);
 
 if ~prod(size(d))
    error('This directory or file does not exist')
-end 
-files=str2mat(d.name);
+end
+
+% Depending on Matlab version we need to use char instead of str2mat
+date2016a=datetime(2016,2,11);
+[~,dateme]=version;
+if dateme<date2016a
+    files=str2mat(d.name);
+else
+    files=char(d.name);
+end
 
 mino=3;
 % When using a wildcard that refers directly to a file
