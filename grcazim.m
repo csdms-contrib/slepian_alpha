@@ -1,5 +1,5 @@
-function varargout=grcazim(lonlat,dlta,angl)
-% [lon2,lat2]=GRCAZIM([lon1 lat1],dlta,angl)
+function varargout=grcazim(lonlat,dlta,angl,spheroid)
+% [lon2,lat2]=GRCAZIM([lon1 lat1],dlta,angl,spheroid)
 %
 % Calculated location of points lying on a great circle through a certain
 % point with a certain azimuth at a certain epicentral distance. One of
@@ -8,12 +8,16 @@ function varargout=grcazim(lonlat,dlta,angl)
 %
 % INPUT:
 %
-% [lon1 lat1]        First point (can be vector), in degrees
-% dlta               Epicentral distance, in km (can be vector)
+% [lon1 lat1]        Origin (vector), in degrees
+% dlta               Epicentral distance (vector):
+%                          in degrees (on 'unitsphere'), or 
+%                          in km on spheroid (e.g. 'Earth')
 % angl               Angle (vector) WEST from NORTH, in degrees
 %                    Note: this is TRUE COURSE rather than azimuth
 %                    NORTH-SOUTH: angl=0,  and dlta>0 is NORTH
 %                    EAST-WEST:   angl=90, and dlta>0 is WEST
+% spheroid           'unitsphere' and then dlta is in degrees
+%                    'Earth' and then dlta is in km
 %
 % OUPUT:
 %
@@ -23,10 +27,11 @@ function varargout=grcazim(lonlat,dlta,angl)
 %
 % grcazim('demo1')
 %
-% Last modified by fjsimons-at-alum.mit.edu, 11/05/2010
+% Last modified by fjsimons-at-alum.mit.edu, 07/17/2017
 
 % Some default values
 defval('lonlat',[100 20])
+defval('spheroid','Earth')
 
 if ~isstr(lonlat)
   defval('dlta',-1500:10:1500)
@@ -36,7 +41,14 @@ if ~isstr(lonlat)
   lon1=lonlat(:,1); dlta=dlta(:);
   lat1=lonlat(:,2); angl=angl(:);
   lon1=lon1*pi/180; lat1=lat1*pi/180;
-  dlta=dlta*1000/fralmanac('Radius');
+  switch spheroid
+    case 'Earth'
+     dlta=dlta*1000/fralmanac('Radius',spheroid);
+   case 'unitsphere'
+     dlta=dlta/180*pi;
+   otherwise
+    error('Must specify a spheroid!')
+  end
   angl=angl*pi/180;
 
   % Only one vector at a time except if lonlat and dlta have the same length
