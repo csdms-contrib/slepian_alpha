@@ -51,6 +51,8 @@ defval('res',0)
 defval('ofs',0)
 defval('pcol',grey)
 defval('xyze',nan(1,3))
+% Guyot Hall
+defval('lolax',[-74.6548   40.3458])
 
 switch res
  case 5
