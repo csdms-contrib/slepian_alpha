@@ -29,6 +29,7 @@ function varargout=plotcont(c11,cmn,res,ofs,pcol,lolax)
 % handl  Handle to the plotted line or individual patches, and for
 %        option Mollweide, also the handle to the box around it
 % XYZ    The actual data points plotted (2D or 3D)
+% xyze   The equatorial data points plotted (2D or 3D)
 %
 % AUSTRALIA:
 % plotcont([90 10],[180 -60])
@@ -38,7 +39,7 @@ function varargout=plotcont(c11,cmn,res,ofs,pcol,lolax)
 %
 % SEE ALSO: MAPROTATE, SPHAREA, PHICURVE, RCENTER
 %
-% Last modified by fjsimons-at-alum.mit.edu, 03/13/2015
+% Last modified by fjsimons-at-alum.mit.edu, 07/25/2017
 
 % Saved matrix as space-saving unsigned integer 
 % - but that translates the NaN's into some  high number - take that out.
@@ -49,6 +50,7 @@ function varargout=plotcont(c11,cmn,res,ofs,pcol,lolax)
 defval('res',0)
 defval('ofs',0)
 defval('pcol',grey)
+defval('xyze',nan(1,3))
 
 switch res
  case 5
@@ -245,7 +247,7 @@ switch res
 end
 
 % Generate output
-vars={axlim,handl,XYZ};
+vars={axlim,handl,XYZ,xyze};
 varargout=vars(1:nargout);
 
 % Last-minute cosmetic adjustment
