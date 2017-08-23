@@ -45,7 +45,6 @@ defval('caxoc',[-7000 0]);
 defval('parm',1)
 defval('pos','hor')
 defval('invt',0)
-defval('tint',(maC-miC)/10)
 
 ah=gca;
 fpos=getpos(ah);
@@ -70,6 +69,8 @@ cb=axes('position',pos);
 miC=min([caxoc caxcon]);
 maC=max([caxoc caxcon]);
 cbd=linspace(miC,maC,500);
+
+defval('tint',(maC-miC)/10)
 
 % Some flag to control 'hor' vs 'ver'
 wis=2;
