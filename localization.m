@@ -153,7 +153,7 @@ if ~isstr(L)
     catch
       [~,b,~]=star69;
       error(sprintf(['%s: change the call in %s to have at least 5 outputs so ' ...
-                     'kernels do get made'],upper(mfilename),upper(b))
+                     'kernels do get made'],upper(mfilename),upper(b)))
     end
   end
   
