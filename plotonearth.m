@@ -1,61 +1,61 @@
 function varargout=plotonearth(data,conts,lon,lat)
-% PLOTONEARTH(data)
-% PLOTONEARTH(data,1) with continents
-% PLOTONEARTH(data,1,lon,lat) if it matters where
+% pc=PLOTONEARTH(data,conts,lon,lat)
 %
-% h=PLOTONEARTH returns axis handle to the continents
+% Maps data onto a sphere, with optional continents, and in an
+% absolute longitude-latitude coordinate frame if so requested.
 %
-% Plots data on a globe, with continents or not.
-% Without relief but with optional continents, and with
-% the possibility of an absolute coordinate frame. 
+% INPUT:
 %
-% See also PLOTONSPHERE, PLOTPLM
+% data      The two-dimensional data matrix to be rendered
+% conts     1 continents will be plotted
+%           0 continents will not be plotted
+% lon       Optional longitudes for the data matrix columns [degrees]
+% lat       Optional latitudes for the data matrix rows [degrees]
 %
-% Last modified by fjsimons-at-alum.mit.edu, June 26th, 2003
+% OUTPUT:
+%
+% pc         The handle to the continents plotted
+%
+% See also PLOTONSPHERE, PLOTPLM, PLOTPLM
+%
+% Last modified by fjsimons-at-alum.mit.edu, 09/18/2017
 
+% Default inputs
+defval('data',rand(100,200))
 defval('conts',1)
 defval('lon',[])
 defval('lat',[])
 
-if ~isempty(lon)
-  if size(data)~=size(lon) | size(data)~=size(lat)
-    error('Wrong size arrays')
+if isempty(lon)
+  % Make a relative mapping grid for the data
+  [ny,nx]=100;
+  [lon,lat]=meshgrid(linspace(0,360,nx),linspace(90,-90,ny));
+end
+
+% Check input sizing in case you supply your own lon/lat grid
+if ~isempty(lon) || ~isempty(lat)
+  if size(data)~=size(lon) || size(data)~=size(lat)
+    error('All input arrays need to be of equal size')
   end
 end
 
+% Should you want the continents
 if conts==1
-  % Plot the continents
-  [jk1,jk2,cont]=plotcont([0 90],[360 -90]);
-  delete(jk2)
-  lonc=cont(:,1)/180*pi;
-  latc=cont(:,2)/180*pi;
-  rad=repmat(1.001,size(latc));
-  [xx,yy,zz]=sph2cart(lonc,latc,rad);
-  pc=plot3(xx,yy,zz,'k-','LineWidth',1.5);
-  hold on
+  % Plot the continents in this three-dimensional rendering
+  [~,pc]=plotcont([0 90],[360 -90],3);
 end
 
-if isempty(lon)
-  % Make sphere for the data
-  lons=linspace(0,360,100)/180*pi;
-  lats=linspace(90,-90,100)/180*pi;
-  [lons,lats]=meshgrid(lons,lats);
-else
-  lons=lon;
-  lats=lat;
-end
+% Make the mapping sphere  
+[x,y,z]=sph2cart(lons,lats,ones(size(lats));
 
-rads=ones(size(lats));
-
-[x,y,z]=sph2cart(lons,lats,rads);
-
+% Render the data onto the mapping sphere
 surface(x,y,z,'FaceColor','texture','Cdata',data);
 
+% Cosmetics
 axis image
 shading flat
 view(140,30)
 
-nargs={'pc'};
-for ind=1:nargout
-  varargout{ind}=eval(nargs{ind});
-end
+% Optional outputs
+varns={pc};
+varargout=varns(1:nargout);
