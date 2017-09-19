@@ -34,7 +34,7 @@ end
 
 % Check input sizing in case you supply your own lon/lat grid
 if ~isempty(lon) || ~isempty(lat)
-  if size(data)~=size(lon) || size(data)~=size(lat)
+  if size(data)~=size(lon) | size(data)~=size(lat)
     error('All input arrays need to be of equal size')
   end
 end
