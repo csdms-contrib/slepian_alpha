@@ -26,17 +26,17 @@ defval('conts',1)
 defval('lon',[])
 defval('lat',[])
 
-if isempty(lon)
-  % Make a relative mapping grid for the data
-  [ny,nx]=deal(100);
-  [lon,lat]=meshgrid(linspace(0,360,nx),linspace(90,-90,ny));
-end
-
 % Check input sizing in case you supply your own lon/lat grid
 if ~isempty(lon) || ~isempty(lat)
   if size(data)~=size(lon) | size(data)~=size(lat)
     error('All input arrays need to be of equal size')
   end
+end
+
+if isempty(lon)
+  % Make a relative mapping grid for the data
+  [ny,nx]=deal(100);
+  [lon,lat]=meshgrid(linspace(0,360,nx),linspace(90,-90,ny));
 end
 
 % Should you want the continents
