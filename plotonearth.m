@@ -46,7 +46,7 @@ if conts==1
 end
 
 % Make the mapping sphere  
-[x,y,z]=sph2cart(lons,lats,ones(size(lats)));
+[x,y,z]=sph2cart(lon,lat,ones(size(lats)));
 
 % Render the data onto the mapping sphere
 surface(x,y,z,'FaceColor','texture','Cdata',data);
