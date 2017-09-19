@@ -28,7 +28,7 @@ defval('lat',[])
 
 if isempty(lon)
   % Make a relative mapping grid for the data
-  [ny,nx]=100;
+  [ny,nx]=deal(100);
   [lon,lat]=meshgrid(linspace(0,360,nx),linspace(90,-90,ny));
 end
 
