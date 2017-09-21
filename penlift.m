@@ -65,7 +65,7 @@ if prod(size(X))==length(X)
   % They're all simply vectors
 
   % Where do the NaN's go (linear index is enough here)
-  p=find(d>dlev*nanmean(d));
+  p=find(d>dlev*nmn(d));
 
   X=insert(X,NaN,p+1);
   Y=insert(Y,NaN,p+1);
@@ -78,7 +78,7 @@ else
   % we are going to assume to be sure; also, we make them bigger
   
   % Where do the NaN's go (row and column index needed)
-  [p,j]=find(d>dlev*repmat(nanmean(d),size(d,1),1));
+  [p,j]=find(d>dlev*repmat(nmn(d),size(d,1),1));
 
   % Every column is a different curve so to speak
   for in=1:size(X,2)
@@ -106,3 +106,16 @@ end
 
 % Actual output generation
 varargout=vars(1:nargout);
+
+
+end
+
+function y=nmn(x)
+    % count how many entries of your vector are nans 
+    n=sum(~isnan(x));
+    % replace the nans in your vector with zeroes 
+    % such that they don't contribute to the sum    
+    x(isnan(x))=0;
+    % Divide the sum by number of non-nan elements
+    y=sum(x)/n;
+end
