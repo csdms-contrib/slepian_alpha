@@ -58,8 +58,10 @@ defval('xver',0)
 axes(handel)
 xl=get(handel,'xlim');
 yl=get(handel,'ylim');
-rxl=range(xl);
-ryl=range(yl);
+%rxl=range(xl);
+rxl=max(xl)-min(xl);
+%ryl=range(yl);
+ryl=max(xl)-min(xl);
 
 %-----------------------------------------------
 % Specify height and width of box and margins
