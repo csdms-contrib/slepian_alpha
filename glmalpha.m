@@ -207,13 +207,13 @@ if ~(ischar(TH) && ~isempty(strfind(TH(:)','demo')))
       if tl
         if verLessThan('matlab', '8.2')
             % For MATLAB older than MATLAB 8.2, we need to check if the pool is open
-            s=matlabpool('size');
-            if s
+            p=gcp('nocreate');
+            if isempty(p)
+              disp('No open parpool. Running KERNELC (non-parallel).');
+              [Klmlmp]=kernelc(maxL,TH,sord);
+            else
               disp('Running KERNELCP (parallel)');
               [Klmlmp]=kernelcp(maxL,TH,sord);
-            else
-              disp('No open matlabpool. Running KERNELC (non-parallel).');
-              [Klmlmp]=kernelc(maxL,TH,sord);
             end    
         else
             % For MATLAB 8.2 and newer, a parpool should start automatically
