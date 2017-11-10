@@ -156,14 +156,15 @@ if ~isstr(lmcosi)
 		 fullfile(getenv('IFILES'),'LEGENDRE'),...
 		 ldown,lup,nlat);
     % ONLY COMPLETE LINEARLY SPACED SAMPLED VECTORS ARE TO BE SAVED!
+    p=gcp('nocreate');
     if [exist(fnpl,'file')==2 && length(c11cmn)==4 && all(c11cmn==[0 90 360 -90])]...
 	  & ~[size(els,1)==1 &&  exist('Plm','var')==1]
       % Get Legendre function values at linearly spaced intervals
       disp(sprintf('Using preloaded %s',fnpl))
       load(fnpl)
       % AND TYPICALLY ANYTHING ELSE WOULD BE PRECOMPUTED, BUT THE GLOBAL
-      % ONES CAN TOO! The Matlabpool check doesn't seem to work inside 
-    elseif size(els,1)==1 &&  exist('Plm','var')==1 && matlabpool('size')==0
+      % ONES CAN TOO! The Parpool check doesn't seem to work inside 
+    elseif size(els,1)==1 &&  exist('Plm','var')==1 && isempty(p)
       % disp(sprintf('Using precomputed workspace Legendre functions'))
     else
       % Evaluate Legendre polynomials at selected points
