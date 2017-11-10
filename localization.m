@@ -182,9 +182,6 @@ if ~isstr(L)
     % Return the rotation parameters also, to undo later
     [XY,lonc,latc]=eval(sprintf('%s(%i)',dom,N));
     % h=waitbar(0);
-    try
-      parpool 
-    end
     parfor index=1:J
       % This here was changed 10/18/2010 to reflect the changed
       % conventions in PLM2ROT
