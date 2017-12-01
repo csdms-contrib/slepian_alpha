@@ -71,7 +71,7 @@ function varargout=glmalpha(TH,L,sord,blox,upco,resc,J,anti)
 %
 % Last modified by plattner-at-alumni.ethz.ch, 10/11/2016  
 % Last modified charig-at-princeton.edu, 06/27/2016
-% Last modified by fjsimons-at-alum.mit.edu, 11/10/2016
+% Last modified by fjsimons-at-alum.mit.edu, 12/01/2017
 
 % Should be able to update this to retain the rank order per m as well as
 % the global ordering. Does this work for the whole-sphere? In that case,
@@ -278,7 +278,7 @@ if ~(ischar(TH) && ~isempty(strfind(TH(:)','demo')))
 
         % This is a bit double up... but it's only for excessive verification
         [V1,C]=localization(L,TH,sord);
-        difer(V-V1',[],[],mesg)
+        difer(V(:)-V1(:),[],[],mesg)
         for index=1:length(C)
 	  salpha=G'*C{index}(R2);
 	  % Only one of these functions should get "hit"
