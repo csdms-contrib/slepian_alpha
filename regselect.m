@@ -149,7 +149,7 @@ else
   % Do we want to buffer out or buffer inside the curve?
   if buf ~= 0
     if buf > 0
-      inout='out';
+      inout='outPlusInterior';
     else
       inout='in';
     end
