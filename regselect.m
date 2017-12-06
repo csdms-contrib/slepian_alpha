@@ -22,7 +22,8 @@ function XY=regselect(regn,c11,cmn,xunt,res,buf,ofs)
 %
 % XY       The requested coordinates
 % 
-% Last modified by charig-at-princeton.edu, 09/30/2015
+% Last modified by charig-at-email.arizona.edu, 12/05/2017
+% Last modified by maxvonhippel@email.arizona.edu, 12/05/2017
 % Last modified by fjsimons-at-alum.mit.edu, 06/13/2015
 
 % The directory where you keep the coordinates
@@ -155,6 +156,9 @@ else
     end
     % Make some buffered coordinates and save them for later use
     disp('Buffering the coastlines... this may take a while');
+
+    % Here we assume you now have a 2015 or later version of Matlab
+    % so we can interpret positive buffers as outPlusInterior
 
     % You might look into REDUCEM to make this easier
     % Note that BUFFERM has gone through quite a few revisions
