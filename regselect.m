@@ -165,23 +165,7 @@ else
     % Note that, if due to BEZIER there might be a pinched-off loop in
     % the XY you will get an extra NaN and will need to watch it
     % If this shouldn't work, keep it all unchanged in other words
-    try
-      % You'll need a line for every possible version behavior
-      % Note how POLY2CW has disappeared from BUFFERM
-      if sign(buf)<0 || ~isempty(strfind(version,'2010a'))
-	% Take the last bit of non-NaNs; there might have been pinched
-        % off sections in the original
-	LonB=LonB(indeks(find(isnan(LonB)),'end')+1:end);
-	LatB=LatB(indeks(find(isnan(LatB)),'end')+1:end);
-      elseif ~isempty(strfind(version,'2011a')) || ~isempty(strfind(version,'2012a'))
-	LonB=LonB(1:find(isnan(LonB))-1);
-	LatB=LatB(1:find(isnan(LatB))-1);
-      elseif ~isempty(strfind(version,'2015a'))
-         % Should not need to do anything here
-      end
-    catch
-      disp('BUFFERM failed to buffer as expected. Version update?')
-    end
+
     % Periodize the right way
     XY=[LonB+360*any(LonB<0) LatB];
     
