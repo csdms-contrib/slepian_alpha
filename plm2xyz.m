@@ -162,8 +162,8 @@ if ~isstr(lmcosi)
       disp(sprintf('Using preloaded %s',fnpl))
       load(fnpl)
       % AND TYPICALLY ANYTHING ELSE WOULD BE PRECOMPUTED, BUT THE GLOBAL
-      % ONES CAN TOO! The Matlabpool check doesn't seem to work inside 
-    elseif size(els,1)==1 &&  exist('Plm','var')==1 && matlabpool('size')==0
+      % ONES CAN TOO! 
+    elseif size(els,1)==1 &&  exist('Plm','var')==1 && isempty(gcp('nocreate'))
       % disp(sprintf('Using precomputed workspace Legendre functions'))
     else
       % Evaluate Legendre polynomials at selected points
