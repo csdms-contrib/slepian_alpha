@@ -81,7 +81,7 @@ end
 % save was buggy, and could not be subsequently loaded.
 % Thus used  ~(L==180 & m==0) as an extra condition, now gone.
 % Used matzerofix to remediate this.
-if exist(fnpl,'file')==2 && (vcut>0) & 1==3
+if exist(fnpl,'file')==2 && (vcut>0)
   load(fnpl)
   disp(sprintf('%s loaded by SDWCAP',fnpl))
 else
