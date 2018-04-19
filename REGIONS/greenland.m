@@ -23,7 +23,7 @@ function varargout=greenland(res,buf,nearby)
 
 defval('res',0)
 defval('buf',0)
-defval('nearby',1)
+defval('nearby',0)
 
 % Parameters that make this the region in question
 regn='greenland';
