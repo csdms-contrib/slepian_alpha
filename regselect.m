@@ -22,7 +22,8 @@ function XY=regselect(regn,c11,cmn,xunt,res,buf,ofs)
 %
 % XY       The requested coordinates
 % 
-% Last modified by charig-at-princeton.edu, 09/30/2015
+% Last modified by charig-at-email.arizona.edu, 12/05/2017
+% Last modified by maxvonhippel@email.arizona.edu, 12/05/2017
 % Last modified by fjsimons-at-alum.mit.edu, 06/13/2015
 
 % The directory where you keep the coordinates
@@ -149,12 +150,15 @@ else
   % Do we want to buffer out or buffer inside the curve?
   if buf ~= 0
     if buf > 0
-      inout='out';
+      inout='outPlusInterior';
     else
       inout='in';
     end
     % Make some buffered coordinates and save them for later use
     disp('Buffering the coastlines... this may take a while');
+
+    % Here we assume you now have a 2015 or later version of Matlab
+    % so we can interpret positive buffers as outPlusInterior
 
     % You might look into REDUCEM to make this easier
     % Note that BUFFERM has gone through quite a few revisions
@@ -165,23 +169,7 @@ else
     % Note that, if due to BEZIER there might be a pinched-off loop in
     % the XY you will get an extra NaN and will need to watch it
     % If this shouldn't work, keep it all unchanged in other words
-    try
-      % You'll need a line for every possible version behavior
-      % Note how POLY2CW has disappeared from BUFFERM
-      if sign(buf)<0 || ~isempty(strfind(version,'2010a'))
-	% Take the last bit of non-NaNs; there might have been pinched
-        % off sections in the original
-	LonB=LonB(indeks(find(isnan(LonB)),'end')+1:end);
-	LatB=LatB(indeks(find(isnan(LatB)),'end')+1:end);
-      elseif ~isempty(strfind(version,'2011a')) || ~isempty(strfind(version,'2012a'))
-	LonB=LonB(1:find(isnan(LonB))-1);
-	LatB=LatB(1:find(isnan(LatB))-1);
-      elseif ~isempty(strfind(version,'2015a'))
-         % Should not need to do anything here
-      end
-    catch
-      disp('BUFFERM failed to buffer as expected. Version update?')
-    end
+
     % Periodize the right way
     XY=[LonB+360*any(LonB<0) LatB];
     
