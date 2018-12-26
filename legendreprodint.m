@@ -37,7 +37,7 @@ function varargout=legendreprodint(L1,m1,L2,m2,x0,method)
 % legendreprodint('demo5') Verify some analytical formulas
 %
 % Last modified by plattner-at-princeton.edu, 05/24/2011
-% Last modified by fjsimons-at-alum.mit.edu, 06/12/2015
+% Last modified by fjsimons-at-alum.mit.edu, 06/30/2015
 
 if ~isstr(L1)
   defval('L1',1)
@@ -170,8 +170,15 @@ if ~isstr(L1)
       % where
       % Q_{L1,m1,L2,m2}^{L,m1} =(-1)^(m1+m2)*(2*L+1)...
       %          *threej(L,L1,L2,-m1-m2,m1,m2)*zeroj(L,L1,L2)
-      % See also DS 2008, Eq. (13), SDW 2006, Eq. (3.7) and WS 2005, Eq. (B9)
-            
+      % See also DS 2008 (doi: 10.1111/j.1365-246X.2008.03854.x), 
+      %       Eq. (13), and
+      % SDW 2006 (doi: 10.1137/S0036144504445765),
+      %       Eq. (3.7), and
+      % WS 2005, (doi: 10.1007/s00041-006-6904-1)
+      %       Eq. (B9)
+      % See also PS 2014 (doi: /10.1016/j.acha.2012.12.001),
+      %       Eq. (5)
+
       % First calculate the range of L via the selection rules 
       % L=abs(L1-L2):(L1+L2);
       % The next line should avoid the post-selection for admissibility
