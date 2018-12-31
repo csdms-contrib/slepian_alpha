@@ -12,7 +12,7 @@ function scalmat=scale(inmat,ranscale)
 %
 % plot(scale(scale(sin(0:0.01:3*pi),[1898 9100]),[-1 1]),'r-')
 %
-% Last modified by fjsimons-at-alum.mit.edu, 08/15/2012
+% Last modified by fjsimons-at-alum.mit.edu, 12/31/2018
 
 defval('ranscale',[-1 1])
 
