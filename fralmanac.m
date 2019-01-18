@@ -30,12 +30,14 @@ function val=fralmanac(neem,plenet)
 % 
 %           'DegDis'        Length of equatorial longitude      [m]
 %           'GM_GMM2B'      GMM2B reference mass constant       [m^3s^{-2}]
+%           'GM_GMM3 '      GMM3 reference mass constant       [m^3s^{-2}]
 %           'GM_JGM85H02'   JGM85H02 reference mass constant    [m^3s^{-2}]
 %           'GravAcc'       Surface gravity                     [ms^{-2}]
 %           'IMR2'          Reduced moment of inertia (I/MR2)   [dimensionless]
 %           'Mass'          Reference mass                      [kg]
 %           'Radius'        Volumetric mean radius              [m]
 %           'a_GMM2B'       GMM2B reference radius              [m]
+%           'a_GMM3 '       GMM3 reference radius               [m]
 %           'a_JGM85H02'    JGM85H02 reference radius           [m]
 %
 %           -> for plenet 'Moon'
@@ -62,7 +64,7 @@ function val=fralmanac(neem,plenet)
 %           'GLGM2'              Moon geopotential (from Clementine)
 %           'GLTM2B'             Moon topography (from Clementine)
 %           'GMM2B'              Mars geopotential (from MGS / Frank Lemoine)
-%           'GMM3B'              Mars geopotential
+%           'GMM3'               Mars geopotential
 %           'GTM090'             Mars shape (from MOLA / Greg Neumann)
 %           'GTM3AR'             Earth topography (from Georg Wenzel)
 %           'JGM85H02'           Mars geopotential (from MGS)
@@ -129,5 +131,6 @@ if nargin>0 & ~isempty(neem)
       val=val{1};
     end
 else
+  % Needs to also default to another planet
   number(str2mat(fieldnames(eval(plenet))))
 end
