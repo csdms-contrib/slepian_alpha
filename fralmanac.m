@@ -62,6 +62,7 @@ function val=fralmanac(neem,plenet)
 %           'GLGM2'              Moon geopotential (from Clementine)
 %           'GLTM2B'             Moon topography (from Clementine)
 %           'GMM2B'              Mars geopotential (from MGS / Frank Lemoine)
+%           'GMM3B'              Mars geopotential
 %           'GTM090'             Mars shape (from MOLA / Greg Neumann)
 %           'GTM3AR'             Earth topography (from Georg Wenzel)
 %           'JGM85H02'           Mars geopotential (from MGS)
@@ -114,7 +115,7 @@ function val=fralmanac(neem,plenet)
 %
 % Among others, from http://nssdc.gsfc.nasa.gov/planetary/factsheet/
 %
-% Last modified by fjsimons-at-alum.mit.edu, 02/22/2012
+% Last modified by fjsimons-at-alum.mit.edu, 01/17/2019
 
 defval('neem',[])
 defval('plenet','Earth')
