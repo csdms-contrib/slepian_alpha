@@ -1,12 +1,13 @@
-function x=indeks(y,in)
-% x=INDEKS(y,in)
+function x=indeks(M,i)
+% x=INDEKS(M,i)
 %
-% Extracts indexed positions out of simple matrices
+% Extracts linearly indexed position(s) i out of a matrix M.
+% Works for logical and numeric indices.
 %
 % INPUT:
 %
-% y         Some vector
-% in        Some set of running linear indices [default: 1]
+% M         The input matrix 
+% i         The requested set of running linear indices [default: 1]
 %
 % EXAMPLES:
 % 
@@ -14,14 +15,14 @@ function x=indeks(y,in)
 % indeks([1 2],':,2')
 % indeks([1 2],'end')
 %
-% Works for logical and numeric indices.
+% See also RINDEKS, KINDEKS, TINDEKS, DINDEKS, SQUEEZE
 %
-% Last modified by fjsimons-at-alum.mit.edu, 11/15/2014
+% Last modified by fjsimons-at-alum.mit.edu, 01/30/2019
 
-defval('in',1)
+defval('i',1)
 
-if ~isstr(in)
-  x=y(in);
+if ~isstr(i)
+  x=M(i(:));
 else
-  eval([ 'x=y(' in ');'])
+  eval([ 'x=M(' i ');'])
 end
