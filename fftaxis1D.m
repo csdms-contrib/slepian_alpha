@@ -25,21 +25,22 @@ function [fax,selekt,lax]=fftaxis1D(sig,nfft,physl)
 %
 % Use without FFTSHIFT, as in:
 %
-% FX=fft(S,nfft); SX=abs(FX).^2; plot(fax,SX(selekt)
+% nfft=256; s=rand(nfft,1); [fax,selekt]=fftaxis1D(s,nfft,1);
+% S=abs(fft(s-mean(s),nfft)).^2; plot(fax,log10(S(selekt)))
 %
-% The "complete" axis is again, for a power-of-two signal
-% [kax ; -flipud(kax(2:end-1))]
+%% The "complete" axis is again, for a power-of-two signal
+% [fax ; -flipud(fax(2:end-1))]
 %
 % The equivalence of FFTAXIS1D and KNUM2 is explicit:
 % N=256;
-% [fax,selekt]=fftaxis1d(rand(N,1),N,N-1);
+% [fax,selekt]=fftaxis1D(rand(N,1),N,N-1);
 % [K,kx]=knum2([2 N],[2 N]-1);
 % fx=-fliplr(indeks(kx,selekt)/2/pi);
 % difer(fx(:)-fax(:))
 %
 % SEE ALSO: KNUM2
 %
-% Last modified by fjsimons-at-alum.mit.edu, 10/22/2012
+% Last modified by fjsimons-at-alum.mit.edu, 03/19/2019
 
 xsint=physl/(length(sig)-1);
 
