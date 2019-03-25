@@ -3,21 +3,23 @@ function ind=dindeks(i,d,sais)
 %
 % Returns the indices to the ith plane perpendicular to the dth dimension
 % of a threedimensional array. Return everything as a linear array.
+% 
+% INPUT:
+%
+% i         The ith plane perpendicular to...
+% d         ... the dth dimension [default: 1] of a 3D array...
+% sais      ... of this particular size [n1 n2 n3]
 %
 % EXAMPLE:
 %
 % vec=rand(28,13,78); chex=12;
-% difer(indeks(rindeks(vec,chex),':')-vec(dindeks(chex,1,size(vec))))
+% difer(indeks(        rindeks(vec,chex) ,':')-vec(dindeks(chex,1,size(vec))))
 % difer(indeks(squeeze(kindeks(vec,chex)),':')-vec(dindeks(chex,2,size(vec))))
 % difer(indeks(squeeze(tindeks(vec,chex)),':')-vec(dindeks(chex,3,size(vec))))
 %
-% EXAMPLE:
+% SEE ALSO: RINDEKS, KINDEKS, TINDEKS, INDEKS, SQUEEZE
 %
-% 
-%
-% SEE ALSO: RINDEKS, KINDEKS, TINDEKS
-%
-% Last modified by fjsimons-at-alum.mit.edu, 03/11/2010
+% Last modified by fjsimons-at-alum.mit.edu, 01/30/2019
 
 defval('d',1)
 
@@ -36,11 +38,6 @@ switch d
  case 3
   ind=repmat(n1*n2*(i-1)+[1:n1],n2,1)'+repmat([0:n2-1]'*n1,1,n1)';
 end
-
-% The test works for here:
-% difer(squeeze(rindeks(vec,chex))-vec(dindeks(chex,1,size(vec))))
-% difer(squeeze(kindeks(vec,chex))-vec(dindeks(chex,2,size(vec))))
-% difer(squeeze(tindeks(vec,chex))-vec(dindeks(chex,3,size(vec))))
 
 % Now the output
 ind=ind(:);

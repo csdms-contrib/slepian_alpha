@@ -142,7 +142,11 @@ if ~isstr(TH)
     if ~strcmp(fname,'neveravailable') 
       % If the variable is HUGE you must use the -v7.3 flag, if not, you
       % can safely omit it and get more backwards compatibility
-      save(fname,'-v7.3','G','V','EL','EM','N','GM2AL','MTAP','IMTAP')
+      if exist('octave_config_info') % If it's octave
+        save(fname,'G','V','EL','EM','N','GM2AL','MTAP','IMTAP')
+      else
+        save(fname,'-v7.3','G','V','EL','EM','N','GM2AL','MTAP','IMTAP')
+      end
     end
   end
   

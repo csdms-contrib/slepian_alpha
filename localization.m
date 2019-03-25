@@ -50,13 +50,20 @@ function varargout=localization(L,dom,N,J,rotb,anti)
 % LOCALIZATION2D, PLOTPLM, PLM2XYZ, PLOTSLEP, KLMLMP2ROT, GLMALPHA,
 % ROTATEGP 
 % 
-% Last modified by fjsimons-at-alum.mit.edu, 11/09/2016 
+% Last modified by fjsimons-at-alum.mit.edu, 06/12/2018
 
 % Study covariance at some point?
 
 % Default inputs
 defval('L',18)
 
+% Checks directory structure
+targdir=fullfile(getenv('IFILES'),'LOCALIZE');
+if exist(targdir)~=7
+  disp(sprintf('Making %s',targdir))
+  mkdir(targdir);
+end
+  
 if ~isstr(L)
   defval('dom','australia')
   defval('N',10)
@@ -66,7 +73,7 @@ if ~isstr(L)
   % If it's been pre-done this isn't strictly necessary anymore - is it?
   % You could thus avoid calling KERNELC(P) if you don't want this
   % output and if for some reason you threw the kernel away. 
-  
+
   % Calculates the localization kernel for this domain
   if nargout>4
     % Note that the "rotb" parameter is always set to 0 by default and that
@@ -111,22 +118,22 @@ if ~isstr(L)
   switch doms
    case 'sqpatch'
     fnpl=sprintf('%s/%s-%i-%i-%i-%i-%i.mat',...
-		 fullfile(getenv('IFILES'),'LOCALIZE'),doms,L,...
+		 targdir,doms,L,...
 		 round(N(1)*180/pi),round(N(2)*180/pi),...
 		 round(N(3)*180/pi),round(N(4)*180/pi),J);
    case 'patch'
     fnpl=sprintf('%s/%s-%i-%i-%i-%i-%i.mat',...
-		 fullfile(getenv('IFILES'),'LOCALIZE'),doms,L,...
+		 targdir,doms,L,...
 		 round(N(1)*180/pi),round(N(2)*180/pi),...
 		 round(N(3)*180/pi),J);
    otherwise
     fnpl=sprintf('%s/%s-%i-%i-%i.mat',...
-		 fullfile(getenv('IFILES'),'LOCALIZE'),doms,L,N,J);
+		 targdir,doms,L,N,J);
   end
   if anti==1
     Klmlmp=eye(size(Klmlmp))-Klmlmp;
     fnpl=sprintf('%s/%s-%i-%i-%i-%i.mat',...
-		 fullfile(getenv('IFILES'),'LOCALIZE'),doms,L,N,J,anti);
+		 targdir,doms,L,N,J,anti);
     disp(sprintf('Remember that you requested the anti-%s region',doms))
   end
   
@@ -322,5 +329,4 @@ elseif strcmp(L,'demo7')
 else
   error('Specify valid demo number')
 end
-
 

@@ -26,7 +26,7 @@ function varargout=boxtex...
 % OUTPUT:
 %
 % bcor      Coordinates of box, and
-% tcor      Coordinates of text, OR
+% tcor      Coordinates of text, OR (depending on the number of INPUT variables)
 % bhan      Handle to box, and
 % than      Handle to text
 % 
@@ -44,7 +44,7 @@ function varargout=boxtex...
 % See also: LABEL, FILLBOX
 %
 % Tested on 8.3.0.532 (R2014a) and 9.0.0.341360 (R2016a)
-% Last modified by fjsimons-at-alum.mit.edu, 09/22/2016
+% Last modified by fjsimons-at-alum.mit.edu, 07/05/2017
 
 defval('posi','ll')
 defval('index',1)
@@ -58,8 +58,10 @@ defval('xver',0)
 axes(handel)
 xl=get(handel,'xlim');
 yl=get(handel,'ylim');
-rxl=range(xl);
-ryl=range(yl);
+%rxl=range(xl);
+rxl=max(xl)-min(xl);
+%ryl=range(yl);
+ryl=max(xl)-min(xl);
 
 %-----------------------------------------------
 % Specify height and width of box and margins
@@ -81,8 +83,10 @@ end
 
 hit=hit*hitmul;
 wid=wid*widmul;
-xmrg=0.025; % Margin as ratio of xlim
-ymrg=0.025; % Margin as ratio of ylim
+% Margin as ratio of xlim
+xmrg=0.025; 
+% Margin as ratio of ylim
+ymrg=0.025;
 
 % Actually, this needs to be updated depending on the data aspect ratio
 da=get(handel,'dataaspectratio'); 
@@ -162,7 +166,8 @@ if nargin>2
   end
 else
     if nargout
-    varargout{1}=bcor;
-    varargout{2}=tcor;
-  end
+      varargout{1}=bcor;
+      varargout{2}=tcor;
+    end
 end
+

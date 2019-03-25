@@ -1,5 +1,5 @@
-function varargout=plotcont(c11,cmn,res,ofs,pcol)
-% [axlim,handl,XYZ]=PLOTCONT(c11,cmn,res,ofs,pcol)
+function varargout=plotcont(c11,cmn,res,ofs,pcol,lolax)
+% [axlim,handl,XYZ]=PLOTCONT(c11,cmn,res,ofs,pcol,lolax)
 % 
 % INPUT:
 %
@@ -16,9 +16,10 @@ function varargout=plotcont(c11,cmn,res,ofs,pcol)
 %        8 The world's coastlines from the NOAA>NESDIS>NGDC>MGGD database
 %        9 Plot this on the two-dimensional cubed sphere
 %        10 Global Mollweide projection centered on Greenwich
-%        11 Three-dimensional coordinates, Southern hermisphere only
+%        11 Three-dimensional flattened obstructed view centered on an axis
 % ofs    Longitude offset, e.g. 360 degrees [only for 0,1,5,6,7]
 % pcol   The patch color in case option 7 is chosen [default: grey]
+% lolax  View axis when res==11
 %
 % Longitude ranges from 0 to 360; plots are centered on the PACIFIC.
 %
@@ -28,6 +29,7 @@ function varargout=plotcont(c11,cmn,res,ofs,pcol)
 % handl  Handle to the plotted line or individual patches, and for
 %        option Mollweide, also the handle to the box around it
 % XYZ    The actual data points plotted (2D or 3D)
+% xyze   The equatorial data points plotted (2D or 3D)
 %
 % AUSTRALIA:
 % plotcont([90 10],[180 -60])
@@ -37,8 +39,7 @@ function varargout=plotcont(c11,cmn,res,ofs,pcol)
 %
 % SEE ALSO: MAPROTATE, SPHAREA, PHICURVE, RCENTER
 %
-% Last modified by fjsimons-at-alum.mit.edu, 09/24/2010
-% Last modified by charig-at-princeton.edu, 07/01/2013
+% Last modified by fjsimons-at-alum.mit.edu, 07/25/2017
 
 % Saved matrix as space-saving unsigned integer 
 % - but that translates the NaN's into some  high number - take that out.
@@ -49,6 +50,9 @@ function varargout=plotcont(c11,cmn,res,ofs,pcol)
 defval('res',0)
 defval('ofs',0)
 defval('pcol',grey)
+defval('xyze',nan(1,3))
+% Guyot Hall
+defval('lolax',[-74.6548   40.3458])
 
 switch res
  case 5
@@ -161,7 +165,7 @@ switch res
   fill(lon(beg:end),lat(beg:end),pcol)
   hold off
   axlim=[0 360 -90 90];
- case {3,4,11}
+ case {3,4}
   % Convert to spherical coordinates
   lon=cont(:,1)/180*pi;
   lat=cont(:,2)/180*pi;
@@ -171,23 +175,9 @@ switch res
   XYZ=[xx yy zz];
   if res==4
     XYZ=XYZ(zz>0,:);
-  elseif res==11
-    [xx,yy,zz]=sph2cart(lon-pi/2,lat,rad);
-    XYZ=[xx -yy zz];
-    XYZ=XYZ(zz<0,:);
   end
   % Now need to take out the annoying connecting lines
-  % Distance between two consecutive points
-  xx=XYZ(:,1); yy=XYZ(:,2); zz=XYZ(:,3);
-  d=sqrt((xx(2:end)-xx(1:end-1)).^2+(yy(2:end)-yy(1:end-1)).^2);
-  % D-level: minimum distance to lift pen... variable
-  dlev=3;
-  p=find(d>dlev*nanmean(d));
-  % Now right after each of these positions need to insert a NaN;
-  nx=insert(xx,NaN,p+1);
-  ny=insert(yy,NaN,p+1);
-  nz=insert(zz,NaN,p+1);
-  XYZ=[nx(:) ny(:) nz(:)];
+  XYZ=penlift(XYZ);
   
   % And plot this, too
   handl=plot3(XYZ(:,1),XYZ(:,2),XYZ(:,3),'k');
@@ -205,23 +195,63 @@ switch res
   hold on
   % Protect against unsightly junks
   for in=1:6
-    d=sqrt((xic{in}(2:end)-xic{in}(1:end-1)).^2+...
-	   (etac{in}(2:end)-etac{in}(1:end-1)).^2);
-    dlev=3; pp=find(d>dlev*nanmean(d));
-    nx{in}=insert(xic{in},NaN,pp+1); ny{in}=insert(etac{in},NaN,pp+1); 
+    [nx{in},ny{in}]=penlift(xic{in},etac{in});
   end
   [pc,pgc]=plotonchunk(nx,ny);
   hold off; set(pc,'Color','k','lines','-','marker','none')
   delete(cat(1,pgc{:})) 
   handl=pc;
-  XYZ=[lon+ofs lat];
+  % XYZ=[lon+ofs lat];
+  % Rather return the processed coordinates
+  XYZ=[nx ; ny];
+ case 11
+  % This from LORIS1 and EOS1
+  lon=lolax(1);
+  lat=lolax(2);
+  % Set view angles ahead of time as an explicit longitude and latitude
+  [xv,yv,zv]=sph2cart(lon*pi/180,lat*pi/180,1);
+
+  % Convert to spherical coordinates
+  lonc=cont(:,1)/180*pi;
+  latc=cont(:,2)/180*pi;
+  rara=1.01;
+  radc=repmat(rara,size(latc));
+  % Convert to Cartesian coordinates
+  [xx,yy,zz]=sph2cart(lonc,latc,radc);
+  XYZ=[xx yy zz];
+
+  % Inner product selectivity
+  yes=[xv yv zv]*XYZ'>0; 
+  % This protection from jumps is straight from PLOTCONT
+  XYZ=penlift(XYZ(yes,1:3));
+  % And then finally do it
+  skl=0.99;
+  handl(1)=plot3(XYZ(:,1)*skl,XYZ(:,2)*skl,XYZ(:,3)*skl,'k-');
+  hold on
+  % Plot a bit of the equator
+  [xe,ye,ze]=sph2cart(linspace(0,2*pi,100),0,rara);
+  xyze=[rotz(-lon*pi/180)*roty(-[90-lat]*pi/180)*[xe ; ye ; repmat(ze,1,length(ye))]]';
+  handl(2)=plot3(xyze(:,1),xyze(:,2),xyze(:,3),'k');
+  view([xv,yv,zv]); [AZ,EL]=view;
+  disp(sprintf('Azimuth: %i ; Elevation: %i',round(AZ),round(EL)))
+  axlim=[-1 1 -1 1 -1 1]*rara*1.01;
+  axis(axlim); axis off
+  % Where is the North Pole?
+  hold on
+  pnp=plot3(0,0,1,'MarkerF','k','MarkerE','k','Marker','o');
+  hold off
+  % Where is the Viewing Axis?
+  hold on
+  pva=plot3(xv,yv,zv,'MarkerF','k','MarkerE','k','Marker','o');
+  hold off
+  delete(pnp)
+  delete(pva)
 end
 
 % Generate output
-vars={axlim,handl,XYZ};
+vars={axlim,handl,XYZ,xyze};
 varargout=vars(1:nargout);
 
 % Last-minute cosmetic adjustment
 axis equal
 hold off
-

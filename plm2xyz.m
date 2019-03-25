@@ -1,6 +1,6 @@
 function varargout=plm2xyz(lmcosi,degres,c11cmn,lmax,latmax,Plm)
-% [r,lon,lat,Plm]=PLM2XYZ(lmcosi,degres,c11cmn,lmax,latmax,Plm)
-% [r,lon,lat,Plm]=PLM2XYZ(lmcosi,lat,lon,lmax,latmax,Plm)
+% [r,lon,lat,Plm,degres]=PLM2XYZ(lmcosi,degres,c11cmn,lmax,latmax,Plm)
+% [r,lon,lat,Plm,degres]=PLM2XYZ(lmcosi,lat,lon,lmax,latmax,Plm)
 %
 % Inverse (4*pi-normalized real) spherical harmonic transform.
 %
@@ -25,6 +25,7 @@ function varargout=plm2xyz(lmcosi,degres,c11cmn,lmax,latmax,Plm)
 % r          The field (matrix for a grid, vector for scattered points)
 % lon,lat    The grid (matrix) or evaluation points (vector), in degrees
 % Plm        The set of appropriate Legendre polynomials should you want them
+% degres     Longitude/ latitude spacing, in degrees
 % 
 % EXAMPLE:
 %
@@ -52,7 +53,7 @@ function varargout=plm2xyz(lmcosi,degres,c11cmn,lmax,latmax,Plm)
 % See also XYZ2PLM, PLM2SPEC, TH2PL, PL2TH, YLM
 %
 % Special thanks to kwlewis-at-princeton.edu for spotting a bug.
-% Last modified by fjsimons-at-alum.mit.edu, 07/13/2012
+% Last modified by fjsimons-at-alum.mit.edu, 12/07/2018
 if ~isstr(lmcosi)
   t0=clock;
   % Lowest degree of the expansion
@@ -162,8 +163,8 @@ if ~isstr(lmcosi)
       disp(sprintf('Using preloaded %s',fnpl))
       load(fnpl)
       % AND TYPICALLY ANYTHING ELSE WOULD BE PRECOMPUTED, BUT THE GLOBAL
-      % ONES CAN TOO! 
-    elseif size(els,1)==1 &&  exist('Plm','var')==1 && isempty(gcp('nocreate'))
+      % ONES CAN TOO! The Matlabpool check doesn't seem to work inside 
+    elseif size(els,1)==1 &&  exist('Plm','var')==1 && matlabpool('size')==0
       % disp(sprintf('Using precomputed workspace Legendre functions'))
     else
       % Evaluate Legendre polynomials at selected points
@@ -196,13 +197,8 @@ if ~isstr(lmcosi)
 	delete(h)
       end
       if length(c11cmn)==4 && all(c11cmn==[0 90 360 -90])
-        % If it is Octave, do not use the Matlab -v7.3 option  
-        if exist('octave_config_info')             
-          save(fnpl,'Plm')
-        else
-          save(fnpl,'Plm','-v7.3')
-        end
-          disp(sprintf('Saved %s',fnpl))
+	save(fnpl,'Plm','-v7.3')
+	disp(sprintf('Saved %s',fnpl))
       end
     end
 
@@ -271,7 +267,7 @@ if ~isstr(lmcosi)
   lat=90-theta*180/pi;
 
   % Prepare output
-  vars={r,lon,lat,Plm};
+  vars={r,lon,lat,Plm,degres};
   varargout=vars(1:nargout);
   
 %  disp(sprintf('PLM2XYZ (Synthesis) took %8.4f s',etime(clock,t0)))
@@ -323,7 +319,7 @@ elseif strcmp(lmcosi,'demo2')
   [r,lon,lat]=plm2xyz(lmcosi,180/sqrt(L*(L+1)));
   tol=length(lon)*length(lat);
   defval('degres',0.4)
-  fra=degres;
+  fra=degres*1.5; 
   unform=2;
   [LON,LAT]=meshgrid(lon,lat);
   if unform==1
@@ -550,13 +546,14 @@ elseif strcmp(lmcosi,'demo6')
   v=v(1:addmup(1000)-addmup(v(1)-1),:);
   [r,lon,lat,Plm]=plm2xyz(v,[],[8 45 20 37]);
   if nargout==0
-    plotplm(r,lon*pi/180,lat*pi/180,4);
+    [~,b,g]=plotplm(r,lon*pi/180,lat*pi/180,4);
+    disp('Adjust the axes!!')
   end
   % Now with Dongs' which looks good, passed all tests 4/21/2010
   % [rdw,londw,latdw]=plm2xyzdw(v,[],[45 37 8 20],0,0);
   
   % Prepare output
-  vars={r,lon,lat,Plm};
+  vars={r,lon,lat,Plm,degres};
   varargout=vars(1:nargout);
 elseif strcmp(lmcosi,'demo7')
   % Load the model
@@ -644,6 +641,6 @@ elseif strcmp(lmcosi,'demo8')
   [r,lon,lat,Plm]=plm2xyz(v);
   plotplm(r)
   % Prepare output
-  vars={r,lon,lat,Plm};
+  vars={r,lon,lat,Plm,degres};
   varargout=vars(1:nargout);
 end

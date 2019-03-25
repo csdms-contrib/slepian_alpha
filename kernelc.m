@@ -63,6 +63,7 @@ function varargout=kernelc(Lmax,dom,pars,ngl,rotb)
 %
 % Last modified by fjsimons-at-alum.mit.edu, 03/14/2012
 % Last modified by charig-at-princeton.edu, 01/22/2014
+% Last modified by plattner-at-alumni.ethz.ch, 05/26/2017
 
 t0=clock;
 defval('Lmax',18); 
@@ -107,7 +108,11 @@ if ~isstr(Lmax)
   else
     % If, instead of a string, we have closed form coordinates, then make a
     % hash from the coordinates and use it as the filename.
-    h=hash(dom,'sha1');
+    if exist('octave_config_info')
+      h=builtin('hash','sha1',dom);
+    else
+      h=hash(dom,'sha1');
+    end
     fnpl=sprintf('%s/%s-%i.mat',filoc,h,Lmax);  
   end
   
@@ -452,8 +457,13 @@ if ~isstr(Lmax)
     
     % This is only saved when it's not the alternative calculation method
     if ~strcmp(fnpl,'neveravailable')
-      save(fnpl,'Lmax','Klmlmp','dom','ngl','XY',...
-	   'lonc','latc','K1','K')
+      if exist('octave_config_info')% If you are running octave   
+	save(fnpl,'Lmax','Klmlmp','dom','ngl','XY',...
+	     'lonc','latc','K1','K')
+      else
+	save(fnpl,'Lmax','Klmlmp','dom','ngl','XY',...
+	     'lonc','latc','K1','K','-v7.3')
+      end
     end
   end
   

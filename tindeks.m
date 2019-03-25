@@ -1,11 +1,17 @@
 function x=tindeks(M,i)
 % x=TINDEKS(M,i)
 %
-% Returns the ith 3-rd dimension of a 3D matrix.
+% Returns the ith 3-rd dimension(s) of a 3D matrix M.
 %
-% See also INDEKS, RINDEKS, KINDEKS
+% EXAMPLE:
 %
-% Last modified by fjsimons-at-alum.mit.edu, 06/30/2009
+% M=rand([randij(12) randi(4)])
+% witsj=randi(size(M,3))
+% tindeks(M,witsj)
+%
+% See also INDEKS, RINDEKS, KINDEKS, DINDEKS, SQUEEZE
+%
+% Last modified by fjsimons-at-alum.mit.edu, 01/30/2019
 
-x=M(:,:,i);
+x=M(:,:,i(:));
 

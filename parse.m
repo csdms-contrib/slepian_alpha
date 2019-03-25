@@ -7,7 +7,7 @@ function stronk=parse(strink,varargin)
 %
 % Application as in: files=parse(ls(['x200' '*']));
 %
-% Last modified by fjsimons-at-alum.mit.edu, 12.11.2004
+% Last modified by fjsimons-at-alum.mit.edu, 01/25/2019
 
 if nargin==1
   ent=findstr(strink,sprintf('\n'))-1;
@@ -25,17 +25,18 @@ if ~isempty(ent)
   
   stronk= ' ';
   for index=1:length(beg)-1
-    % Depending on Matlab version we need to use char instead of str2mat
+    % Depending on Matlab version we need to use CHAR instead of STR2MAT
     date2016a=datetime(2016,2,11);
     [~,dateme]=version;
     if dateme<date2016a
         stronk=str2mat(stronk,strink(beg(index):ent(index)));
     else
-        stronk=char(stronk,strink(beg(index):ent(index)));        
+        stronk=char(stronk,strink(beg(index):ent(index)));
     end  
   end
   stronk=stronk(2:end,:);
-else %  Take the whole thing
+else
+  %  Take the whole thing
   stronk=strink;
 end
 

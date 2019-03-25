@@ -37,7 +37,8 @@ function varargout=legendreprodint(L1,m1,L2,m2,x0,method)
 % legendreprodint('demo5') Verify some analytical formulas
 %
 % Last modified by plattner-at-princeton.edu, 05/24/2011
-% Last modified by fjsimons-at-alum.mit.edu, 06/12/2015
+% Last modified by Aidan Blaser arb355-at-cornell.edu, 12/26/2018
+% Last modified by fjsimons-at-alum.mit.edu, 12/26/2018
 
 if ~isstr(L1)
   defval('L1',1)
@@ -57,7 +58,7 @@ if ~isstr(L1)
 
   if m1==0 && m2==0 && ~strcmp(method,'gl') && ~strcmp(method,'paul')
     % For unequal L1 and L2, may use Byerly's method
-    %disp(sprintf('LEGENDRgEPRODINT using %s',method))
+    %disp(sprintf('LEGENDREPRODINT using %s',method))
     if L1~=L2
       % Analytical method from Byerly (1959) p.172.
       % http://mathworld.wolfram.com/LegendrePolynomial.html
@@ -170,8 +171,15 @@ if ~isstr(L1)
       % where
       % Q_{L1,m1,L2,m2}^{L,m1} =(-1)^(m1+m2)*(2*L+1)...
       %          *threej(L,L1,L2,-m1-m2,m1,m2)*zeroj(L,L1,L2)
-      % See also DS 2008, Eq. (13), SDW 2006, Eq. (3.7) and WS 2005, Eq. (B9)
-            
+      % See also DS 2008 (doi: 10.1111/j.1365-246X.2008.03854.x), 
+      %       Eq. (13), and
+      % SDW 2006 (doi: 10.1137/S0036144504445765),
+      %       Eq. (3.7), and
+      % WS 2005, (doi: 10.1007/s00041-006-6904-1)
+      %       Eq. (B9)
+      % See also PS 2014 (doi: /10.1016/j.acha.2012.12.001),
+      %       Eq. (5)
+
       % First calculate the range of L via the selection rules 
       % L=abs(L1-L2):(L1+L2);
       % The next line should avoid the post-selection for admissibility
@@ -235,13 +243,17 @@ elseif strcmp(L1,'demo1')
   set(p{2}(1),'MarkerF','k','MarkerE','k')
   set(p{2}(2),'MarkerF','k','MarkerE','k')
   set(ah(2),'YScale','lin')
-  l=legend('Wigner 3{\it{j}}','Gauss-Legendre',4);
+  try
+    l=legend('Wigner 3{\it{j}}','Gauss-Legendre',"SouthEast");
+  catch
+    l=legend('Wigner 3{\it{j}}','Gauss-Legendre',4);
+  end
   grid on; longticks(ah); 
   set([xl yl tl],'FontS',12)
   figna=figdisp('legendreprodint1',[],[],1);
   system(sprintf('epstopdf %s.eps',figna));
 elseif strcmp(L1,'demo2')
-  % For unequal L and m=0, Byerlee's formula vs Gauss-Legendre 
+  % For unequal L and m=0, Byerly's formula vs Gauss-Legendre 
   L1=ceil(20*rand(20,1))+1;
   L2=ceil(20*rand(20,1))+1;
   L2(L1==L2)=L2(L1==L2)+1; % Make sure they are definitely different
@@ -270,7 +282,11 @@ elseif strcmp(L1,'demo2')
   set(p{2}(1),'MarkerF','k','MarkerE','k')
   set(p{2}(2),'MarkerF','k','MarkerE','k')
   set(ah(2),'YScale','lin')
-  l=legend('Byerlee','Gauss-Legendre',4);
+  try
+    l=legend('Byerly','Gauss-Legendre',"SouthEast"); 
+  catch
+    l=legend('Byerly','Gauss-Legendre',4);
+  end
   grid on; longticks(ah); 
   set([xl yl tl],'FontS',12)
   figna=figdisp('legendreprodint2',[],[],1);
@@ -302,7 +318,11 @@ elseif strcmp(L1,'demo3')
   set(p{2}(1),'MarkerF','k','MarkerE','k')
   set(p{2}(2),'MarkerF','k','MarkerE','k')
   set(ah(2),'YScale','Log')
-  l=legend('Semi-analytical','Gauss-Legendre',2);
+  try
+    l=legend('Semi-analytical','Gauss-Legendre',"NorthWest");
+  catch
+    l=legend('Semi-analytical','Gauss-Legendre',2);
+  end
   grid on; longticks(ah); 
   set([xl yl tl],'FontS',12)
   figna=figdisp('legendreprodint3',[],[],1);

@@ -28,7 +28,8 @@ function [K11,K21,K22]=cdlkernel(x1,x2,L,m,spd)
 %
 % cdlkernel('demo1')     % Compares the two methods
 %
-% Last modified by fjsimons-at-alum.mit.edu, June 3rd, 2004
+% Last modified by Aidan Blaser arb355-at-cornell.edu, 12/26/2018
+% Last modified by fjsimons-at-alum.mit.edu, 12/26/2018
 
 if ~isstr(x1)
   defval('m',0')
@@ -116,7 +117,11 @@ elseif strcmp(x1,'demo1')
   set(p{2}(1),'MarkerF','b','MarkerE','b')
   set(p{2}(2),'MarkerF','r','MarkerE','r')
   set(ah(2),'YScale','Log')
-  l=legend('Christoffel-Darboux formula','Complete summation',4);
+  try
+    l=legend('Christoffel-Darboux formula','Complete summation','SouthEast');
+  catch
+    l=legend('Christoffel-Darboux formula','Complete summation',4);
+  end
   grid on
   longticks(ah)
   figdisp

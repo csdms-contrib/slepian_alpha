@@ -19,7 +19,8 @@ function varargout=addcb(pos,caxcon,caxoc,parm,tint,invt)
 %             2 Gravity colormap composed of two sections
 %             3 Another colormap identified by a string, e.g. 'kelicol'
 %             4 An actual colormap as a rgb matrix, e.g. gray(21)
-% tint        Interval between the tickmarks [default: one tenth of the range]
+% tint        If a single number: tick INTERVAL [default: one tenth of the range]
+%             If it is two or more numbers: absolute ticks, see CBARTICKS
 % invt        1 Invert the color bar in question
 %             0 Don't [default]
 %
@@ -34,10 +35,10 @@ function varargout=addcb(pos,caxcon,caxoc,parm,tint,invt)
 % 
 % SEE ALSO:
 %
-% PLOTTOPO, PLOTGRAV, JOINCOLMAP, CAX2DEM, SERGEICOL, DEMMAP, IMAGEFDIR
+% PLOTTOPO, PLOTGRAV, JOINCOLMAP, CAX2DEM, SERGEICOL, DEMMAP, IMAGEFDIR, CBARTICKS
 %
 % Tested on 8.3.0.532 (R2014a) and 9.0.0.341360 (R2016a)
-% Last modified by fjsimons-at-alum.mit.edu, 07/06/2016
+% Last modified by fjsimons-at-alum.mit.edu, 07/26/2017
 
 defval('caxcon',[0 1500]);
 defval('caxoc',[-7000 0]);
@@ -69,7 +70,6 @@ miC=min([caxoc caxcon]);
 maC=max([caxoc caxcon]);
 cbd=linspace(miC,maC,500);
 
-% Tick mark interval
 defval('tint',(maC-miC)/10)
 
 % Some flag to control 'hor' vs 'ver'
