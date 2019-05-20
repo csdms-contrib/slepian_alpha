@@ -91,7 +91,7 @@ if ~isstr(l1) % Not a demo
       end
     else
       % Precompute the database - with bottom rows of zero
-      wignercycle(L,0);
+      wignercycle(L,0,0);
       % And have a go again
       s=zeroj(l1,l2,l3,L);
     end
