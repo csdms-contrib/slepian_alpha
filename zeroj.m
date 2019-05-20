@@ -30,7 +30,7 @@ function [s,C,S,L]=zeroj(l1,l2,l3,L,meth,C,S)
 %
 % SEE ALSO: THREEJ, SIXJ, WIGNERCYCLE
 %
-% Last modified by fjsimons-at-alum.mit.edu, 05/20/2019
+% Last modified by fjsimons-at-alum.mit.edu, 05/19/2019
 
 if ~isstr(l1) % Not a demo
   defval('C',[])
