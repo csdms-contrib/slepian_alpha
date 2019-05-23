@@ -4,9 +4,10 @@ function fig2print(fignrs,oren)
 % Makes the figure window WYSIWYG.
 % Also works on a vector of figure numbers
 %
-% Last modified by fjsimons-at-alum.mit.edu, Jan 5th, 2002
+% Last modified by fjsimons-at-alum.mit.edu, 05/22/2019
 
 defval('fignrs',gcf)
+defval('fignrs','portrait')
 
 oren=lower(oren);
 
