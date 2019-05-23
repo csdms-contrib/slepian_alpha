@@ -1,7 +1,7 @@
 function varargout=serre(ah,resjo,ww)
 % old=SERRE(ah,resjo,ww)
 %
-% Pushes figure panels down or across to make room
+% Brings subplot panels closer together
 %
 % INPUT:
 % 
