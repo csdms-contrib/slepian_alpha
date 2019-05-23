@@ -1,6 +1,8 @@
 function varargout=serre(ah,resjo,ww)
 % old=SERRE(ah,resjo,ww)
 %
+% Pushes figure panels down or across to make room
+%
 % INPUT:
 % 
 % ah        Vector of axis handles; if matrix goes row by row
@@ -19,7 +21,7 @@ function varargout=serre(ah,resjo,ww)
 % o2=serre(H',1/2,'down'); difer(ho2-o2);
 % unserre(ah,o1); difer(ho1-getpos(ah));
 %
-% Last modified by fjsimons-at-alum.mit.edu, 04/02/2009
+% Last modified by fjsimons-at-alum.mit.edu, 05/22/2019
 
 defval('resjo',1/2)
 defval('ww','across')
