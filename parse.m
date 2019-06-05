@@ -1,19 +1,25 @@
-function stronk=parse(strink,varargin)
-% stronk=parse(strink)
-% stronk=parse(strink,sepor)
+function stronk=parse(strink,sepor)
+% stronk=PARSE(strink,sepor)
 %
-% Makes a string matrix from a long string with line breaks
-% or with separator 'sepor' (which is a character used by FINDSTR).
+% Makes a string matrix from a long string delimited by a certain
+% separator and strips it of rows of blanks as well
 %
-% Application as in: files=parse(ls(['x200' '*']));
+% INPUT:
 %
-% Last modified by fjsimons-at-alum.mit.edu, 01/25/2019
+% strink     The string that you want parsed
+% sepor      The separator to guide the parsing [default: a newline line break]
+%
+% EXAMPLE:
+%
+% files=parse(ls(['x200' '*']));
+%
+% Last modified by fjsimons-at-alum.mit.edu, 06/05/2019
 
-if nargin==1
-  ent=findstr(strink,sprintf('\n'))-1;
-else
-  ent=findstr(strink,varargin{1})-1;
-end
+% Default separator
+defval('sepor',sprintf('\n'))
+
+% Go find the separator!
+ent=findstr(strink,sepor)-1;
 
 if ~isempty(ent)
   % If the string does not end on the delimiter
@@ -25,14 +31,12 @@ if ~isempty(ent)
   
   stronk= ' ';
   for index=1:length(beg)-1
-    % Depending on Matlab version we need to use CHAR instead of STR2MAT
-    date2016a=datetime(2016,2,11);
-    [~,dateme]=version;
-    if dateme<date2016a
-        stronk=str2mat(stronk,strink(beg(index):ent(index)));
-    else
-        stronk=char(stronk,strink(beg(index):ent(index)));
-    end  
+    % Remember STR2MAT was the predecessor to CHAR
+    try
+      stronk=char(stronk,strink(beg(index):ent(index)));
+    catch
+      stronk=str2mat(stronk,strink(beg(index):ent(index)));
+    end
   end
   stronk=stronk(2:end,:);
 else
@@ -47,5 +51,7 @@ for index=1:size(stronk,1)
     delt(index)=0;
   end
 end
+
+% The end result!
 stronk=stronk(~~delt,:);
 
