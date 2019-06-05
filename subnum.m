@@ -1,10 +1,7 @@
 function sbnums=subnum(m,n)
 % sbnums=SUBNUM(m,n)
 %
-% Returns the complete set of mxn figure
-% subplot numbers. Will return a vector
-% of numbers or a matrix of strings, 
-% both of which can go into 'krijetem'
+% Returns a set of figure panel subnumbers
 %
 % INPUT:
 %
