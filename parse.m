@@ -7,7 +7,7 @@ function stronk=parse(strink,sepor)
 % INPUT:
 %
 % strink     The string that you want parsed
-% sepor      The separator to guide the parsing [default: a newline line break]
+% sepor      The single separator to guide the parsing [default: a newline]
 %
 % EXAMPLE:
 %
@@ -22,14 +22,16 @@ defval('sepor',sprintf('\n'))
 ent=findstr(strink,sepor)-1;
 
 if ~isempty(ent)
-  % If the string does not end on the delimiter
+  % If the string does not END on the delimiter...
   if ent(end)~=[length(strink)-1]
     ent=[ent length(strink)];
   end
-  
+  % Where the parse segments begin
   beg=[1 ent+2];
-  
+
+  % Initialize
   stronk= ' ';
+  % Iterate
   for index=1:length(beg)-1
     % Remember STR2MAT was the predecessor to CHAR
     try
@@ -40,7 +42,7 @@ if ~isempty(ent)
   end
   stronk=stronk(2:end,:);
 else
-  %  Take the whole thing
+  %  ... otherwise just take the whole thing
   stronk=strink;
 end
 
