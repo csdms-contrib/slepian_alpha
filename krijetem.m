@@ -1,7 +1,7 @@
 function varargout=krijetem(pols,pos)
 % [ah,ha,H]=KRIJETEM(pols,pos)
 %
-% Creates subplots returns handles to them.
+% Creates figure subplot panels and returns handles to them
 %
 % INPUT:
 %
@@ -22,7 +22,7 @@ function varargout=krijetem(pols,pos)
 % [ah,ha,H]=krijetem(subnum(3,3));
 % [ah,ha]=krijetem(['2,2,3' ; '3,3,4'])
 %
-% Last modified by fjsimons-at-alum.mit.edu, 04/03/2009
+% Last modified by fjsimons-at-alum.mit.edu, 06/05/2019
 
 % Supply default
 defval('pos',[])
@@ -36,11 +36,17 @@ else
   % Specify subplot panel indices as concatenated numbers - only through 339
   if ~isstr(pols)
     pols=pols(:)';
-    % It's three numbers and each of them is distinct
+    % It's three numbers and each of them can be distinct
     nwy=floor(pols(1)/100);
     nwx=floor((pols(1)-floor(pols(1)/100)*100)/10);
-    for index=1:length(pols)
-      ah(index)=subplot(pols(index));
+    % There could have been only one in the pathological case, and
+    % weirdly, in that case, SUBPLOT refuses to return an axis handle
+    if nwx*nwy==1
+      ah=gca;
+    else
+      for index=1:length(pols)
+	ah(index)=subplot(pols(index));
+      end
     end
   else
     % Specify subplot panel indices as a string of comma-separated numbers
