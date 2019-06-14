@@ -5,7 +5,9 @@ function of=osdep
 % on the LOCAL operating system for files created
 % on the LOCAL operating system.
 %
-% Last modified by fjsimons-at-alum.mit.edu, 23.11.2004
+% Last modified by fjsimons-at-alum.mit.edu, 06/16/2019
+
+defval('of','l')
 
 if strcmp(getenv('OSTYPE'),'linux')
   of= 'l';  
