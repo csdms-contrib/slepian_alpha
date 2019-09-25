@@ -28,7 +28,7 @@ function varargout=rcenter(lola,method)
 %
 % SPHAREA, AREAINT, CURVECHECK, CAPLOC
 %
-% Last modified by fjsimons-at-alum.mit.edu, 12/24/2009
+% Last modified by fjsimons-at-alum.mit.edu, 09/24/2019
 
 defval('plots',0)
 defval('method','GL')
