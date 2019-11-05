@@ -1,10 +1,14 @@
 function noticks(varargin)
-% NOTICKS(handels)
-% NOTICKS(handels,1)
-% NOTICKS(handels,2)
-% NOTICKS(handels,3)
+% NOTICKS(handels) % for x, y and z
+% NOTICKS(handels,1) % for x
+% NOTICKS(handels,2) % for y
+% NOTICKS(handels,3) % for z
 %
-% Last modified by fjsimons-at-alum.mit.edu, 11/13/2013
+% SEE ALSO: 
+%
+% NOLABELS
+% 
+% Last modified by fjsimons-at-alum.mit.edu, 06/08/2015
 
 defval('handels',gca)
 
@@ -15,3 +19,4 @@ if nargin==1
 else
   set(varargin{1},poshan{varargin{2}},[])
 end
+
