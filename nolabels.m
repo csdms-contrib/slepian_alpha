@@ -1,9 +1,14 @@
 function nolabels(axh,w)
-% NOLABELS(handels)
-% NOLABELS(handels,1)
-% NOLABELS(handels,2)
+% NOLABELS(handels) % for x and y 
+% NOLABELS(handels,1) % For x
+% NOLABELS(handels,2) % for y
+% NOLABELS(handels,3) % for x and y
 %
-% Last modified by fjsimons-at-mit.edu, Nov. 2nd, 2001
+% SEE ALSO: 
+%
+% NOTICKS
+% 
+% Last modified by fjsimons-at-alum.mit.edu, 06/08/2015
 
 defval('axh',gca)
 defval('w',3)
