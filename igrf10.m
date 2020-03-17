@@ -234,9 +234,6 @@ end
 
 % Actual printing
 fig2print(gcf,'portrait')
-figna=figdisp('igrf10',sprintf('%s-%i',yr,yir),[],1);
-system(sprintf('degs %s.eps',figna));
-system(sprintf('epstopdf %s.eps',figna));
-system(sprintf('rm -f %s.eps',figna));
+figna=figdisp('igrf10',sprintf('%s-%i',yr,yir),[],2);
 % Maybe this...
 % figna=figdisp([],sprintf('%s-%i',yr,yir),'-r300',1,'jpeg');
