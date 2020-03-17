@@ -2,9 +2,8 @@ function varargout=figdisp(name,ext,opt,act,form,convo)
 % FIGDISP(name,ext,opt,act,form,convo)
 % [fname,pstring]=FIGDISP(...)
 %
-% Suggests print command for figures.
-% Assumes environment variable 'EPS' is set.
-% Use PAINTERS to override, sometimes.
+% Suggests print command for figures. Assumes environment variable 'EPS' is set.
+% Use PAINTERS to override, sometimes. Might need EPSTOPDF or PS2RASTER.
 %
 % INPUT:
 %
@@ -24,8 +23,12 @@ function varargout=figdisp(name,ext,opt,act,form,convo)
 % fname         The full file name, but definitely no graphics extension
 % pstring       The plot string
 %
+% SEE ALSO:
+%
+% DEGS
+%
 % Tested on 8.3.0.532 (R2014a) and 9.0.0.341360 (R2016a)
-% Last modified by fjsimons-at-alum.mit.edu, 07/01/2016
+% Last modified by fjsimons-at-alum.mit.edu, 03/20/2020
 
 [p,n]=star69;
 
@@ -33,8 +36,8 @@ defval('name',n)
 defval('ext',[])
 defval('opt',[])
 defval('act',0)
-defval('convo','ps2raster -Tf')
 defval('form','epsc')
+defval('convo','ps2raster -Tf')
 
 % Calls itself and cleans up afterward
 if act==2
@@ -44,7 +47,9 @@ if act==2
   % periods in it...  so if you GIVE it an extension coming in, careful!
   % What normally comes out of FIGDISP as 'fname' has no extension
   if ~any(fname==46) ; xtra='.eps'; else xtra=[]; end
+  % You need to have DEGS available in your search path
   system(sprintf('degs %s%s',fname,xtra));
+  % You need to have EPSTOPDF or PS2RASTER available in your search path
   system(sprintf('%s %s%s',convo,fname,xtra));
   % Now, depending on the behavior of the conversion, fix ITS extension;
   % epstopdf and ps2raster appear to STRIP ANY extension reading from the
