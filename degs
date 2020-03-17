@@ -1,0 +1,33 @@
+#!/bin/csh -f
+# 
+# Removes weird characters in front of a degree sign in PostScript
+#
+# Don't use with links as it will make a whole new file
+# You can use wildcards as follows:
+# subs.pl "\" "" seal??.eps
+#
+# Last modified by fjsimons-at-alum.mit.edu, 03/20/2020
+
+set warnin = 0
+
+label1:
+if($#argv < 1)then
+  echo ' '
+  echo 'One input argument expected:'
+  echo ' '
+  echo '----------> PostScript file name'
+  echo '---------->    e.g. $EPS/file.eps'
+  echo '---------->    or   "$EPS/*.eps"'
+  echo
+   @ warnin +=1
+  goto label999
+endif
+ 
+# GET RID OF FUNNY STUFF BEFORE DEGREE SIGN
+# subs.pl "\\302" "" $1
+subs.pl "\" "" $1
+
+label999:
+echo ' '
+echo "Script degs stopped. $warnin warning messages generated"
+echo ' '
