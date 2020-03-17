@@ -17,19 +17,23 @@ function lmcosi=igrf10(yr,yir)
 %
 % EXAMPLE:
 %
-% igrf10('demo1')
+% igrf10('demo1') % The radial field, in nanoTesla
 % igrf10('demo2') % The radial non-dipolar field, in nanoTesla
-% igrf10('demo3') % The radial field, contoured, in nanoTesla
-% igrf10('demo4') % The radial non-dipolar field, contoured, in nanoTesla
-% igrf10('demo5') % The radial non-dipolar field
+% igrf10('demo3') % The radial field, only contoured, in nanoTesla
+% igrf10('demo4') % The radial non-dipolar field, only contoured, in nanoTesla
+% igrf10('demo5') % The radial non-dipolar field, also contoured
+% igrf10('demo6') % The radial non-dipolar secular variation since 1900
 %
 % SEE ALSO: 
 %
 % PLM2MAG
 %
-% Last modified by fjsimons-at-alum.mit.edu, 10/11/2010
+% Tested on 8.3.0.532 (R2014a)
+%
+% Last modified by fjsimons-at-alum.mit.edu, 09/25/2015
 
 % See plates at: http://pubs.usgs.gov/sim/2007/2964/
+% See /u/fjsimons/CLASSES/GEO371/2008/Images/igrf-10-Bv.gif
 
 defval('yr',2005)
 
@@ -48,7 +52,7 @@ if ~isstr(yr)
   fmt1=['%s %s %s' repmat('%n',1,22) '%s'];
   fmt2=['%s' repmat('%n',1,25)];
   
-  % The maximum expansion
+  % The maximum expansion for every year, you have to know what's going on!
   lmax=[repmat(10,1,20) 13 13];
 
   % Read the first line % TEXTSCAN better than TEXTREAD
@@ -95,218 +99,144 @@ if ~isstr(yr)
   % and what we want is lmcosi with the coefficients in the right position 
   % This is the output
   lmcosi(mzo+2*size(lmcosi,1))=prepar;
+  % Check that your inkling was right or you need to go back
+  diferm(max(lmcosi(~~sum(lmcosi(:,3:4),2),1)),lmax(years==yr))
 elseif strcmp(yr,'demo1')
-  clf
-  yir=2005;
+  defval('yir',2005);
   h=igrf10(yir);
 
-  % Change Schmidt to full normalization for use in PLOTPLM
-  % This converts the COEFFICIENTS to be multiplied with Schmidt to the 
-  % COEFFICIENTS to be multiplied with 4pi-normalized harmonics, which
-  % are Schmidt*sqrt(2l+1), see PLM2XYZ and note the TYPO in Blakely.
-  h(:,3:4)=h(:,3:4)./repmat(sqrt(2*h(:,1)+1),1,2);
-  % Make sure it is the RADIAL component of this at the surface
-  h(:,3:4)=repmat(h(:,1)+1,1,2).*h(:,3:4);
-  
-  d=plotplm(h,[],[],4,1);
-  longticks(gca,2)
-  
-  t(1)=title(sprintf('IGRF-10 magnetic field, year %i, degrees %i-%i',yir,...
-		h(min(find(h(:,3))),1),h(end,1)));
-  movev(t,5)
-  
-  cb=colorbar('hor');
-  shrink(cb,2,2)
-  axes(cb)
-  longticks(cb,2)
-  xlabel('radial component (nT)')
-  
-  movev(cb,-.1)
-  
-  fig2print(gcf,'portrait')
-  figna=figdisp([],sprintf('%s-%i',yr,yir),[],1);
-  system(sprintf('degs %s.eps',figna));
-  system(sprintf('epstopdf %s.eps',figna));
+  % Plot and print
+  plotandprint(h,yr,yir,0,0)
   
 elseif strcmp(yr,'demo2')
   defval('yir',2005);
   h=igrf10(yir);
 
-  % Change Schmidt to full normalization for use in PLOTPLM
-  h(:,3:4)=h(:,3:4)./repmat(sqrt(2*h(:,1)+1),1,2);
+  % Plot and print
+  plotandprint(h,yr,yir,1,0,[-20000:1000:-1000],[1000:1000:20000])
 
-  % The nondipole field, as Blakely p170 and eq. (8.20)
-  h(1:3,3:4)=0;
-  
-  % Make sure it is the RADIAL component of this at the surface
-  h(:,3:4)=repmat(h(:,1)+1,1,2).*h(:,3:4);
-  
-  clf
-  d=plotplm(h,[],[],4,1);
-  axis image
-  longticks(gca,2)
-  t(1)=title(sprintf('IGRF-10 magnetic field, year %i, degrees %i-%i',yir,...
-		h(min(find(h(:,3))),1),h(end,1)));
-  movev(t,5)
-
-  cb=colorbar('hor');
-  shrink(cb,2,2)
-  axes(cb)
-  longticks(cb,2)
-  xlabel('non-dipolar radial component (nT)');  
-  movev(cb,-.1)
-  
-  fig2print(gcf,'portrait')
-  figna=figdisp([],sprintf('%s-%i',yr,yir),[],1);
-  system(sprintf('degs %s.eps',figna));
-  system(sprintf('epstopdf %s.eps',figna));
 elseif strcmp(yr,'demo3')
-  clf
-  yir=2005;
+  defval('yir',2005);
   h=igrf10(yir);
   
-  % Change Schmidt to full normalization for use in PLOTPLM
-  h(:,3:4)=h(:,3:4)./repmat(sqrt(2*h(:,1)+1),1,2);
-  
-  % Make sure it is the RADIAL component of this at the surface
-  h(:,3:4)=repmat(h(:,1)+1,1,2).*h(:,3:4);
-
-  d=plotplm(h,[],[],4,1); clf
-
-  lons=linspace(0,360,size(d,2));
-  lats=linspace(-90,90,size(d,1));
-  
-  % Don't forget to flip up down for contouring!
-  [c,hh]=contour(lons,lats,...
-		flipud(d),[-65000:5000:-5000]); 
-  set(hh,'EdgeC','r')
-  hold on
-  [c,hh]=contour(lons,lats,...
-		flipud(d),[5000:5000:65000]); 
-  set(hh,'EdgeC','b')
-  [c,hh]=contour(lons,lats,...
-		flipud(d),[0 0]); 
-  set(hh,'EdgeC','k','LineW',2)
-  
-  plotcont; axis image; ylim([-90 90])
-  defval('dlat',45)
-  set(gca,'ytick',[-90:dlat:90])
-  set(gca,'xtick',[0:90:360])
-  deggies(gca)
-
-  longticks(gca,2)
-  t(1)=title(sprintf('IGRF-10 magnetic field, year %i, degrees %i-%i',yir,...
-		     h(min(find(h(:,3))),1),h(end,1)));
-  movev(t,5)
-
-  xl=xlabel(sprintf('minimum %i nT ; maximum %i nT',round(min(d(:))), ...
-		  round(max(d(:)))));
-  movev(xl,-10)
-
-  fig2print(gcf,'portrait')
-  figna=figdisp([],sprintf('%s-%i',yr,yir),[],1);
-  system(sprintf('degs %s.eps',figna));
-  system(sprintf('epstopdf %s.eps',figna));
+  % Plot and print
+  plotandprint(h,yr,yir,0,1,[-65000:5000:-5000],[5000:5000:65000])
 
 elseif strcmp(yr,'demo4')
-  clf
-  yir=2005;
+  defval('yir',2005);
   h=igrf10(yir);
-  
-  % The nondipole field, as Blakely p170 and eq. (8.20)
-  h(1:3,3:4)=0;
 
-  % Change Schmidt to full normalization for use in PLOTPLM
-  h(:,3:4)=h(:,3:4)./repmat(sqrt(2*h(:,1)+1),1,2);
-  
-  % Make sure it is the RADIAL component of this at the surface
-  h(:,3:4)=repmat(h(:,1)+1,1,2).*h(:,3:4);
-
-  d=plotplm(h,[],[],4,1); clf
-  lons=linspace(0,360,size(d,2));
-  lats=linspace(-90,90,size(d,1));
-
-  clf
-  % Don't forget to flip up down for contouring!
-  [c,hh]=contour(lons,lats,...
-		flipud(d),[-20000:1000:-1000]); 
-  set(hh,'EdgeC','r')
-  hold on
-  [c,hh]=contour(lons,lats,...
-		flipud(d),[1000:1000:20000]); 
-  set(hh,'EdgeC','b')
-  [c,hh]=contour(lons,lats,...
-		flipud(d),[0 0]); 
-  set(hh,'EdgeC','k','LineW',2)
-  
-  plotcont; axis image; ylim([-90 90])
-  defval('dlat',45)
-  set(gca,'ytick',[-90:dlat:90])
-  set(gca,'xtick',[0:90:360])
-  deggies(gca)
-
-  longticks(gca,2)
-  t(1)=title(sprintf('IGRF-10 magnetic field, year %i, degrees %i-%i',yir,...
-		     h(min(find(h(:,3))),1),h(end,1)));
-  movev(t,5)
-
-  xl=xlabel(sprintf('minimum %i nT ; maximum %i nT',round(min(d(:))), ...
-		  round(max(d(:)))));
-  movev(xl,-10)
-
-  fig2print(gcf,'portrait')
-  figna=figdisp([],sprintf('%s-%i',yr,yir),[],1);
-  system(sprintf('degs %s.eps',figna));
-  system(sprintf('epstopdf %s.eps',figna));
+  % Plot and print
+  plotandprint(h,yr,yir,1,1)
 elseif strcmp(yr,'demo5')
   clf
   defval('yir',2005);
   h=igrf10(yir);
   
-  % The nondipole field, as Blakely p170 and eq. (8.20)
+  % Plot and print
+  plotandprint(h,yr,yir,1,2,[-20000:2000:-2000],[2000:2000:20000])
+elseif strcmp(yr,'demo6')
+  clf
+  for yir=1900:5:2005
+    h=igrf10(yir);
+    % Plot and print
+    kelicol
+    plotandprint(h,yr,yir,1,2,[-20000:2000:-2000],[2000:2000:20000])
+  end
+end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Subfunction to plot and print 
+function plotandprint(h,yr,yir,zro,cnt,negcont,poscont)
+% Zero out the degree-1 component
+defval('zro',0)
+% Whether contours are plotted
+defval('cnt',0)
+
+% Change Schmidt to full normalization for use in PLOTPLM
+% This converts the COEFFICIENTS to be multiplied with Schmidt to the 
+% COEFFICIENTS to be multiplied with 4pi-normalized harmonics, which
+% are Schmidt*sqrt(2l+1), see PLM2XYZ and note the TYPO in Blakely.
+h(:,3:4)=h(:,3:4)./repmat(sqrt(2*h(:,1)+1),1,2);
+
+if zro==1
+  % The nondipole field, as Blakely p170 and p169 eq. (8.20)
   h(1:3,3:4)=0;
+  xlab='non-dipolar radial component (nT)';
+else
+  xlab='radial component (nT)';
+end
 
-  % Change Schmidt to full normalization for use in PLOTPLM
-  h(:,3:4)=h(:,3:4)./repmat(sqrt(2*h(:,1)+1),1,2);
+% Make sure it is the RADIAL component of this at the SURFACE
+h(:,3:4)=repmat(h(:,1)+1,1,2).*h(:,3:4);
+
+clf
+% This resolution parameter will change the quoted maxima and minima
+degres=1;
+d=plotplm(h,[],[],4,degres);
+
+switch cnt
+  case 0
+   % Just a color plot
+  axis image
+  longticks(gca,2)
+  t(1)=title(sprintf('IGRF-10 magnetic field, year %i, degrees %i-%i',yir,...
+                     h(min(find(h(:,3))),1),h(end,1)));
+  movev(t,5)
   
-  % Make sure it is the RADIAL component of this at the surface
-  h(:,3:4)=repmat(h(:,1)+1,1,2).*h(:,3:4);
-
-  d=plotplm(h,[],[],4,1); 
+  cb=colorbar('hor');
+  shrink(cb,2,2)
+  axes(cb)
+  longticks(cb,2)
+  xlabel(xlab)
+  movev(cb,-.1)
+ case {1,2}
+  % A judicious contour plot
+  if cnt==1
+    % No overlay
+    clf
+  end
+  
+  % Negative and positive contour intervals
+  defval('negcont',[-20000:1000:-1000])
+  defval('poscont',[  1000:1000:20000])
+  % Geographic grid
   lons=linspace(0,360,size(d,2));
   lats=linspace(-90,90,size(d,1));
 
   % Don't forget to flip up down for contouring!
-  [c,hh]=contour(lons,lats,...
-		flipud(d),[-20000:2000:-2000]); 
+  [c,hh]=contour(lons,lats,flipud(d),negcont); 
   set(hh,'EdgeC','r')
   hold on
-  [c,hh]=contour(lons,lats,...
-		flipud(d),[2000:2000:20000]); 
+  [c,hh]=contour(lons,lats,flipud(d),poscont); 
   set(hh,'EdgeC','b')
-  [c,hh]=contour(lons,lats,...
-		flipud(d),[0 0]); 
+  [c,hh]=contour(lons,lats,flipud(d),[0 0]); 
   set(hh,'EdgeC','k','LineW',2)
-  
+  % Finalize
   plotcont; axis image; ylim([-90 90])
   defval('dlat',45)
   set(gca,'ytick',[-90:dlat:90])
   set(gca,'xtick',[0:90:360])
-  deggies(gca)
-
+  if cnt==1
+    % Otherwise you already had them
+    deggies(gca)
+  end
   longticks(gca,2)
+  % Only quote the maximum degree where you actually have it
   t(1)=title(sprintf('IGRF-10 magnetic field, year %i, degrees %i-%i',yir,...
-		     h(min(find(h(:,3))),1),h(end,1)));
+		     h(min(find(h(:,3))),1),max(h(~~sum(h(:,3:4),2),1))));
   movev(t,5)
-
-  xl=xlabel(sprintf('minimum %i nT ; maximum %i nT',round(min(d(:))), ...
-		  round(max(d(:)))));
+  xl=xlabel(sprintf('minimum %i nT ; maximum %i nT ; contour interval %i nT',...
+                    round(min(d(:))),round(max(d(:))),...
+                    unique([diff(negcont) diff(poscont)])));
   movev(xl,-10)
-
-  fig2print(gcf,'portrait')
-  figna=figdisp([],sprintf('%s-%i',yr,yir),[],1);
-  system(sprintf('degs %s.eps',figna));
-  system(sprintf('epstopdf %s.eps',figna));
 end
 
-
+% Actual printing
+fig2print(gcf,'portrait')
+figna=figdisp('igrf10',sprintf('%s-%i',yr,yir),[],1);
+system(sprintf('degs %s.eps',figna));
+system(sprintf('epstopdf %s.eps',figna));
+system(sprintf('rm -f %s.eps',figna));
+% Maybe this...
+% figna=figdisp([],sprintf('%s-%i',yr,yir),'-r300',1,'jpeg');
