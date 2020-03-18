@@ -1,4 +1,4 @@
-#!/bin/csh -f
+#!/bin/tcsh -f
 # 
 # Removes weird characters in front of a degree sign in PostScript
 #
@@ -24,8 +24,10 @@ if($#argv < 1)then
 endif
  
 # GET RID OF FUNNY STUFF BEFORE DEGREE SIGN
-# subs.pl "\\302" "" $1
-subs.pl "\" "" $1
+# This for MATLAB 2014
+subs.pl "\\302" "" $1
+# This for MATLAB 2016
+#subs.pl "\" "" $1
 
 label999:
 echo ' '
