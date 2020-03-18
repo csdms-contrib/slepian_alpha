@@ -2,12 +2,13 @@ function lmcosi=igrf10(yr,yir)
 % lmcosi=IGRF10(yr,yir)
 %
 % Interface to load the International Geomagnetic Reference Field
-% and pass it on to other subroutines.
+% and pass it on to other subroutines. Supplanted by IGRF which, to make
+% it backwards compatible, calls this version when IGRF(10) is requested.
 % 
 % INPUT:
 %
 % yr        The year of interest (out of 1900:5:2005) [default: 2005]
-%           OR: a string with the demo numbre
+%           OR: a string with the demo number
 % yir       The year of interest if the first argument is a demo string
 %
 % OUTPUT:
@@ -26,11 +27,11 @@ function lmcosi=igrf10(yr,yir)
 %
 % SEE ALSO: 
 %
-% PLM2MAG
+% PLM2MAG, IGRF
 %
 % Tested on 8.3.0.532 (R2014a)
 %
-% Last modified by fjsimons-at-alum.mit.edu, 09/25/2015
+% Last modified by fjsimons-at-alum.mit.edu, 03/17/2020
 
 % See plates at: http://pubs.usgs.gov/sim/2007/2964/
 % See /u/fjsimons/CLASSES/GEO371/2008/Images/igrf-10-Bv.gif
@@ -45,15 +46,17 @@ if ~isstr(yr)
   end
   
   % Open file
-  fid=fopen(fullfile(getenv('IFILES'),...
-		     'EARTHMODELS','IGRF-10','igrf10coeffs.txt'));
+  fname=fullfile(getenv('IFILES'),'EARTHMODELS','IGRF-10','igrf10coeffs.txt');
+  fid=fopen(fname);
   
   % Define formats
   fmt1=['%s %s %s' repmat('%n',1,22) '%s'];
   fmt2=['%s' repmat('%n',1,25)];
-  
-  % The maximum expansion for every year, you have to know what's going on!
-  lmax=[repmat(10,1,20) 13 13];
+
+  % The maximum expansion for every year, you have to know what's going
+  % on! Try determining it from the file itself, first, shunt otherwise
+  %[~,NF]=system(sprintf('awk ''{print NF}'' %s',fname)); NF=str2num(NF);
+  lmax=[repmat(10,1,20) repmat(13,1,2)];
 
   % Read the first line % TEXTSCAN better than TEXTREAD
   d=textscan(fid,fmt1,1);
@@ -72,8 +75,9 @@ if ~isstr(yr)
   EM=e{3};
 
   % Secular variation
-  SV=e{26}(~isnan(e{26}));
+  SV=e{26};
 
+  %%% This applies when the unkowns are empties in the file %%%%%%%%%%
   % The actual field expansion coefficients
   % Work from the back - you've got to know what's going on
   cosi=[e{4:25}];
@@ -87,10 +91,14 @@ if ~isstr(yr)
 
   % Now extract the data
   [C,iy]=intersect(years,yr);
+  if isempty(iy)
+    error(sprintf('\n%s: Musty specify valid model year',upper(mfilename)));
+  end
   prepar=cosi(:,iy);
   % Stick in the non-existing zeros for degree and order zero
   prepar=[zeros(1,size(prepar,2)) ; prepar];
-
+  %%% This applied when the unkowns are empties in the file %%%%%%%%%%
+  
   % Reordering sequence
   [dems,dels,mz,lmcosi,mzi,mzo,bigm,bigl,rinm,ronm,demin]=...
       addmon(max(lmax));
@@ -175,13 +183,15 @@ clf
 degres=1;
 d=plotplm(h,[],[],4,degres);
 
+% The title string
+ztit=sprintf('IGRF-10 magnetic field, year %i, degrees %i-%i',yir,...
+		     h(min(find(h(:,3))),1),max(h(~~sum(h(:,3:4),2),1)));
 switch cnt
   case 0
    % Just a color plot
   axis image
   longticks(gca,2)
-  t(1)=title(sprintf('IGRF-10 magnetic field, year %i, degrees %i-%i',yir,...
-                     h(min(find(h(:,3))),1),h(end,1)));
+  t(1)=title(ztit);
   movev(t,5)
   
   cb=colorbar('hor');
@@ -223,8 +233,7 @@ switch cnt
   end
   longticks(gca,2)
   % Only quote the maximum degree where you actually have it
-  t(1)=title(sprintf('IGRF-10 magnetic field, year %i, degrees %i-%i',yir,...
-		     h(min(find(h(:,3))),1),max(h(~~sum(h(:,3:4),2),1))));
+  t(1)=title(ztit);
   movev(t,5)
   xl=xlabel(sprintf('minimum %i nT ; maximum %i nT ; contour interval %i nT',...
                     round(min(d(:))),round(max(d(:))),...
