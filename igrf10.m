@@ -148,7 +148,6 @@ elseif strcmp(yr,'demo6')
   for yir=1900:5:2005
     h=igrf10(yir);
     % Plot and print
-    kelicol
     plotandprint(h,yr,yir,1,2,[-20000:2000:-2000],[2000:2000:20000])
   end
 end
@@ -182,6 +181,7 @@ clf
 % This resolution parameter will change the quoted maxima and minima
 degres=1;
 d=plotplm(h,[],[],4,degres);
+kelicol
 
 % The title string
 ztit=sprintf('IGRF-10 magnetic field, year %i, degrees %i-%i',yir,...
