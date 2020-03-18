@@ -137,14 +137,12 @@ elseif strcmp(yr,'demo4')
   % Plot and print
   plotandprint(h,yr,yir,1,1)
 elseif strcmp(yr,'demo5')
-  clf
   defval('yir',2005);
   h=igrf10(yir);
   
   % Plot and print
   plotandprint(h,yr,yir,1,2,[-20000:2000:-2000],[2000:2000:20000])
 elseif strcmp(yr,'demo6')
-  clf
   for yir=1900:5:2005
     h=igrf10(yir);
     % Plot and print
