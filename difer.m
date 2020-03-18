@@ -8,20 +8,24 @@ function varargout=difer(V,tolex,sev,goods)
 %
 % V         Vector or matrix values (NOT symbolic ones!)
 % tolex     Tolerance exponent (default: 10 for 1e-10)
-% sev       0 produces WARNING upon failure (default)
+% sev       0 produces WARNING upon failure [default]
 %           1 produces ERROR upon failure 
-% goods     A string with an uplifting message (if NaN, no message)
+%           2 invokes KEYBOARD upon failure
+% goods     A string with an uplifting message (if NaN, no message) 
+%           displayed in case it's all good
 %
 % OUTPUT (optional)
 %
-% a         1 if V is bigger than "zero", 0 if it isn't 
-%           but remember if you request output there's no message 
+% a         1 (logical) if V is bigger than "zero"
+%           0 (logical) if it isn't
+%           but remember if you request output there's no message and no
+%           action modulated by "sev"
 %
 % SEE ALSO: 
 %
 % ISEQUAL
 %
-% Last modified by fjsimons-at-alum.mit.edu, 06/27/2014
+% Last modified by fjsimons-at-alum.mit.edu, 10/08/2014
 
 % Which one is the calling program?
 [path,name,ext]=star69;
@@ -56,6 +60,12 @@ if ~isnan(sabs)
      case 1
       if nargout==0
 	error(mesg)
+      else
+	varargout{1}=logical(1);
+      end
+     case 2
+      if nargout==0
+        keyboard
       else
 	varargout{1}=logical(1);
       end
