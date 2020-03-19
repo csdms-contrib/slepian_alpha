@@ -1,5 +1,5 @@
-function varargout=plm2spec(lmcosi,norma)
-% [sdl,l,bta,lfit,logy,logpm]=PLM2SPEC(lmcosi,norma)
+function varargout=plm2spec(lmcosi,norma,in,ot)
+% [sdl,l,bta,lfit,logy,logpm]=PLM2SPEC(lmcosi,norma,in,ot)
 %
 % Calculates the power spectrum of real spherical harmonic
 % sine and cosine coefficients contained in the matrix 'lmcosi' which is
@@ -8,13 +8,15 @@ function varargout=plm2spec(lmcosi,norma)
 % INPUT:
 %
 % lmcosi               Spherical harmonic coefficients [l m Ccos Csin]
-% norma                [1] multiplication by (l+1) 
+% norma                1 multiplication by (l+1) 
 %                          This gives the mean-square value of the
 %                          gradient of a potential in Schmidt-harmonics
-%                      [2] division by (2*l+1) [default]
+%                      2 division by (2*l+1) [default]
 %                          This gives the proper power spectral density
 %                          as we've come to know it
-%                      [3] none, i.e. a scaling factor of 1
+%                      3 none, i.e. a scaling factor of 1
+% in                   Index to minimum degree to consider for the spectral fit [defaulted]                 
+% ot                   Index to maximum degree to consider for the spectral fit [defaulted]                 
 %
 % OUTPUT:
 %
@@ -31,7 +33,7 @@ function varargout=plm2spec(lmcosi,norma)
 %
 % [sdl,l,bta,lfit,logy,logpm]=plm2spec(fralmanac('EGM96'));
 %
-% See also ACTSPEC
+% SEE ALSO: ACTSPEC
 %
 % The normalization by (2l+1) is what's required when the spherical
 % harmonics are normalized to 4pi. See DT p. 858. A "delta"-function then
@@ -40,7 +42,7 @@ function varargout=plm2spec(lmcosi,norma)
 % (Lowes, JGR 71(8), 2179 [1966])
 % (Nagata, JGeomagGeoel 17, 153-155 [1965])
 %
-% Last modified by fjsimons-at-alum.mit.edu, 07/13/2012
+% Last modified by fjsimons-at-alum.mit.edu, 03/18/2020
 
 defval('norma',2)
 lmin=lmcosi(1);
@@ -70,21 +72,22 @@ end
 sdl=normfac.*sdl;
 sdl=sdl(:);
 
+% Figure out the range over which to make the fit
 l=lmin:lmax; 
 l=l(:);
 if lmin==0
-  in=3;
+  defval('in',3);
 elseif lmin==1
-  in=2;
+  defval('in',2);
 else
-  in=1;
+  defval('in',1);
 end
-
-lfit=l(in:end);
+defval('ot',lmax)
+lfit=l(in:ot);
 
 if nargout>=3
   % Calculate spectral slope
-  [bt,E]=polyfit(log10(lfit),log10(sdl(in:end)),1);
+  [bt,E]=polyfit(log10(lfit),log10(sdl(in:ot)),1);
   bta=bt(1);
   [logy,loge]=polyval(bt,log10(lfit),E);
   logy=10.^logy;
