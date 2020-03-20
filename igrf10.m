@@ -13,7 +13,7 @@ function lmcosi=igrf10(yr,yir)
 %
 % OUTPUT:
 %
-% lmcosi    The tradition matrix with the ordered real coefficients
+% lmcosi    The traditional matrix with the ordered real coefficients
 %           for the potential - however, in units of nT (nanoTesla)
 %
 % EXAMPLE:
@@ -39,8 +39,8 @@ function lmcosi=igrf10(yr,yir)
 defval('yr',2005)
 
 if ~isstr(yr)
-  
- % Make it a single year - perhaps fix later
+
+  % Make it a single year - perhaps fix later
   if prod(size(yr))~=1
     error('Only a single year at the time can be requested for now')
   end
