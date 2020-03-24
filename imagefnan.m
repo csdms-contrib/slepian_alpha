@@ -27,7 +27,7 @@ function varargout=imagefnan(c11,cmn,matrix,colmap,cax,nancol,invo,setnan)
 %
 % See IMAGEF, IMAGEFDIR, JOINCOLMAP, ADDCB, HALVERANGE
 %
-% Last modified by fjsimons-at-alum.mit.edu, 06/24/2014
+% Last modified by fjsimons-at-alum.mit.edu, 07/14/2015
 
 if nargin==1
   % Then the variable "c11" really is the variable "matrix"
@@ -44,8 +44,8 @@ defval('cax',halverange(matrix,[],NaN))
 defval('invo',0)
 defval('setnan',1)
 
-if prod(size(matrix))>1e8
-  error('You likely going into swap might not like this')
+if prod(size(matrix))>1e9
+  warning('Your likely going into swap might not be that great')
 end
 
 if setnan==1
@@ -80,7 +80,7 @@ else
   X=repmat(1/pi,length(matrix(:)),3);
 end
 
-if ~isempty(thenans),
+if ~isempty(thenans)
   X(thenans(:),1)=nancol(1);
   X(thenans(:),2)=nancol(2);
   X(thenans(:),3)=nancol(3);
