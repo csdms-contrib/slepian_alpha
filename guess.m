@@ -15,7 +15,7 @@ function guesses=guess(n)
 %
 % RANDIJ
 %
-% Last modified by fjsimons-at-alum.mit.edu, 2/6/2009
+% Last modified by fjsimons-at-alum.mit.edu, 2/7/2009
 
 defval('n',10)
 
