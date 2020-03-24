@@ -24,7 +24,8 @@ function [I,phint,th,pars]=coscos(th,m1,m2,dom,pars)
 % coscos('demo2')   % Compares result with GL integration
 % [a,b]=coscos('demo2',0); % Compares result with GL integration
 %
-% Last modified by fjsimons-at-alum.mit.edu, 04/20/2009
+% Last modified by charig-at-princeton.edu, 10/23/2014
+% Last modified by fjsimons-at-alum.mit.edu, 10/23/2014
 
 defval('th',[])
 defval('m1',10) % Not zero (see demo2)
@@ -43,7 +44,7 @@ if ~isstr(th)
      case 'england' 
       defval('N',10)
       % Now we may have multiple pairs
-      phint=dphengland(th*180/pi,N);
+      phint=dphregion(th*180/pi,N,'england');
       phint=phint*pi/180;
      otherwise
       error('Specify valid domain')
@@ -73,7 +74,6 @@ if ~isstr(th)
       I=I+(B-A);
     end
   end
-  
 elseif strcmp(th,'demo1')
   % Center of the circle, latitude, in degrees
   defval('cent',[10+rand*340 90-(rand*180)]);
