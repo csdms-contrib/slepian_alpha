@@ -16,7 +16,7 @@ function varargout=plotonearth(data,conts,lon,lat)
 %
 % pc         The handle to the continents plotted
 %
-% See also PLOTONSPHERE, PLOTPLM, PLOTPLM
+% See also PLOTONSPHERE, PLOTPLM
 %
 % Last modified by fjsimons-at-alum.mit.edu, 09/18/2017
 
