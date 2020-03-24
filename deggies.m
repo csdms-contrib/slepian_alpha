@@ -1,7 +1,7 @@
 function deggies(ah,swit)
 % DEGGIES(ah,swit)
 %
-% Puts degree signs on ticklabels
+% Puts degree signs on axis ticklabels
 %
 % INPUT:
 %
