@@ -5,7 +5,7 @@ function sdwspace
 % Plots spatial functions for spherical polar cap
 % for various angular orders with eigenvalue grey shading. 
 %
-% Last modified by fjsimons-at-alum.mit.edu, August 19th, 2004
+% Last modified by fjsimons-at-alum.mit.edu, 06/27/2014
 
 TH=40; TH=20
 nth=128;
@@ -80,7 +80,7 @@ end
 
 set([pm(:) ; pg(:)],'LineW',1)
 
-set([ah],'Fonts',nf)
+set([ah],'FontSize',nf)
 
 fig2print(gcf,'portrait')
 
