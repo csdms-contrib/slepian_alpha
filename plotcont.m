@@ -1,5 +1,7 @@
 function varargout=plotcont(c11,cmn,res,ofs,pcol,lolax)
-% [axlim,handl,XYZ]=PLOTCONT(c11,cmn,res,ofs,pcol,lolax)
+% [axlim,handl,XYZ,xyze]=PLOTCONT(c11,cmn,res,ofs,pcol,lolax)
+% 
+% Plots continental outlines (from a database) on a map
 % 
 % INPUT:
 %
@@ -19,7 +21,7 @@ function varargout=plotcont(c11,cmn,res,ofs,pcol,lolax)
 %        11 Three-dimensional flattened obstructed view centered on an axis
 % ofs    Longitude offset, e.g. 360 degrees [only for 0,1,5,6,7]
 % pcol   The patch color in case option 7 is chosen [default: grey]
-% lolax  View axis when res==11
+% lolax  Longitude and latitude of the view axis when res==11
 %
 % Longitude ranges from 0 to 360; plots are centered on the PACIFIC.
 %
@@ -39,7 +41,7 @@ function varargout=plotcont(c11,cmn,res,ofs,pcol,lolax)
 %
 % SEE ALSO: MAPROTATE, SPHAREA, PHICURVE, RCENTER
 %
-% Last modified by fjsimons-at-alum.mit.edu, 07/25/2017
+% Last modified by fjsimons-at-alum.mit.edu, 03/23/2020
 
 % Saved matrix as space-saving unsigned integer 
 % - but that translates the NaN's into some  high number - take that out.
@@ -232,7 +234,7 @@ switch res
   [xe,ye,ze]=sph2cart(linspace(0,2*pi,100),0,rara);
   xyze=[rotz(-lon*pi/180)*roty(-[90-lat]*pi/180)*[xe ; ye ; repmat(ze,1,length(ye))]]';
   handl(2)=plot3(xyze(:,1),xyze(:,2),xyze(:,3),'k');
-  view([xv,yv,zv]); [AZ,EL]=view;
+  view([xv,yv,zv]); [AZ,EL]=view; % [xv yv zv];
   disp(sprintf('Azimuth: %i ; Elevation: %i',round(AZ),round(EL)))
   axlim=[-1 1 -1 1 -1 1]*rara*1.01;
   axis(axlim); axis off
