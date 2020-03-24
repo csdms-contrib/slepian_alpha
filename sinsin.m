@@ -18,11 +18,8 @@ function [I,dph,th,thR,th0,ph0]=sinsin(th,m1,m2,dom,pars)
 %                 thR  Radius of the cap, in radians
 %            N for 'england' with N the smoothness of the splining
 %
-% EXAMPLE:
-%
-% sinsin('demo1');
-%
-% Last modified by fjsimons-at-alum.mit.edu, 04/20/2009
+% Last modified by charig-at-princeton.edu, 10/23/2014
+% Last modified by fjsimons-at-alum.mit.edu, 10/23/2014
 
 defval('th',[])
 defval('m1',10);
@@ -38,7 +35,7 @@ if isstr(dom)
     phint=dphpatch(th,thR,th0,ph0);
    case 'england'     
     defval('N',10)
-    phint=dphengland(th*180/pi,N);
+    phint=dphregion(th*180/pi,N,'england');
     phint=phint*pi/180;
    otherwise
     error('Specify valid domain')
