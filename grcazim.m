@@ -17,7 +17,7 @@ function varargout=grcazim(lonlat,dlta,angl,spheroid)
 %                    NORTH-SOUTH: angl=0,  and dlta>0 is NORTH
 %                    EAST-WEST:   angl=90, and dlta>0 is WEST
 % spheroid           'unitsphere' and then dlta is in degrees
-%                    'Earth' and then dlta is in km
+%                    'Earth' and then dlta is in km [default]
 %
 % OUPUT:
 %
@@ -27,7 +27,7 @@ function varargout=grcazim(lonlat,dlta,angl,spheroid)
 %
 % grcazim('demo1')
 %
-% Last modified by fjsimons-at-alum.mit.edu, 07/17/2017
+% Last modified by fjsimons-at-alum.mit.edu, 06/03/2020
 
 % Some default values
 defval('lonlat',[100 20])
