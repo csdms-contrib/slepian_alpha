@@ -1,13 +1,16 @@
 function bottom(hand,aha)
-% BOTTOM(hand)
 % BOTTOM(hand,aha)
 %
-% Moves an object 'hand', child to gcf (default) or axis 'aha'
-% to the bottom of the visual pile.
+% Moves an object, child to a figure or axis, to the BOTTOM of the visual pile.
 %
-% SEE ALSO: TOP
+% INPUT:
 %
-% Last modified by fjsimons-at-alum.mit.edu, 03/19/2012
+% hand     An object handle
+% gcf      A figure or axis handle [default: gcf]
+%
+% SEE ALSO: TOP, UISTACK
+% 
+% Last modified by fjsimons-at-alum.mit.edu 08/17/2020
 
 defval('aha',gcf)
 
