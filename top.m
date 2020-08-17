@@ -1,13 +1,16 @@
 function top(hand,aha)
-% TOP(hand)
 % TOP(hand,aha)
 %
-% Moves an object 'hand', child to gcf (default) or axis 'aha'
-% to the top of the visual pile.
+% Moves an object, child to a figure or axis, to the top of the visual pile.
 %
-% SEE ALSO: BOTTOM
+% INPUT:
+%
+% hand     An object handle
+% gcf      A figure or axis handle [default: gcf]
+%
+% SEE ALSO: BOTTOM, UISTACK
 % 
-% Last modified by fjsimons-at-alum.mit.edu 03/19/2012
+% Last modified by fjsimons-at-alum.mit.edu 08/17/2020
 
 defval('aha',gcf)
 
