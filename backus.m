@@ -28,7 +28,7 @@ function [ap1,th,th0,ap2]=backus(L,N,norma)
 %
 % See also DAHLEN, HILBXLM.
 %
-% Last modified by fjsimons-at-alum.mit.edu, 03/16/2016
+% Last modified by fjsimons-at-alum.mit.edu, 03/17/2016
 
 defval('norma','sch')
 defval('N',1000);
