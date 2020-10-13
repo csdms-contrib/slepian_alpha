@@ -7,5 +7,5 @@ which you may cite if you find any of these routines useful!
 ## Latest release
 [![DOI](https://zenodo.org/badge/6548/csdms-contrib/slepian_alpha.svg)](https://zenodo.org/badge/latestdoi/6548/csdms-contrib/slepian_alpha)
 
-
+[![View slepian_alpha on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/71416-slepian_alpha)
 
