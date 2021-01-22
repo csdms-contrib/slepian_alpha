@@ -1,5 +1,5 @@
 function varargout=plotonsphere(data,rang,mygrid,conts)
-% PLOTONSPHERE(data,rang)
+% PLOTONSPHERE(data,rang,mygrid,conts)
 %
 % Plots data as topography and colors onto a sphere. Has the option to add
 % grid lines and continent outlines.
@@ -9,10 +9,9 @@ function varargout=plotonsphere(data,rang,mygrid,conts)
 % data     Standard 2D geographic data; i.e. the first column is the
 %          Greenwich meridian in the x-z plane.
 % rang     Exaggeration of topography compared to 1 [default: 0]
-% grid     Vector of grid spacing in the longitude and lattitude 
-%           dimensions (e.g. [30 15]) [default: empty, no grid]
+% mygrid   Vector of grid spacing in the longitude and latitude 
+%          dimensions (e.g. [30 15]) [default: empty, no grid]
 % conts    Switch if you want continents drawn [default: 0]
-%
 %
 % OUTPUT:
 %
@@ -27,7 +26,7 @@ function varargout=plotonsphere(data,rang,mygrid,conts)
 % plotonsphere('demo2')
 % plotonsphere('demo3')   Figure of filtered free-air anomaly
 %
-% Last modified by fjsimons-at-alum.mit.edu, 12/02/2008
+% Last modified by fjsimons-at-alum.mit.edu, 01/21/2021
 % Last modified by charig-at-princeton.edu, 6/17/2016
 
 defval('conts',0)
@@ -66,7 +65,8 @@ if ~isstr(data)
   y=-y.*data;
   z=z.*data;
   set(s, 'xdata', x, 'ydata', y, 'zdata', z)
-  view(60,20) % So x and y face at you
+  % So x and y face at you
+  view(60,20)
   set(gca, 'dataaspectratio', [1 1 1], 'cameraviewangle', 7)
   axis image
   shading flat
@@ -83,19 +83,25 @@ if ~isstr(data)
     lx=xtraxis;
     [jk1,jk2,cont]=plotcont([0 90],[360 -90]);
     delete(lx)
+
     [lat,lon]=interpm(cont(:,2),cont(:,1),.1);
     cont = [lon lat];
     [ny,nx]=size(data);
     data2=flipud(data);
     % Make the elevations
-    Vq = interp2([0:nx-1],[0:nx-1],data2,cont(:,1)*(nx-1)/360,(cont(:,2)-90)*-1*(ny-1)/180,'linear');
-    [ind,colnr,rownr]=cor2ind(cont(:,1),cont(:,2),[-0.01 90.01],[360.01 -90.01],nx,ny);
+    Vq=interp2([0:nx-1],[0:nx-1],data2,...
+	       cont(:,1)*(nx-1)/360,(cont(:,2)-90)*-1*(ny-1)/180,'linear');
+    [ind,colnr,rownr]=cor2ind(cont(:,1),cont(:,2),...
+			      [-0.01 90.01],[360.01 -90.01],nx,ny);
     
     lonc=cont(:,1)/180*pi;
     latc=cont(:,2)/180*pi;
     rad=repmat(1,size(latc));
-    indone=ind; indone(isnan(ind))=1;
+    
+    indone=ind; 
+    indone(isnan(ind))=1;
     data2=flipud(data);
+
     [xx,yy,zz]=sph2cart(lonc,latc,Vq);
     % Plot
     hold on
@@ -105,44 +111,44 @@ if ~isstr(data)
 
   % If you want a lon lat grid drawn
   if ~isempty(mygrid)
-      if length(mygrid)==1
-          degreslon = mygrid;
-          degreslat = mygrid;
-      elseif length(mygrid)==2
-          degreslon = mygrid(1);
-          degreslat = mygrid(2);
-      end
-      [ny,nx]=size(data);
-      data2=flipud(data);
-      degres=15;
-      lon = linspace(0,360,721);
-      lat = linspace(90,-90,361);
-      % First one here: longitude coordinates of the longitude lines
-      latlon = repmat(lon',1,180/degreslat+1);
-      latlat = repmat([90:-degreslat:-90],length(lon),1);
-      lonlon = repmat([0:degreslon:360],length(lat),1);
-      lonlat = repmat(lat',1,360/degreslon+1);
-      % Calculate radius for lines of lattitude
-      Vq1 = interp2([0:nx-1],[0:nx-1],data2,latlon*(nx-1)/360,(latlat-90)*-1*(ny-1)/180,'linear');
-      [xx1,yy1,zz1]=sph2cart(latlon/180*pi,latlat/180*pi,Vq1);
-      % Calculate radius for lines of longitude
-      Vq2 = interp2([0:nx-1],[0:nx-1],data2,lonlon*(nx-1)/360,(lonlat-90)*-1*(ny-1)/180,'linear');
-      [xx2,yy2,zz2]=sph2cart(lonlon/180*pi,lonlat/180*pi,Vq2);
-      % Plot
-      hold on
-      pc=plot3(xx1,yy1,zz1,'k-','LineWidth',1);
-      pc=plot3(xx2,yy2,zz2,'k-','LineWidth',1);
-      hold off
+    if length(mygrid)==1
+      degreslon = mygrid;
+      degreslat = mygrid;
+    elseif length(mygrid)==2
+      degreslon = mygrid(1);
+      degreslat = mygrid(2);
+    end
+    [ny,nx]=size(data);
+    data2=flipud(data);
+    degres=15;
+    lon=linspace(0,360,721);
+    lat=linspace(90,-90,361);
+    % First one here: longitude coordinates of the longitude lines
+    latlon=repmat(lon',1,180/degreslat+1);
+    latlat=repmat([90:-degreslat:-90],length(lon),1);
+    lonlon=repmat([0:degreslon:360],length(lat),1);
+    lonlat=repmat(lat',1,360/degreslon+1);
+    % Calculate radius for lines of lattitude
+    Vq1=interp2([0:nx-1],[0:nx-1],data2,...
+		latlon*(nx-1)/360,(latlat-90)*-1*(ny-1)/180,'linear');
+    [xx1,yy1,zz1]=sph2cart(latlon/180*pi,latlat/180*pi,Vq1);
+    % Calculate radius for lines of longitude
+    Vq2 = interp2([0:nx-1],[0:nx-1],data2,...
+		  lonlon*(nx-1)/360,(lonlat-90)*-1*(ny-1)/180,'linear');
+    [xx2,yy2,zz2]=sph2cart(lonlon/180*pi,lonlat/180*pi,Vq2);
+    % Plot
+    hold on
+    pc=plot3(xx1,yy1,zz1,'k-','LineWidth',1);
+    pc=plot3(xx2,yy2,zz2,'k-','LineWidth',1);
+    hold off
   end
   
   if conts==1
-      nargs={'pc'};
-      for ind=1:nargout
-        varargout{ind}=eval(nargs{ind});
-      end
+    nargs={'pc'};
+    for ind=1:nargout
+      varargout{ind}=eval(nargs{ind});
+    end
   end
-
-  
 elseif strcmp(data,'demo1')
   d70=plotplm(5,0,1,2,5); 
   d72=plotplm(7,2,1,2,5);
@@ -184,24 +190,25 @@ elseif strcmp(data,'demo2')
   figdisp('Psevens')
   disp('User PAINTERS')
 elseif strcmp(data,'demo3')
-    wat=2;
-    [data,ah,cb,t,lmcosif]=gravifilt([2 40],[],0,wat,[]);
-    clf
-    plotonsphere(data,0.1,[15 15],1)
-    caxis([-80 80])
-    %view(100,30)
-    colormap jet
-    hold on
-    axes('position',[0,0,1,1]);  % Define axes for the text.
-    htext = text(0.52,0.92,['Free-air anomaly filtered between L = 2 and 40'], 'FontSize', 18  );
-    set(htext,'HorizontalAlignment','center');
-    set(gca,'Visible','off');
-    [cb,xcb]=addcb('hor',[-80 80],[-80 80],'jet',20);
-    shrink(cb); movev(cb,0.05);
-    moveh(cb,.02)
-    cb.XLabel.String = '[mgal]';
-    cb.FontSize = 16;
-    myf=gcf; myf.InvertHardcopy='off';
+  wat=2;
+  [data,ah,cb,t,lmcosif]=gravifilt([2 40],[],0,wat,[]);
+  clf
+  plotonsphere(data,0.1,[15 15],1)
+  caxis([-80 80])
+  %view(100,30)
+  colormap jet
+  hold on
+  axes('position',[0,0,1,1]);  % Define axes for the text.
+  htext=text(0.52,0.92,['Free-air anomaly filtered between L = 2 and 40'],...
+	     'FontSize', 18);
+  set(htext,'HorizontalAlignment','center');
+  set(gca,'Visible','off');
+  [cb,xcb]=addcb('hor',[-80 80],[-80 80],'jet',20);
+  shrink(cb); movev(cb,0.05);
+  moveh(cb,.02)
+  cb.XLabel.String = '[mgal]';
+  cb.FontSize = 16;
+  myf=gcf; myf.InvertHardcopy='off';
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -210,7 +217,7 @@ function grd=reduntest(grd)
 % and removes last data column
 if sum(abs(grd(:,1)-grd(:,end))) >= size(grd,2)*eps*10
   disp(sprintf('Data violate wrap-around by %8.4e',...
-		  sum(abs(grd(:,1)-grd(:,end)))))
+	       sum(abs(grd(:,1)-grd(:,end)))))
 end
 grd=grd(:,1:(end-1));
 
