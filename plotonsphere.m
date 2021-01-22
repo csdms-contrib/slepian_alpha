@@ -1,5 +1,5 @@
 function varargout=plotonsphere(data,rang,mygrid,conts)
-% PLOTONSPHERE(data,rang,mygrid,conts)
+% pc=PLOTONSPHERE(data,rang,mygrid,conts)
 %
 % Plots data as topography and colors onto a sphere. Has the option to add
 % grid lines and continent outlines.
@@ -15,8 +15,7 @@ function varargout=plotonsphere(data,rang,mygrid,conts)
 %
 % OUTPUT:
 %
-% contlines    If you asked for continents to be drawn, you have the ability
-%               to ask for them as output.
+% pc       Handle to the continental outlines if wanted them
 %
 % See PLOTONEARTH, PLOTPLM
 %
@@ -107,6 +106,8 @@ if ~isstr(data)
     hold on
     pc=plot3(xx,yy,zz,'k-','LineWidth',1.5);
     hold off
+  else
+    pc=NaN;
   end
 
   % If you want a lon lat grid drawn
@@ -142,13 +143,9 @@ if ~isstr(data)
     pc=plot3(xx2,yy2,zz2,'k-','LineWidth',1);
     hold off
   end
-  
-  if conts==1
-    nargs={'pc'};
-    for ind=1:nargout
-      varargout{ind}=eval(nargs{ind});
-    end
-  end
+  % Optional output
+  varns={pc};
+  varargout=varns(1:nargout);
 elseif strcmp(data,'demo1')
   d70=plotplm(7,0,1,2,5); 
   d72=plotplm(7,2,1,2,5);
