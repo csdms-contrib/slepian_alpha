@@ -1,8 +1,8 @@
 function varargout=plotonsphere(data,rang,mygrid,conts)
 % pc=PLOTONSPHERE(data,rang,mygrid,conts)
 %
-% Plots data as topography and colors onto a sphere. Has the option to add
-% grid lines and continent outlines.
+% Plots data as raised topography and colors onto a sphere. Has the option
+% to add grid lines and continent outlines.
 %
 % INPUT:
 %
