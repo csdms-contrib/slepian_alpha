@@ -24,7 +24,7 @@ function varargout=plotonsphere(data,rang,mygrid,conts)
 %
 % plotonsphere('demo1')
 % plotonsphere('demo2')
-% plotonsphere('demo3')   Figure of filtered free-air anomaly
+% plotonsphere('demo3') % Figure of filtered free-air anomaly
 %
 % Last modified by fjsimons-at-alum.mit.edu, 01/21/2021
 % Last modified by charig-at-princeton.edu, 6/17/2016
@@ -150,7 +150,7 @@ if ~isstr(data)
     end
   end
 elseif strcmp(data,'demo1')
-  d70=plotplm(5,0,1,2,5); 
+  d70=plotplm(7,0,1,2,5); 
   d72=plotplm(7,2,1,2,5);
   d74=plotplm(7,4,1,2,5);
   d76=plotplm(7,6,1,2,5);
@@ -174,7 +174,8 @@ elseif strcmp(data,'demo1')
   disp('User PAINTERS')
 elseif strcmp(data,'demo2')
   clf
-  [E,V,Lmax,TH,C,K,V0,unc,sqz]=wieczorek(40,5,0,180/5,1);
+  % [E,V,Lmax,TH,C,K,V0,unc,sqz]=wieczorek(40,5,0,180/5,1);
+  [E,V]=sdwcap(40,22,0,180/5);
   ah=krijetem(subnum(1,5));
   axes(ah(1))
   plotonsphere(repmat(E(:,1),1,length(E(:,1))*2),0.2); shading faceted
@@ -199,8 +200,9 @@ elseif strcmp(data,'demo3')
   colormap jet
   hold on
   axes('position',[0,0,1,1]);  % Define axes for the text.
-  htext=text(0.52,0.92,['Free-air anomaly filtered between L = 2 and 40'],...
-	     'FontSize', 18);
+  htext=text(0.52,0.92,...
+	     ['Free-air anomaly filtered between L = 2 and 40'],...
+	     'FontSize',18);
   set(htext,'HorizontalAlignment','center');
   set(gca,'Visible','off');
   [cb,xcb]=addcb('hor',[-80 80],[-80 80],'jet',20);
