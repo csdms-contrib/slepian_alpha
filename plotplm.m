@@ -48,7 +48,7 @@ function varargout=plotplm(data,lon,lat,meth,degres,th0,sres,cax)
 %
 % See also PLOTONSPHERE, PLOTONEARTH, CPX2RSH, RSH2CPX, ADDCB.
 %
-% Last modified by fjsimons-at-alum.mit.edu, 02/20/2012
+% Last modified by fjsimons-at-alum.mit.edu, 01/21/2021
 % Last modified by charig-at-princeton.edu, 05/14/2015
 
 defval('meth',1)
@@ -235,8 +235,7 @@ switch meth
   hold on
   ch=plot(XYZ(:,1),XYZ(:,2),'k-','LineWidth',1);
   data=Z;
-
-otherwise
+ otherwise
   error('Not a valid method')
 end
 
