@@ -54,19 +54,38 @@ function [lmcosi,dw]=xyz2plm(fthph,L,method,lat,lon,cnd)
 %
 % See also PLM2XYZ, PLM2SPEC, PLOTPLM, etc.
 %
-% Last modified by fjsimons-at-alum.mit.edu, 09/04/2014
+% Previously modified by fjsimons-at-alum.mit.edu, 09/04/2014
+% Minor changes by pfaff-at-kit.edu, 10/04/2016
 
 t0=clock;
 
-defval('method','im')
-defval('lon',[])
-defval('lat',[])
-defval('dw',[])
-defval('cnd',[])
+switch nargin
+    case 1
+        method='im';
+        lat=[];
+        lon=[];
+        cnd=[];
+    case 2
+        method='im';
+        lat=[];
+        lon=[];
+        cnd=[];
+    case 3
+        lat=[];
+        lon=[];
+        cnd=[];
+    case 4
+        lon=[];
+        cnd=[];
+    case 5
+        cnd=[];
+end
+
+dw=[];
 
 as=0;
 % If no grid is specified, assumes equal spacing and complete grid
-if isempty(lat) & isempty(lon)
+if isempty(lat) && isempty(lon)
   % Test if data is 2D, and periodic over longitude
   fthph=reduntest(fthph);
   polestest(fthph)
@@ -116,12 +135,14 @@ else
 end
 
 % Decide on the Nyquist frequency
-defval('L',Lnyq);
+if nargin==1
+    L=Lnyq;
+end
 % Never use Libbrecht algorithm... found out it wasn't that good
-defval('libb',0)
+libb=0;
 %disp(sprintf('Lnyq= %i ; expansion out to degree L= %i',Lnyq,L))
 
-if L>Lnyq | nlat<(L+1)
+if L>Lnyq || nlat<(L+1)
   warning('XYZ2PLM: Function undersampled. Aliasing will occur.')
 end
 
@@ -143,14 +164,23 @@ switch method
   error('Specify valid method')
 end
 
-fnpl=sprintf('%s/LSSM-%i-%i.mat',...
-	       fullfile(getenv('IFILES'),'LEGENDRE'),L,length(x));
- 
-if exist(fnpl,'file')==2 & as==1
+
+% Set to true to use the folder in which xyz2plm resides as the folder for the LEGENDRE folder
+createInFolderOfMatlabFile=false;
+if createInFolderOfMatlabFile 
+    mfn=mfilename('fullpath'); %#ok<UNRCH>
+    fnpl=fullfile(mfn(1:end-8),'LEGENDRE',sprintf('LSSM-%i-%i.mat',L,length(x)));
+else
+    fnpl=sprintf('%s/LSSM-%i-%i.mat',...
+        fullfile(getenv('IFILES'),'LEGENDRE'),L,length(x));
+end
+    
+
+if exist(fnpl,'file')==2 && as==1
   load(fnpl)
 else  
   % Evaluate Legendre polynomials at selected points
-  Plm=repmat(NaN,length(x),addmup(L));
+  Plm=NaN(length(x),addmup(L));
   if L>200
     h=waitbar(0,'Evaluating all Legendre polynomials');
   end
@@ -180,14 +210,14 @@ switch method
  case {'irr'}
   Plm=[Plm.*cos(lon(:)*m(:)') Plm.*sin(lon(:)*m(:)')];
   % Add these into the sensitivity matrix
-  [C,merr,mcov,chi2,L2err,rnk,dw]=datafit(Plm,fthph,[],[],cnd);
+  [C,merr,mcov,chi2,L2err,rnk,dw]=datafit(Plm,fthph);
   lmcosi(:,3)=C(1:end/2);
   lmcosi(:,4)=C(end/2+1:end);
  case {'im','gl','simpson'}
   % Perhaps demean the data for Fourier transform
-  defval('dem',0)
+  dem=false;
   if dem
-    meanm=mean(fthph,2);
+    meanm=mean(fthph,2); %#ok<UNRCH>
     fthph=fthph-repmat(meanm,1,nlon);
   end
   
@@ -200,7 +230,7 @@ switch method
 
   if dem
     % Add the azimuthal mean back in there
-    gfft(:,1)=2*pi*meanm;
+    gfft(:,1)=2*pi*meanm; %#ok<UNRCH>
   end
 
   % Note these things are only half unique - the maximum m is nlon/2
@@ -220,8 +250,8 @@ switch method
     a(:,1)=a(:,1)/2;
     b(:,1)=b(:,1)/2;
     Pm=Plm(:,mz(ord+1:end)+ord)*pi;
-    [lmcosi(mz(ord+1:end)+ord,3)]=datafit(Pm,a(:,ord+1),[],[],cnd);
-    [lmcosi(mz(ord+1:end)+ord,4)]=datafit(Pm,b(:,ord+1),[],[],cnd);
+    [lmcosi(mz(ord+1:end)+ord,3)]=datafit(Pm,a(:,ord+1));
+    [lmcosi(mz(ord+1:end)+ord,4)]=datafit(Pm,b(:,ord+1));
   end
  case 'simpson'
   % Loop over the degrees. Could go up to l=nlon if you want
@@ -250,7 +280,6 @@ switch method
     lmcosi(addmup(l-1)+1:addmup(l),3)=clm(:)/4/pi;
     lmcosi(addmup(l-1)+1:addmup(l),4)=slm(:)/4/pi;
   end
-  rnk=[]; 
 end
 
 % Get rid of machine precision error
@@ -264,8 +293,8 @@ function grd=reduntest(grd)
 % Tests if last longitude repeats last (0,360)
 % and removes last data column
 if sum(abs(grd(:,1)-grd(:,end))) >= size(grd,2)*eps*10
-  disp(sprintf('Data violate wrap-around by %8.4e',...
-		  sum(abs(grd(:,1)-grd(:,end)))))
+  fprintf('Data violate wrap-around by %8.4e\n',...
+		  sum(abs(grd(:,1)-grd(:,end))));
 end
 grd=grd(:,1:end-1);
 
@@ -274,6 +303,6 @@ function polestest(grd)
 % Tests if poles (-90,90) are identical over longitudes 
 var1=var(grd(1,:));
 var2=var(grd(end,:));
-if var1>eps*10 | var2>eps*10
-  disp(sprintf('Poles violated by %8.4e and %8.4e',var1,var2))
+if var1>eps*10 || var2>eps*10
+  fprintf('Poles violated by %8.4e and %8.4e\n',var1,var2);
 end

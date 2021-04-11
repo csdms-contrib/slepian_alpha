@@ -15,12 +15,14 @@ function bigger=gamini(data,folding)
 % See also DEGAMINI,GAMINI2
 %
 % Last modified by fjsimons-at-alum.mit.edu, 03/28/2009
-
-defval('folding',3)
+% Minor changes by pfaff-at-kit.edu, 10/04/2016
+if nargin==1
+    folding=3;
+end
 
 % Copy a single scalar folding for all elements in the array 
-if prod(size(folding))==1
-  folding=repmat(folding,prod(size(data)),1);
+if numel(folding)==1
+  folding=repmat(folding,numel(data),1);
 end
 
 % Never had a replication factor of 0 before
@@ -35,7 +37,7 @@ data=data(:)';
 folding=folding(:)';
 
 if ~all(size(data)==size(folding)) 
-  error([ ' Sizes of input and folding must be the same'])
+  error('Sizes of input and folding must be the same')
 end
 
 gelp=zeros(1,sum(folding));
