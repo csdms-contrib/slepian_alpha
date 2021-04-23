@@ -11,7 +11,7 @@ function varargout=moving(y,wlen)
 % OUTPUT:
 %
 % ma      The signal after moving averaging (not original length!)
-% mo      The missing piece to restore he length, simply the repeated last entry
+% mo      The missing piece to restore the length, simply the repeated last entry
 %
 % Written by fjsimons-at-alum.mit.edu, 04/22/2021
 
