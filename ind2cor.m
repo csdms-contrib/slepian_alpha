@@ -5,15 +5,17 @@ function [lon,lat,colnr,rownr]=ind2cor(indices,c11,cmn,m,n)
 % to PIXEL CENTER  longitude and latitude coordinates for indices from 
 % a matrix with 'm' rows and 'n' columns
 %
-% c11 and cmn are PIXEL CENTERED coordinates of center of first and last element
-% of the matrix, in (x-y).  Indices may be a matrix or a vector.
+% c11 and cmn are PIXEL CENTERED coordinates of center of first and last
+% element of the matrix, in (x-y).  Indices may be a matrix or a vector.
 %
 % Test on:
 %
 % c11=[90 -10]; cmn=[100 -30]; m=4 ; n=6;
 % [lon,lat]=ind2cor(1:m*n,c11,cmn,m,n)
 %
-% Last modified by fjsimons-at-alum.mit.edu
+% See also COR2IND, ACOR2IND
+%
+% Last modified by fjsimons-at-alum.mit.edu, 05/10/2021
 
 lonint=(cmn(1)-c11(1))/(n-1);
 latint=(cmn(2)-c11(2))/(m-1);
