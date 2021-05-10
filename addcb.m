@@ -38,7 +38,7 @@ function varargout=addcb(pos,caxcon,caxoc,parm,tint,invt)
 % PLOTTOPO, PLOTGRAV, JOINCOLMAP, CAX2DEM, SERGEICOL, DEMMAP, IMAGEFDIR, CBARTICKS
 %
 % Tested on 8.3.0.532 (R2014a) and 9.0.0.341360 (R2016a)
-% Last modified by fjsimons-at-alum.mit.edu, 07/26/2017
+% Last modified by fjsimons-at-alum.mit.edu, 11/18/2020
 
 defval('caxcon',[0 1500]);
 defval('caxoc',[-7000 0]);
@@ -49,7 +49,6 @@ defval('invt',0)
 ah=gca;
 fpos=getpos(ah);
 
-poso=pos;
 if isstr(pos)
   % We temporarily use Matlab's colorbar
   cb=colorbar(pos);
@@ -64,6 +63,9 @@ if isstr(pos)
 end
 % And now I am ready to make a whole new colorbar!
 cb=axes('position',pos);
+
+% Make it numeric; this used to be above the IF above
+poso=pos;
 
 % Figure out the values etc
 miC=min([caxoc caxcon]);
