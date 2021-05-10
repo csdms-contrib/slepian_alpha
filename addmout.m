@@ -19,9 +19,9 @@ function [EM,EL,mz,blkm,dblk]=addmout(L,evens)
 %          m=0 -1 1 -2 2 ... -L L and then degrees l=abs(m):L within those
 % dblk     Reordering sequence to unblock-sort the block-sorted ones...
 %
-% See also ADDMON, MATRANGES
+% See also ADDMON, MATRANGES, ADDMABOUT
 %
-% Last modified by fjsimons-at-alum.mit.edu, 7/12/2012
+% Last modified by fjsimons-at-alum.mit.edu, 05/10/2021
 
 defval('L',4)
 defval('evens',0)
