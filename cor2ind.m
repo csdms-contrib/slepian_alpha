@@ -1,10 +1,9 @@
 function [ind,colnr,rownr]=cor2ind(lon,lat,c11,cmn,m,n)
 % [ind,colnr,rownr]=cor2ind(lon,lat,c11,cmn,m,n)
 %
-% Transforms longitudes and latitudes given an 
-% mXn array with c11 and cmn the BOUNDARY
-% coordinates of the first and last elements of the matrix
-% into a running index and column and row number.
+% Transforms longitudes and latitudes given an mXn array with c11 and cmn
+% the BOUNDARY coordinates of the first and last elements of the matrix into
+% a running index and column and row number.
 %
 % EXAMPLE:
 %
@@ -12,7 +11,7 @@ function [ind,colnr,rownr]=cor2ind(lon,lat,c11,cmn,m,n)
 %
 % See also IND2COR
 %
-% Written by fjsimons-at-mit.edu, October 11th 2000
+% Last modified by fjsimons-at-mit.edu, 05/20/2021
 
 if ~isstr(lon)
   lonspan=(cmn(1)-c11(1));
