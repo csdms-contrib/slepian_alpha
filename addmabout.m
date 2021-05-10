@@ -23,7 +23,9 @@ function a=addmabout(L,l,m)
 %   difer(EL(addmabout(L,l,m))-l);
 % end; end
 %
-% Last modified by fjsimons-at-alum.mit.edu, 12/28/2006
+% See also ADDMOUT
+%
+% Last modified by fjsimons-at-alum.mit.edu, 05/10/2021
 
 % WATCH OUT, THIS DOES NOT KNOW ANYTHING USEFUL ABOUT L AND M
 % I.E. YOU ALWAYS GET AN ANSWER - SHOULD BUILD THIS IN!
