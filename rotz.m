@@ -40,7 +40,7 @@ function Rz=rotz(gama)
 %
 % ROTX, ROTY, ROTCOF, DLMB, BLANCO, PLM2ROT
 % 
-% Last modified by fjsimons-at-alum.mit.edu, 03/10/2010
+% Last modified by fjsimons-at-alum.mit.edu, 05/10/2021
 
 Rz=[ cos(gama) sin(gama)  0;...
     -sin(gama) cos(gama)  0;...
