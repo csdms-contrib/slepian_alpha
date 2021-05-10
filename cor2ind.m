@@ -9,9 +9,9 @@ function [ind,colnr,rownr]=cor2ind(lon,lat,c11,cmn,m,n)
 %
 % cor2ind('demo');
 %
-% See also IND2COR
+% See also IND2COR, ACOR2IND
 %
-% Last modified by fjsimons-at-mit.edu, 05/20/2021
+% Last modified by fjsimons-at-mit.edu, 05/10/2021
 
 if ~isstr(lon)
   lonspan=(cmn(1)-c11(1));
