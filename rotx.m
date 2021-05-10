@@ -31,7 +31,7 @@ function Rx=rotx(alfa)
 %
 % ROTX, ROTZ, ROTS, ROTTP, ROTCOF, PLM2ROT
 %
-% Last modified by fjsimons-at-alum.mit.edu, 03/10/2010
+% Last modified by fjsimons-at-alum.mit.edu, 05/10/2021
 
 Rx=[1     0          0    ;...
     0  cos(alfa) sin(alfa);...
