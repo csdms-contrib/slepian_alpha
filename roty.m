@@ -31,7 +31,7 @@ function Ry=roty(bita)
 %
 % ROTX, ROTZ, ROTS, ROTTP, ROTCOF, PLM2ROT
 %
-% Last modified by fjsimons-at-alum.mit.edu, 03/10/2010
+% Last modified by fjsimons-at-alum.mit.edu, 05/10/2021
 
 Ry=[cos(bita) 0 -sin(bita);...
         0     1      0    ;...
