@@ -1,8 +1,8 @@
 function addo=adrc(mat,val)
 % addo=ADRC(mat,val)
 %
-% Adds an extra row and column to a matrix, e.g. for use wih PCOLOR, or to
-% use in constrained optimization with a Lagrange multitplier.
+% Adds an extra row and column to a matrix, e.g. for use wih PCOLOR or to
+% use in optimization with a Lagrange multitplier.
 %
 % INPUT:
 %
@@ -13,7 +13,7 @@ function addo=adrc(mat,val)
 %
 % addo     The new matrix with the row and column added
 %
-% Last modified by fjsimons-at-alum.mit.edu, 05/11/2021
+% Last modified by fjsimons-at-alum.mit.edu, 05/21/2021
 
 % Note that for Lagrange optimization, you may want addo(end,end)=0...
 
