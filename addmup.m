@@ -1,8 +1,8 @@
 function nrmorl=addmup(nr,drk)
 % nrmorl=ADDMUP(nr,drk)
 %
-% Calculates the number of real spherical harmonic orders that belong to
-% an expansion from degree l=0 to L, OR vice versa. For arrays where m=0:l.
+% Calculates the number of real spherical harmonic ORDERS that belong to
+% an expansion from DEGREE l=0 to L, OR vice versa. For arrays where m=0:l.
 %
 % INPUT:
 %
@@ -22,7 +22,7 @@ function nrmorl=addmup(nr,drk)
 %
 % See also ADDMOFF, ADDMOUT
 %
-% Last modified by fjsimons-at-alum.mit.edu, 05/10/2021
+% Last modified by fjsimons-at-alum.mit.edu, 05/11/2021
 
 % Since m=0:l for real spherical harmonics, the number of orders per
 % degree is l+1. This program thus calculates
