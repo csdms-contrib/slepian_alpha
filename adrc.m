@@ -13,7 +13,7 @@ function addo=adrc(mat,val)
 %
 % addo     The new matrix with the row and column added
 %
-% Last modified by fjsimons-at-alum.mit.edu, 09/18/2006
+% Last modified by fjsimons-at-alum.mit.edu, 05/21/2021
 
 % Note that for Lagrange optimization, you may want addo(end,end)=0...
 
