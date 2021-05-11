@@ -1,5 +1,6 @@
 function [dems,dels,mz,lmcosi,mzi,mzo,bigm,bigl,rinm,ronm,demin]=addmon(L,m)
 % [dems,dels,mz,lmcosi,mzi,mzo,bigm,bigl,rinm,ronm,demin]=ADDMON(L,m)
+%
 % Returns spherical harmonic degree and positive-order indexing arrays.
 %
 % INPUT:
@@ -46,7 +47,7 @@ function [dems,dels,mz,lmcosi,mzi,mzo,bigm,bigl,rinm,ronm,demin]=addmon(L,m)
 % [dems,dels,mz,lmcosi,mzi,mzo,bigm,bigl,rinm,ronm,demin]=addmon(L,m);
 % dems(demin)
 %
-% Last modified by fjsimons-at-alum.mit.edu, 1/20/2011
+% Last modified by fjsimons-at-alum.mit.edu, 5/11/2021
 
 defval('m',NaN)
 
