@@ -1,9 +1,8 @@
 function nrmorl=addmoff(nr,drk)
 % nrmorl=ADDMOFF(nr,drk)
 %
-% Calculates the number of real spherical harmonic orders that belong to
-% an expansion from degree l=0 to L, OR vice versa.
-% For arrays where m=-l:l.
+% Calculates the number of spherical harmonic ORDERS that belong to an
+% expansion from DEGREE l=0 to L, OR vice versa. For arrays where m=-l:l.
 %
 % INPUT:
 %
@@ -27,7 +26,7 @@ function nrmorl=addmoff(nr,drk)
 %
 % See also: ADDMUP, ADDMOUT, ADDMON, ADDMIN
 %
-% Last modified by fjsimons-at-alum.mit.edu, 05/17/2011
+% Last modified by fjsimons-at-alum.mit.edu, 05/11/2021
 
 defval('drk','a')
 
