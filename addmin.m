@@ -14,13 +14,7 @@ function vec=addmin(invec)
 %
 % Last modified by fjsimons-at-alum.mit.edu, 05/11/2021
 
-% Ensure column vector input
-invec=invec(:);
-
-% Think - maximum spherical harmonic degree
-L=size(invec,1)-1;
-
 % So this function is really just an interface to GAMINI
-vec=gamini(invec,1:L+1);
+vec=gamini(invec(:),1:length(invec(:)));
 
 
