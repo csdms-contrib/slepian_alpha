@@ -2,7 +2,7 @@ function varargout=arrow(X,Y,U,V,ori,sca,rot,tran)
 % [arro,arroperp,cend]=ARROW(X,Y,U,V,ori,sca,rot,tran)
 %
 % Like QUIVER, but with better arrow heads, for horizontal or vertical
-% arrows. Severely different behaviors between versions!
+% arrows. Severely different behaviors between MATLAB versions!
 %
 % INPUT:
 %
@@ -63,7 +63,7 @@ if ~isstr(X)
   end
   % Rotate in the plane around 90 degrees
   perp=rotz(pi/2);
-  perp(1:2,1:2);
+  perp=perp(1:2,1:2);
   
   % Old version
   if verLessThan('matlab','9')
