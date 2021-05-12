@@ -19,15 +19,17 @@ function varargout=blanco(L,bta)
 % EXAMPLE:
 %
 % Compare the difference; it works for the decomposition where it's just
-% ninety 
+% ninety but there is still a problem with this routine. 
 %
 % L=round(rand*180)
 % d1=blanco(L,90); d2=dlmb(L); 
 % for index=1:L+1; difer(d1{index}-d2{index}); end
 %
-% See also DLMB, PLM2ROT
+% SEE ALSO:
 %
-% Last modified by fjsimons-at-alum.mit.edu, January 12th, 2003
+% DLMB, PLM2ROT
+%
+% Last modified by fjsimons-at-alum.mit.edu, 05/21/2021
 
 t0=clock;
 defval('bta',90)
@@ -36,12 +38,13 @@ if bta<0
   warning('Only for positive rotations')
 end
 
-% Eq. (48-52)
+% Eqs (48-52)
 d{1}(1,1)=1;
 d{2}(2,2)=cos(bta);
 d{2}(3,1)=sin(bta/2)^2;
 d{2}(3,2)=-1/sqrt(2)*sin(bta);
 d{2}(3,3)=cos(bta/2)^2;
+
 % Avoid round-off error
 if abs(bta-pi/2)<eps
   d{2}(2,2)=0;
@@ -64,7 +67,7 @@ for l=2:L
   d{li}=repmat(0,2*l+1);
   li1=li-1;
   li2=li-2;
-  % Use Eq. 64
+  % Use Eq. (64)
   for m=0:l-2
     % Index of m for l
     mi =m+l+1;
@@ -83,17 +86,17 @@ for l=2:L
 			  -fac3*d{li2}(mi2,mpi2));
     end
   end
-  % Eq. 65
+  % Eq. (65)
   % Last index of current l, double
   m=l;  mi=m+l+1;
   % Last index of previous l, double
   mi11=m+l-1; 
   d{li}(mi,mi)=d{2}(3,3)*d{li1}(mi11,mi11);
-  % Eq. 66
+  % Eq. (66)
   % One but last index of current l
   m=l-1; mi=m+l+1; mi1=m+l;
   d{li}(mi,mi)=(l*d{2}(2,2)-l+1)*d{li1}(mi11,mi11); 
-  % Eq. 67
+  % Eq. (67)
   % Last row of the matrix except its last column
   m=l;
   mi=m+l+1;
@@ -119,7 +122,7 @@ for l=2:L
       d{li}(mi,mpi)=0;
     end
   end
-  % Eq. 68
+  % Eq. (68)
   % One but last row
   m=l-1;
   mi=m+l+1;
@@ -147,9 +150,10 @@ for l=2:L
     end
   end
 end
+
 % Something is wrong - either the l-1 elements are not good
 % or we're not using enough of the symmetry properties.
-% Symmetrize using mirror properties of Eq. 38
+% Symmetrize using mirror properties of Eq.(38)
 for l=1:L
   li=l+1;
   % First symmetry equation: flip across LLUR diagonal
@@ -165,8 +169,9 @@ for l=0:L
   dr{li}=d{li}(li:end,li:end);
 end
 
-varn={'dr','d'};
-for index=1:nargout
-  varargout{index}=eval(varn{index});
-end
-disp(sprintf('BLANCO took %8.4f s',etime(clock,t0)))
+disp(sprintf('%s took %8.4f s',mfilename,etime(clock,t0)))
+
+% Optional output
+varns={dr,d};
+varargout=varns(1:nargout);
+
