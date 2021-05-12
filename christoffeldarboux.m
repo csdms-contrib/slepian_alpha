@@ -1,8 +1,11 @@
 function varargout=christoffeldarboux(ks,m,L,mu,mup)
-% CHRISTOFFELDARBOUX(ks,m,L,mu,mup)
 % [m,L,D]=CHRISTOFFELDARBOUX(ks,m,L,mu,mup)
 %
+% Legendre versions of the Christoffel-Darboux formula as quoted by
+% Simons, Dahlen and Wieczorek, SIAM Review. (2006), eqs (3.10) and (5.15)
+%
 % INPUT:
+%
 % ks   1 Standard formula with (mu-mup)
 %      2 Modified formula with (mu-mup)*(mu+mup)
 %      3 Modified as in 2 but with only [m:2:L]
@@ -14,10 +17,7 @@ function varargout=christoffeldarboux(ks,m,L,mu,mup)
 % L    Maximum degree
 % D    Difference between both approaches
 %
-% Several versions of the Christoffel-Darboux formula quoted by Simons,
-% Dahlen and Wieczorek (2006) eqs (3.10/5.15)
-%
-% Last modified by fjsimons-at-alum.mit.edu, 04.05.2006
+% Last modified by fjsimons-at-alum.mit.edu, 05/11/2021
 
 defval('ks',ceil(rand*4))
 defval('m',round(rand*20))
