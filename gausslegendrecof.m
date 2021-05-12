@@ -23,7 +23,7 @@ function [w,x,N]=gausslegendrecof(l,method,intv)
 %
 % SEE ALSO: GAUSSLEGENDRE
 % 
-% The abcissa's are the roots of a Legendre polynomials defined on the
+% The abscissa's are the roots of a Legendre polynomials defined on the
 % same interval. In particular then, this routine can be used to
 % integrate (products) of Legendre functions themselves, which is useful
 % in the analysis of spherical harmonics. This returns the N-point
@@ -38,7 +38,7 @@ function [w,x,N]=gausslegendrecof(l,method,intv)
 %
 % [w,x]=gausslegendrecof(19);
 %
-% Last modified by fjsimons-at-alum.mit.edu, 03/17/2009
+% Last modified by fjsimons-at-alum.mit.edu, 11/11/2015
 
 defval('method','jacobi')
 defval('intv',[])
