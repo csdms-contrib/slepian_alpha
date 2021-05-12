@@ -44,7 +44,7 @@ function [ss,N]=gausslegendre(intv,fname,l,method)
 % gausslegendre('demo3') % Tests normalization of LIBBRECHT Full
 % gausslegendre('demo4') % Tests normalization of LIBBRECHT Unnormalized
 %
-% Last modified by fjsimons-at-alum.mit.edu, 06/01/2011
+% Last modified by fjsimons-at-alum.mit.edu, 05/12/2021
 
 if ~isstr(intv)
   defval('l',19)
