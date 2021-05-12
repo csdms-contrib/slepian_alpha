@@ -1,7 +1,7 @@
 function [ap1,th0]=dahlen(L,m,X,norma)
 % [ap1,th0]=DAHLEN(L,m,X,norma)
 %
-% Dahlens JWKB asymptotic approximation to the associated Legendre
+% Dahlen's JWKB asymptotic approximation to the associated Legendre
 % polynomials of large degree L.
 %
 % INPUT:
@@ -27,7 +27,7 @@ function [ap1,th0]=dahlen(L,m,X,norma)
 %
 % See also BACKUS, HILBXLM.
 %
-% Last modified by fjsimons-at-alum.mit.edu, 03/16/2016
+% Last modified by fjsimons-at-alum.mit.edu, 05/21/2021
 
 if ~isstr(L)
   defval('norma','fnc')
