@@ -17,12 +17,10 @@ defval('wit',0)
 
 % Need to have a centrally located color file KELIM.MAT distributed with
 % this code. Use environmental variables or stash locally (gasp!)
-if ~exist('kelim')
-  try
-    load(fullfile(getenv('IFILES'),'COLORMAPS','kelim'))
-  catch
-    load('kelim')
-  end
+try
+  load(fullfile(getenv('IFILES'),'COLORMAPS','kelim'))
+catch
+  load('kelim')
 end
 
 if wit>0
