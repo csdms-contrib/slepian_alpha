@@ -1,36 +1,47 @@
 function RGB=getcol(symb)
 % RGB=GETCOL(symb)
 %
-% Gets RGB values of M color symbols
-% 'symb' can be a vector 1XM or MX1
-% or a cell structure 1XM or MX1
+% Returns RGB values corresponding to color symbols
 %
-% RGB is MX3
+% INPUT:
 %
-% symb=[ 'y' 'm' 'k' 'g' 'y']
-% symb=[ 'y' ,'m' ,'k' ,'g']
-% symb=[ 'ymkg']
-% symb=[{'y'} ,{'m'} ,{'k'} ,{'g'}]
+% 'symb'   A column or row vector or a cell array of single-character
+%          color strings from the list y m c r g b w k
 %
-% Posisble: ymcrgbwk
+% OUTPUT:
+% 
+% RGB      A three-column matrix with RGB values
+% 
+% EXAMPLE:
+%
+% getcol([ 'y' 'm' 'k' 'g' 'y'])
+% getcol([ 'y' ,'m' ,'k' ,'g'])
+% getcol([ 'ymkg'])
+% getcol([{'y'} ,{'m'} ,{'k'} ,{'g'}]))
+%
+%
+% Last modified by fjsimons-at-mit.edu, 05/26/2021
 
-% Last modified by fjsimons-at-mit.edu, June 6th 2000
+% Input parsing
 if ~iscell(symb)
   symb=symb(:)';
 else
   symb=cat(1,symb{:})';
 end
 
+% Character mapping
 symb=abs(symb)-97;
 
+% Color identification from an alphabet from b to y
 coleq=ones(24,3);
-coleq(24,:)=[1 1 0]; %y 
+coleq(1,:) =[0 0 1]; %b
+coleq(2,:) =[0 1 1]; %c
+coleq(6,:) =[0 1 0]; %g
+coleq(10,:)=[0 0 0]; %k
 coleq(12,:)=[1 0 1]; %m
-coleq(2,:)=[0 1 1]; %c
 coleq(17,:)=[1 0 0]; %r
-coleq(6,:)=[0 1 0]; %g
-coleq(1,:)=[0 0 1]; %b
 coleq(22,:)=[1 1 1]; %w
-coleq(10,:)=[0 0 0]; %b
+coleq(24,:)=[1 1 0]; %y 
 
+% Color selection assignment
 RGB=coleq(symb,:);
