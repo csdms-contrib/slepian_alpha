@@ -32,7 +32,7 @@ function varargout=fillbox(lrtbmat,colvec,varargin)
 %
 % SEE ALSO: EXT2LRTB
 %
-% TESTED ON: MATLAB Version: 8.3.0.532 (R2014a)n
+% TESTED ON: MATLAB Version: 8.3.0.532 (R2014a)
 %
 % Last modified by fjsimons-at-alum.mit.edu, 05/26/2021
 
