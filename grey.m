@@ -1,7 +1,7 @@
 function g=grey(val)
 % g=grey(val)
 %
-% Will return RGB for grey values (0-10).
+% Will return RGB for grey (gray) shadings (0-10).
 %
 % INPUT:
 %
@@ -11,7 +11,7 @@ function g=grey(val)
 %
 % g        An RGB vector with the grey scale
 %
-% Last modified by fjsimons-at-alum.mit.edu, 10/06/2006
+% Last modified by fjsimons-at-alum.mit.edu, 05/21/2021
 
 defval('val',7)
 
