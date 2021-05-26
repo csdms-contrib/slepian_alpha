@@ -15,7 +15,7 @@ function newpos=shrink(handle,widthfactor,heightfactor)
 %
 % newpos        Optional output new position (lrtb)
 %
-% Last modified by fjsimons-at-mit.edu, 14.03.2006
+% Last modified by fjsimons-at-mit.edu, 05/26/2021
 
 defval('handle',gca)
 defval('widthfactor',2)
