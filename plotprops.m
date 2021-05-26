@@ -1,8 +1,8 @@
 function varargout=plotprops(x,y,z,bnd,axl,ms,mrk,clox,cmap)
-% PLOTPROPS(x,y,z,bnd,axl,ms,mrk,clox,cmap)
-% [p,cb]=PLOTPROPS(...)
+% [p,cb]=PLOTPROPS(x,y,z,bnd,axl,ms,mrk,clox,cmap)
 %
-% Plots the third dimension as color-coded symbols on a map.
+% Plots properties as color-coded symbols on a plain map implemented as a
+% two-dimensional view of a three-dimensional rendition
 %
 % INPUT:
 %
@@ -27,9 +27,9 @@ function varargout=plotprops(x,y,z,bnd,axl,ms,mrk,clox,cmap)
 % plotprops(linspace(100,200,12),repmat(0,1,12),...
 %          [1:12]+0.1,1:10,[90 210 -10 10],15,[],[],'kelicol')
 %
-% SEE ALSO: PLOTEQ, PLOTPROP
+% SEE ALSO: PLOTPROP
 %
-% Last modified by fjsimons-at-alum.mit.edu, 06/28/2010
+% Last modified by fjsimons-at-alum.mit.edu, 05/26/2021
 
 % Supply defaults
 defval('ms',6)
@@ -44,14 +44,16 @@ defval('clox','hor');
 defval('flag',0);
 
 % Plot all the data as separate symbols
+ah=gca;
 for index=1:length(x)
   p(index)=plot3(x(index),y(index),index,mrk);
   hold on
 end
 view(2)
 axis(axl)
+hold off
 
-% The following is adjusted from earlier versions, PLOTPROP and PLOTEQ
+% The following is adjusted from earlier PLOTPROP
 defval('cmap',flipud(gray(length(bnd)-1)))
 if isstr(cmap)
   % Note that this does NOT work for KELICOL
@@ -73,7 +75,7 @@ end
 
 if flag==1
   % This is the nearest-neighbor index into the color map
-  zco=round(scale(zco,[1 length(bnd)-1]));
+  zco=round(scale(zco,[1 size(cmap,1)-1]));
 else
   % The grey scale, of course, is from 0 to 1
   zco=scale(zco,[0 10]);
@@ -100,18 +102,20 @@ colormap(cmap)
 
 switch clox
  case 'hor'
-    lims='xlim'; tix='Xtick'; tixl='Xtickl';
+    lims='xlim'; tix='Xtick'; tixl='XtickLabel';
  case 'ver'
-    lims='ylim'; tix='Ytick'; tixl='Ytickl';	
+    lims='ylim'; tix='Ytick'; tixl='YtickLabel';	
  otherwise
   error('Specify a legal colorbar orientation')
 end
 
-% Set the boundaries without further changes; feed the program
-% reasonable ones... Here are the divisions
-% divs=linspace(indeks(get(cb,lims),1),...
-% indeks(get(cb,lims),2),length(bnd));
-divs=linspace(1,length(bnd),length(bnd));
+% Set the boundaries without further changes
+if verLessThan('matlab', '8.4')
+  divs=linspace(1,size(cmap,1),length(bnd));
+else
+  divs=linspace(0,1,length(bnd));
+end
+
 % If all data are contained within the bin boundaries, also show the
 % end points; not if they don't
 if min(z)>=bnd(1);   a=1; else a=2; end
@@ -119,13 +123,12 @@ if max(z)<=bnd(end); b=0; else b=1; end
 
 % Here you piece them together from the limits - this is best
 set(cb,tix,divs(a:end-b),tixl,bnd(a:end-b))
-% Here you get them from whatever Matlab had already decided
-% gotem=get(cb,tix);
-% set(cb,tix,gotem(a:end-b),tixl,bnd(a:end-b))
-longticks(cb,2)
 
+longticks(cb,2)
+longticks(ah,2)
+
+% Optional output
 varns={p,cb};
 varargout=varns(1:nargout);
 
-hold off
 
