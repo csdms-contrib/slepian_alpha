@@ -5,19 +5,24 @@ function varargout=insert(in,derin,pos)
 %
 % in       Original data matrix
 % derin    Additional elements
-% pos      These linear indices in old matrix replaced, rest shifted   
+% pos      These linear indices in old matrix replaced, rest shifted
+%          down, so think of this as a "left" insert, and if you specify
+%          a single entry to add to the non-existing (N+1)the element of
+%          the input matrix, it will handle that properly, too
 %
 % OUTPUT:
 %
 % out      Row data vector with the new elements in it
-% outi     Indexing output so you can be smart the next time
+% outi     Index of the inserted elements in the new matrix
 % 
 % EXAMPLE:
 %
-% insert([1 2 3],[11 12],[2 3])
-% insert([1 2 3],[11 13],[2 2]) 
+% [a,b]=insert([1 2 3],[11 12],[2 3]); a(b)
+% [a,b]=insert([1 2 3],[11 13],[2 2])
+% [a,b]=insert([1 2],[11 22],[1 3])
+% [a,b]=insert([1 2],[11 22 33],[1 2 3])
 %
-% Last modified by fjsimons-at-alum.mit.edu, 03/18/2011
+% Last modified by fjsimons-at-alum.mit.edu, 05/26/2021
 
 % What if nothing needs to happen?
 if isempty(pos)
@@ -34,7 +39,7 @@ in=in(:)';
 derin=derin(:)';
 pos=pos(:)';
 
-% If there is one unique last position
+% If there is one unique last position you can do an add
 if pos(end)==(length(in)+1) && pos(end-1)~=(length(in)+1)
   lest=derin(end);
   derin=derin(1:end-1);
@@ -60,6 +65,7 @@ out(outi)=derin;
 % Take care of the last element
 if flag==1
   out=[out lest];
+  outi=[outi length(out)];
 end
 
 % Output
