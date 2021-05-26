@@ -1,7 +1,7 @@
 function varargout=fillbox(lrtbmat,colvec,varargin)
 % plothandles=FILLBOX(lrtbmat,colvec,opt)
 %
-% lrtbmat   mX4 for m boxes whose Left Right Tob Bottom you give
+% lrtbmat   mX4 for m boxes whose Left Right Top Bottom you give
 % colvec    an mX3 RGB matrix
 %           an mX1 or 1Xm vector of strings
 %           1 scalar (automatic indexing) or 1 letter string
@@ -30,9 +30,11 @@ function varargout=fillbox(lrtbmat,colvec,varargin)
 %
 % FILL3 gets fed MXN matrix for N polygons of order M
 %
-% See also: EXT2LRTB
+% SEE ALSO: EXT2LRTB
 %
-% Last modified by fjsimons-at-alum.mit.edu, 10/22/2012
+% TESTED ON: MATLAB Version: 8.3.0.532 (R2014a)n
+%
+% Last modified by fjsimons-at-alum.mit.edu, 05/26/2021
 
 defval('colvec',grey(8))
 
