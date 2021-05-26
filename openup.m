@@ -16,11 +16,11 @@ function ax=openup(ah,xory,perc)
 %
 % OUTPUT:
 %
-% ax     The axis settings you have just applied
+% ax     The axis settings you have just applied (xlim, ylim)
 %
 % SEE ALSO: XPAND
 % 
-% Last modified by fjsimons-at-alum.mit.edu, 07/13/2012
+% Last modified by fjsimons-at-alum.mit.edu, 05/26/2021
 
 defval('ah',gca);
 defval('xory',2);
