@@ -15,7 +15,7 @@ function varargout=rottick(ah,loc,only)
 %
 % t      Vector with handles to the text objects
 %
-% Last modified by fjsimons-at-alum.mit.edu, 10/25/2010
+% Last modified by fjsimons-at-alum.mit.edu, 05/26/2021
  
 defval('ah',gca)
 defval('loc','b')
