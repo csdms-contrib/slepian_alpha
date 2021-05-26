@@ -3,7 +3,7 @@ function lrtb=ext2lrtb(obj,wf,hf)
 %
 % Transforms the extent (left-bottom-width-height) of a graphics object
 % into a lrtb (left-right-top-bottom) set of coordinates, e.g. to provide
-% a white box under a line of text in a figure.
+% a white box under a line of text in a figure, with optional stretching
 %
 % INPUT:
 %
@@ -18,7 +18,7 @@ function lrtb=ext2lrtb(obj,wf,hf)
 %
 % See also FILLBOX, LRTB2EXT
 % 
-% Last modified by fjsimons-at-alum.mit.edu, 10/22/2012
+% Last modified by fjsimons-at-alum.mit.edu, 05/26/2021
 
 defval('wf',1)
 defval('hf',1)
