@@ -1,12 +1,25 @@
 function varargout=number(strmat)
-% number(strmat)
-% numed=number(strmat)
+% numed=NUMBER(strmat)
 %
-% "Numbers" or indexes a string matrix or cell by the lines
+% Generates/displays row numbers to index a (string) matrix or cell array
 %
-% Uses a recursive algorithm, kind of
+% INPUT:
 %
-% fjsimons-at-alum.mit.edu, 12/17/02
+% strmat         a certain input matrix or cell array
+%
+% OUTPUT:
+%
+% numed          a string matrix with the row numbers
+%                if no output requested, displays to screen
+%
+% EXAMPLES:
+%
+% number([1 2 3; 3 4 5])
+% number([ 'menu' ; 'opti'   ])
+% number([{'menu'} {'option'}])
+% number({{'menu'} {'option'}})
+%
+% fjsimons-at-alum.mit.edu, 05/26/2021
 
 if ~iscell(strmat)
   if ~ischar(strmat)
@@ -19,6 +32,7 @@ elseif iscell(strmat)
   numed=number(strcell(strmat));
 end
 
+% If no output, just displays
 if nargout==1
   varargout{1}=numed;  
 else
