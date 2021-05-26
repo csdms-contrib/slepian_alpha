@@ -1,11 +1,15 @@
 function bigger=gamini(data,folding)
 % bigger=GAMINI(data,folding)
 %
+% Replicates the ith entry of a vector as many times as the ith element of
+% another vector (or a fixed number of times when given only one value ).
+%
 % INPUT:
 %
-% data       Some data vector
-% folding    The replication factor for every element of the data;
-%            if a scalar, this applies to all the elements (default: 3);
+% data       A certain data vector
+% folding    The folding factor(s)
+%            if the same size as the data vector, element-wise replication;
+%            if a scalar, it applies to all data elements [default: 3];
 %            if zero or negative, no replication occurs
 %
 % EXAMPLE:
@@ -14,7 +18,7 @@ function bigger=gamini(data,folding)
 %
 % See also DEGAMINI,GAMINI2
 %
-% Last modified by fjsimons-at-alum.mit.edu, 03/28/2009
+% Last modified by fjsimons-at-alum.mit.edu, 05/26/2021
 
 defval('folding',3)
 
