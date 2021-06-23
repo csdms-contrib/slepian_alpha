@@ -320,10 +320,10 @@ if ~(ischar(TH) && ~isempty(strfind(TH(:)','demo')))
       % Truncate to the smaller amount of eigenfunctions and -values
       G=G(:,1:J);
       V=V(1:J);
-      if exist('octave_config_info') % If it's octave
-	save(fname,'G','V','EL','EM','N')
-      else % It's Matlab
-	save(fname,'-v7.3','G','V','EL','EM','N')
+      try
+	      save(fname,'-v7.3','G','V','EL','EM','N')
+      catch
+        save(fname,'G','V','EL','EM','N')
       end
     else
       % For AXISYMMETRIC REGIONS
@@ -457,11 +457,11 @@ if ~(ischar(TH) && ~isempty(strfind(TH(:)','demo')))
       if ~strcmp(fname,'neveravailable') 
         % Save the results if it isn't a geographical region
         % If the variable is HUGE you must use the -v7.3 flag, if not, you
-        % can safely omit it and get more backwards compatibility
-	if exist('octave_config_info') % If it's octave 
-          save(fname,'G','V','EL','EM','N','GM2AL','MTAP','IMTAP')
-	else % It's Matlab
+        % can safely omit it and get more backwards compatibility      
+	try 
 	  save(fname,'-v7.3','G','V','EL','EM','N','GM2AL','MTAP','IMTAP')
+  catch
+     save(fname,'G','V','EL','EM','N','GM2AL','MTAP','IMTAP')
 	end
       end
     end
