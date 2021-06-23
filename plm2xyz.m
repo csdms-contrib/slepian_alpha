@@ -197,7 +197,11 @@ if ~isstr(lmcosi)
 	delete(h)
       end
       if length(c11cmn)==4 && all(c11cmn==[0 90 360 -90])
-	save(fnpl,'Plm','-v7.3')
+        try
+	        save(fnpl,'Plm','-v7.3')
+        catch
+          save(fnpl,'Plm')
+        end
 	disp(sprintf('Saved %s',fnpl))
       end
     end
