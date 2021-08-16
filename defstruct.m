@@ -18,7 +18,7 @@ function defstruct(name,fields,values)
 %
 % CELLNAN, STRUCTNAN, STRUCT
 %
-% Last modified by fjsimons-at-alum.mit.edu, 05/20/2019
+% Last modified by fjsimons-at-alum.mit.edu, 08/16/2021
 
 if ~ischar(name),
   error(sprintf(['The first argument of DEFSTRUCT',...
@@ -40,12 +40,12 @@ end
 difer(length(values)-length(fields),[],1,NaN)
 
 % If the STRUCTURE exists at all...
-if evalin('caller',[ 'exist(''' name ''',''var'')']);
+if evalin('caller',[ 'exist(''' name ''',''var'')'])
   % ... and it's empty, do it; but don't do it if it's non empty
-  % This as the the whole structure variable, not any piece of it
+  % This as the whole structure variable, not any piece of it
   si=evalin('caller',[ 'isempty(' name ')']);
   % Now if the STRUCTURE is not empty, SOME of it may be empty
-  if ~si && isstruct(name)
+  if ~si && evalin('caller',[ 'isstruct(' name ')']);
     % Which of the fieldnames exist?
     fn=evalin('caller',['fieldnames(' name ')'])';
     % For now they all exist
