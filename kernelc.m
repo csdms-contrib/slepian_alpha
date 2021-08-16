@@ -108,10 +108,10 @@ if ~isstr(Lmax)
   else
     % If, instead of a string, we have closed form coordinates, then make a
     % hash from the coordinates and use it as the filename.
-    if exist('octave_config_info')
-      h=builtin('hash','sha1',dom);
-    else
+    try
       h=hash(dom,'sha1');
+    catch
+      h=builtin('hash','sha1',dom); 
     end
     fnpl=sprintf('%s/%s-%i.mat',filoc,h,Lmax);  
   end
@@ -457,12 +457,12 @@ if ~isstr(Lmax)
     
     % This is only saved when it's not the alternative calculation method
     if ~strcmp(fnpl,'neveravailable')
-      if exist('octave_config_info')% If you are running octave   
-	save(fnpl,'Lmax','Klmlmp','dom','ngl','XY',...
-	     'lonc','latc','K1','K')
-      else
-	save(fnpl,'Lmax','Klmlmp','dom','ngl','XY',...
-	     'lonc','latc','K1','K','-v7.3')
+      try
+	      save(fnpl,'Lmax','Klmlmp','dom','ngl','XY',...
+	           'lonc','latc','K1','K','-v7.3')
+      catch
+        save(fnpl,'Lmax','Klmlmp','dom','ngl','XY',...
+	           'lonc','latc','K1','K')
       end
     end
   end

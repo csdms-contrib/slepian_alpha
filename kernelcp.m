@@ -453,12 +453,12 @@ if ~isstr(Lmax)
     
      % This is only saved when it's not the alternative calculation method
     if ~strcmp(fnpl1,'neveravailable')
-      if exist('octave_config_info')% If you are running octave  
-	save(fnpl1,'Lmax','Klmlmp','dom','ngl','XY',...
- 	     'lonc','latc','K1','K')
-      else
+      try
 	save(fnpl1,'Lmax','Klmlmp','dom','ngl','XY',...
  	     'lonc','latc','K1','K','-v7.3')
+      catch
+  save(fnpl1,'Lmax','Klmlmp','dom','ngl','XY',...
+ 	     'lonc','latc','K1','K') 
       end
      end
   end
