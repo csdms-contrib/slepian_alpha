@@ -74,6 +74,7 @@ for i=1:length(l1)
     [temp(1),temp(2)]=ind2sub([3 3],find(R==min(R(:)),1));
     R=circshift(R,-(temp-1));
     maxinds=find(R==max(R(:)));
+    % Wherever element S is, element L must be in its column or row
     [temp(1),temp(2)]=ind2sub([3 3],...
                               maxinds(find(wcommon(maxinds,[2 3 4 7]),1)));
     % Reorder Regge square (Rasch eq. 2.11))
@@ -89,7 +90,7 @@ for i=1:length(l1)
         oddperm(i)=true;
       end
     end
-    
+    % What makes this true?
     if R(3,2)<R(2,2)
       oddperm(i)=1-oddperm(i);
       R(2:3,:)=flipud(R(2:3,:));
