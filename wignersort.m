@@ -1,5 +1,5 @@
-function [c,oddperm,phasefix]=wignersort(l1,l2,l3,m1,m2,m3)
-% [c,oddperm,phasefix]=WIGNERSORT(l1,l2,l3,m1,m2,m3)
+function [c,oddperm,phasefix,LXTBS,R]=wignersort(l1,l2,l3,m1,m2,m3)
+% [c,oddperm,phasefix,LXTBS,R]=WIGNERSORT(l1,l2,l3,m1,m2,m3)
 %
 % Computes index value for a given 3j symbol for storage, whether it
 % legally exists or not! So care must be taken not to ask too much. 
@@ -14,6 +14,8 @@ function [c,oddperm,phasefix]=wignersort(l1,l2,l3,m1,m2,m3)
 % c            Index value of the Wigner 3j symbol
 % oddperm      True if there were an odd number of permutations involved...
 % phasefix     ...in which case the phase needs to be fixed by this
+% LXTBS        Integer arrays with some intermediates
+% R            The Regge square
 %  
 % This indexing scheme for Wigner 3j symbols takes account of the Regge
 % symmetries and is described in detail by Rasch and Yu (2003). For any
@@ -28,8 +30,8 @@ function [c,oddperm,phasefix]=wignersort(l1,l2,l3,m1,m2,m3)
 % precalculated Wigner 3j, 6j and Gaunt coefficients. SIAM Journal of 
 % Scientific Computing. 25 (4), 1416-1428.
 %
-% Last modified by Kevin W. Lewis, 6/14/10
-% Last modified by fjsimons-at-alum.mit.edu, 05/24/2011
+% Last modified by Kevin W. Lewis, 06/14/10
+% Last modified by fjsimons-at-alum.mit.edu, 09/27/2021
 
 defval('l1',0)
 defval('l2',0)
@@ -46,7 +48,7 @@ defval('l1vec',0)
 
 % Loop over the l1's
 for i=1:length(l1)
-    % Make Regge square
+    % Make Regge square (Rasch eq. 2.10)
     if length(l2)==1
       % Multiple l1's, constant l2,l3,m's
       R=[-l1(i)+l2+l3 l1(i)-l2+l3 l1(i)+l2-l3;...
@@ -74,7 +76,7 @@ for i=1:length(l1)
     maxinds=find(R==max(R(:)));
     [temp(1),temp(2)]=ind2sub([3 3],...
                               maxinds(find(wcommon(maxinds,[2 3 4 7]),1)));
-    % Reorder Regge square
+    % Reorder Regge square (Rasch eq. 2.11))
     if temp(2)==1
       R=R';
       if temp(1)==3
@@ -112,6 +114,9 @@ end
 
 % Make oddperm logical
 oddperm=logical(oddperm);
+
+% More output
+LXTBS=[L X T B S];
 
 % Here is the phase fix
 if l1vec==0
