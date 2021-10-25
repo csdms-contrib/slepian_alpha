@@ -12,6 +12,8 @@ function varargout=boxtex...
 % posi      'll','lr','ul','ur','um','lm', OR (x,y) coordinates
 % handel    Axis handle on which you want to put the textbox
 % index     And scalar index into the alphabet, OR, a string with text
+%           10/25/2021 : Modified to allow cell array inputs for multiline
+%                        text inputs, such as {'a','b'}
 % fs        Label font size [default: 20]
 % kees      1 Upper-case [default] alphabet will be indexed
 %           0 or anything else: Lower case
@@ -45,6 +47,7 @@ function varargout=boxtex...
 %
 % Tested on 8.3.0.532 (R2014a) and 9.0.0.341360 (R2016a)
 % Last modified by fjsimons-at-alum.mit.edu, 07/05/2017
+% Last modified by Yuri Tamama, 10/25/2021
 
 defval('posi','ll')
 defval('index',1)
@@ -149,6 +152,18 @@ if nargin>2
   hold on
   bhan=fillbox(bcor,[1 1 1],1);  
   if isstr(index)
+    than=text(tcor(1),tcor(2),1.1,index,'FontSize',fs,...
+	'HorizontalAlignment','Center');
+  elseif iscell(index)
+    newindex={};
+    for n=1:length(index)
+      ind=index{n};
+      if isnumeric(ind)
+        ind=num2str(ind);
+      end
+      newindex=horzcat(newindex,ind);
+    end
+    index=newindex;
     than=text(tcor(1),tcor(2),1.1,index,'FontSize',fs,...
 	'HorizontalAlignment','Center');
   else
