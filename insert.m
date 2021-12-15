@@ -8,7 +8,7 @@ function varargout=insert(in,derin,pos)
 % pos      These linear indices in old matrix replaced, rest shifted
 %          down, so think of this as a "left" insert, and if you specify
 %          a single entry to add to the non-existing (N+1)the element of
-%          the input matrix, it will handle that properly, too
+%          the input matrix, it will handle that properly, as well
 %
 % OUTPUT:
 %
@@ -22,7 +22,7 @@ function varargout=insert(in,derin,pos)
 % [a,b]=insert([1 2],[11 22],[1 3])
 % [a,b]=insert([1 2],[11 22 33],[1 2 3])
 %
-% Last modified by fjsimons-at-alum.mit.edu, 05/26/2021
+% Last modified by fjsimons-at-alum.mit.edu, 12/15/2021
 
 % What if nothing needs to happen?
 if isempty(pos)
