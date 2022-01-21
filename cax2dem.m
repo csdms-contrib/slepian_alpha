@@ -26,8 +26,9 @@ function [cb,cm]=cax2dem(cax,ori,lronly)
 %
 % See also: ADDCB, JOINCOLMAP, SERGEICOL, DEMMAP
 %
-% Last modified by fjsimons-at-alum.mit.edu, 09/29/2008
+% Last modified by fjsimons-at-alum.mit.edu, 01/21/2022
 
+defval('ori','ver')
 defval('lronly','all')
 
 % Get the color map and its attributes
@@ -67,8 +68,4 @@ colormap(cm)
 caxis(cax)
 
 % Default to vertical orientation
-if nargin<2
-  cb=colorbar;
-else
-  cb=colorbar('hor');
-end
+cb=colorbar(ori);
