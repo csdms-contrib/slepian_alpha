@@ -1,4 +1,4 @@
-function ax=openup(ah,xory,perc)
+function varargout=openup(ah,xory,perc)
 % ax=OPENUP(ah,par,perc)
 %
 % Opens up axes in which a single data set is plotted... using a single parameter.
@@ -20,7 +20,7 @@ function ax=openup(ah,xory,perc)
 %
 % SEE ALSO: XPAND
 % 
-% Last modified by fjsimons-at-alum.mit.edu, 05/26/2021
+% Last modified by fjsimons-at-alum.mit.edu, 01/22/2022
 
 defval('ah',gca);
 defval('xory',2);
@@ -63,3 +63,6 @@ for index=1:length(ah)
   ax(index,:)=axis;
 end
 
+% Optional output
+varns={ax};
+varargout=varns(1:nargout);
