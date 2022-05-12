@@ -62,8 +62,8 @@ function varargout=kernelcp(Lmax,dom,pars,ngl,rotb)
 %          PLOTSLEP, PLM2AVG, KERNELC, LEGENDREPRODINT, DLMLMP
 %
 % Last modified by charig-at-princeton.edu, 09/23/2016
-% Last modified by fjsimons-at-alum.mit.edu, 11/08/2016
 % Last modified by plattner-at-alumni.ethz.ch, 05/26/2017
+% Last modified by fjsimons-at-alum.mit.edu, 05/11/2022
 
 t0=clock;
 defval('Lmax',12); 
@@ -120,11 +120,11 @@ if ~isstr(Lmax)
   if exist(fnpl1,'file')==2 && ~isstr(ngl)
     % Check the KERNELC directory
     load(fnpl1)
-    disp(sprintf('%s loaded by KERNELCP',fnpl1))
+    disp(sprintf('%s loaded by %s',fnpl1),upper(mfilename))
   elseif exist(fnpl2,'file')==2 && ~isstr(ngl)
     % Check if you have a file in the old KERNELCP directory
     load(fnpl2)
-    disp(sprintf('%s loaded by KERNELCP. Consider moving your kernel files back to the KERNELC directory',fnpl2))
+    disp(sprintf('%s loaded by %s. Consider moving your kernel files back to the KERNELC directory',fnpl2,upper(mfilename)))
   else
     if strcmp(dom,'patch')
       % For future reference 
@@ -169,6 +169,7 @@ if ~isstr(Lmax)
       elseif iscell(dom)
         XY=eval(sprintf('%s(%i,%f)',dom{1},pars,buf));
       else
+	% This case when coordinates in degrees are input as matrix
 	XY=dom;
       end
       thN=90-max(XY(:,2)); thN=thN*pi/180;
@@ -334,7 +335,7 @@ if ~isstr(Lmax)
 	phint=dphregion(acos(x)*180/pi,[],XY); % Changed "dom" to "XY" here CTH
 	phint=phint*pi/180;
       end
-      
+
       % The number of elements that will be calculated is
       nel=(dimK^2+dimK)/2;
       parfor lm1dex=1:dimK
@@ -452,14 +453,14 @@ if ~isstr(Lmax)
     end
     
      % This is only saved when it's not the alternative calculation method
-    if ~strcmp(fnpl1,'neveravailable')
-      try
-	save(fnpl1,'Lmax','Klmlmp','dom','ngl','XY',...
- 	     'lonc','latc','K1','K','-v7.3')
-      catch
-  save(fnpl1,'Lmax','Klmlmp','dom','ngl','XY',...
- 	     'lonc','latc','K1','K') 
-      end
+     if ~strcmp(fnpl1,'neveravailable')
+       try
+         save(fnpl1,'Lmax','Klmlmp','dom','ngl','XY',...
+              'lonc','latc','K1','K','-v7.3')
+       catch
+         save(fnpl1,'Lmax','Klmlmp','dom','ngl','XY',...
+              'lonc','latc','K1','K') 
+       end
      end
   end
   
@@ -562,7 +563,7 @@ elseif strcmp(Lmax,'demo2')
   [XY,lonc,latc]=antarctica;
 
   CC=cellnan(J,length(dels),2);
-  for index=1:J
+  parfor index=1:J
     % This statement reappears exactly in LOCALIZATION
     % And the same arguments appear exactly in KLMLMP2ROT
     CC{index}=plm2rot(...
@@ -634,4 +635,5 @@ elseif strcmp(Lmax,'demo5')
   K1=kernelcp(Lmax,dom);
   difer(K2-K1)
 end
+
 
