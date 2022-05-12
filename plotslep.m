@@ -1,5 +1,5 @@
 function varargout=plotslep(G,i,fmt,degres)
-% data=PLOTSLEP(G,i,fmt,degres)
+% [data,ch,ph]=PLOTSLEP(G,i,fmt,degres)
 %
 % Plots Slepian functions coming out of GLMALPHA, GLMALPHAPTO, or those
 % that are the direct result of diagonalizing the kernel from KERNELC
@@ -16,10 +16,15 @@ function varargout=plotslep(G,i,fmt,degres)
 % OUTPUT:
 %
 % data       Spatial data in case coefficients were given
+% ch         Handle to the continents and the map edge:
+%            ch{1}(1) is the handle to the continents
+%            ch{2}(1) is the handle to the left border
+%            ch{2}(2) is the handle to the right border
+% ph         Handle to the plates or the small circles
 %
 % SEE ALSO: GLM2LMCOSI, KLM2LMCOSI
 %
-% Last modified by fjsimons-at-alum.mit.edu, 07/11/2012
+% Last modified by fjsimons-at-alum.mit.edu, 05/11/2022
 
 % Set defaults
 defval('i',1)
@@ -43,8 +48,8 @@ end
 defval('meth',4)
 defval('degres',1)
 % This should be renormalized!!
-data=plotplm(lmcosi,[],[],meth,degres);
+[data,ch,ph]=plotplm(lmcosi,[],[],meth,degres);
 
 % Prepare output if needed
-varns={data};
+varns={data,ch,ph};
 varargout=varns(1:nargout);
