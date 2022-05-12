@@ -42,7 +42,7 @@ function varargout=localization(L,dom,N,J,rotb,anti)
 %
 % EXAMPLES:
 %
-% localization('demoX') % where X=1,2,3,4,5,6, or 7
+% localization('demoX') % where X=1,2,3,4,5,6, 7, 8
 %
 % SEE ALSO:
 %
@@ -50,7 +50,7 @@ function varargout=localization(L,dom,N,J,rotb,anti)
 % LOCALIZATION2D, PLOTPLM, PLM2XYZ, PLOTSLEP, KLMLMP2ROT, GLMALPHA,
 % ROTATEGP 
 % 
-% Last modified by fjsimons-at-alum.mit.edu, 06/12/2018
+% Last modified by fjsimons-at-alum.mit.edu, 05/11/2022
 
 % Study covariance at some point?
 
@@ -138,8 +138,8 @@ if ~isstr(L)
   end
   
   if exist(fnpl,'file')==2
-    disp(sprintf('Loading %s',fnpl))
     load(fnpl)
+    disp(sprintf('%s loading %s',upper(mfilename),fnpl))
   else
     try
       % Calculates the eigenfunctions/values for this localization problem
@@ -258,6 +258,14 @@ elseif strcmp(L,'demo5')
   [~,~,~,~,~,~,~,~,R1,R2]=addmon(L);
   % It's only a matter of indexing and ordering
   difer(GG(R1,:)-G)
+  % Yet another way, see GLMALPHA
+  % A test by expansion and orthogonality
+  for index=1:length(C)
+    salpha=G'*C{index}(R2);
+    % Only one of these functions should get "hit"
+    difer(sum(abs(salpha)>1e-8)-1,[],[],NaN)
+  end
+
 elseif strcmp(L,'demo6')
   L=72/3;
   % What will be the Shannon number in this construction?
@@ -326,6 +334,38 @@ elseif strcmp(L,'demo7')
   [X,Y]=penlift(XY(:,1),XY(:,2));
   plot(X,Y,'Linew',2,'Color','k');
   hold off
+elseif strcmp(L,'demo8')
+  % Hannah Rogers
+  load(fullfile(getenv('IFILES'),'COASTS','LLVP_Rogers.txt')); dom=LLVP_Rogers;
+  doms=dom+[360*[dom(:,1)<0] zeros(size(dom,1),1)];
+  [X,Y]=penlift(doms(:,1),doms(:,2));
+  L=20;
+  [G,V,EL,EM,N,GM2AL,MTAP,IMTAP]=glmalpha(dom,L);
+  [VG,C,dels,dems,XY,Klmlmp,GG]=localization(L,dom);
+  figure(gcf)
+  clf
+  for index=1:length(V)
+    ah(1)=subplot(211);
+    [~,ch1,ph1]=plotslep(G,index);
+    hold on
+    p(1)=plot(X,Y,'k');
+    t(1)=title(sprintf('%i, %s = %8.5f',index,'\lambda',V(index)));
+    ah(2)=subplot(212);
+    [~,ch2,ph2]=plotplm([dels dems C{index}],[],[],4,1);
+    p(2)=plot(X,Y,'k');
+    longticks(ah,2)
+    hold off
+    nolabels(ah(1),1)
+    serre(ah,1/2,'down')
+    set(p,'LineWidth',1)
+    set(ah,'FontSize',6)
+    deggies(ah)
+    %pause
+    set(t,'FontWeight','normal')
+    set([ch1 ph1 ch2 ph2],'LineWidth',0.5)
+    movev(t,5)
+    figdisp([],sprintf('%3.3i',index),[],2)
+  end
 else
   error('Specify valid demo number')
 end
