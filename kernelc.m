@@ -61,9 +61,9 @@ function varargout=kernelc(Lmax,dom,pars,ngl,rotb)
 % See also LOCALIZATION, SDWREGIONS, GLMALPHA, DLMLMP, KERNELC2D, 
 %          PLOTSLEP, PLM2AVG, KERNELCP, LEGENDREPRODINT, DLMLMP
 %
-% Last modified by fjsimons-at-alum.mit.edu, 03/14/2012
 % Last modified by charig-at-princeton.edu, 01/22/2014
 % Last modified by plattner-at-alumni.ethz.ch, 05/26/2017
+% Last modified by fjsimons-at-alum.mit.edu, 05/11/2022
 
 t0=clock;
 defval('Lmax',18); 
@@ -152,12 +152,12 @@ if ~isstr(Lmax)
 	if strcmp(dom,'antarctica') && rotb==1
 	  % Return the rotation parameters also, to undo later
 	  [XY,lonc,latc]=eval(sprintf('%s(%i)',dom,pars));
-        else
+	else
 	  % Don't, the result will be the kernel for the rotated dom
 	  XY=eval(sprintf('%s(%i)',dom,pars));
 	end
       elseif isstr(pars)
-	   defval('pars','supplyyourownfilename');
+        defval('pars','supplyyourownfilename');
 	XY=dom;
 	% Use the input to define the file name that will be created
 	fnpl=sprintf('%s/WREG-%s-%i.mat',filoc,pars,Lmax);
@@ -169,7 +169,7 @@ if ~isstr(Lmax)
       thN=90-max(XY(:,2)); thN=thN*pi/180;
       thS=90-min(XY(:,2)); thS=thS*pi/180;
     end
-
+    
     % No more set-up after this point
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Introduce and dimensionalize variables and arrays
@@ -346,7 +346,8 @@ if ~isstr(Lmax)
 	end
       else
 	% Now we may have multiple pairs
-	phint=dphregion(acos(x)*180/pi,[],XY); % Changed "dom" to "XY" here CTH
+        % Changed "dom" to "XY" here CTH
+        phint=dphregion(acos(x)*180/pi,[],XY);
 	phint=phint*pi/180;
       end
       
@@ -458,11 +459,11 @@ if ~isstr(Lmax)
     % This is only saved when it's not the alternative calculation method
     if ~strcmp(fnpl,'neveravailable')
       try
-	      save(fnpl,'Lmax','Klmlmp','dom','ngl','XY',...
-	           'lonc','latc','K1','K','-v7.3')
+        save(fnpl,'Lmax','Klmlmp','dom','ngl','XY',...
+             'lonc','latc','K1','K','-v7.3')
       catch
         save(fnpl,'Lmax','Klmlmp','dom','ngl','XY',...
-	           'lonc','latc','K1','K')
+             'lonc','latc','K1','K')
       end
     end
   end
