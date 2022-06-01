@@ -11,9 +11,8 @@ function varargout=boxtex...
 %
 % posi      'll','lr','ul','ur','um','lm', OR (x,y) coordinates
 % handel    Axis handle on which you want to put the textbox
-% index     And scalar index into the alphabet, OR, a string with text
-%           10/25/2021 : Modified to allow cell array inputs for multiline
-%                        text inputs, such as {'a','b'}
+% index     And scalar index into the alphabet, OR, a string with text, 
+%           OR, a cell array for multiline text inputs, such as {'a','b'}
 % fs        Label font size [default: 20]
 % kees      1 Upper-case [default] alphabet will be indexed
 %           0 or anything else: Lower case
@@ -46,8 +45,8 @@ function varargout=boxtex...
 % See also: LABEL, FILLBOX
 %
 % Tested on 8.3.0.532 (R2014a) and 9.0.0.341360 (R2016a)
-% Last modified by fjsimons-at-alum.mit.edu, 07/05/2017
-% Last modified by Yuri Tamama, 10/25/2021
+% Last modified by ytamama-at-alumni.princeton.edu, 10/25/2021
+% Last modified by fjsimons-at-alum.mit.edu, 06/01/2022
 
 defval('posi','ll')
 defval('index',1)
@@ -61,9 +60,7 @@ defval('xver',0)
 axes(handel)
 xl=get(handel,'xlim');
 yl=get(handel,'ylim');
-%rxl=range(xl);
 rxl=max(xl)-min(xl);
-%ryl=range(yl);
 ryl=max(xl)-min(xl);
 
 %-----------------------------------------------
@@ -153,7 +150,7 @@ if nargin>2
   bhan=fillbox(bcor,[1 1 1],1);  
   if isstr(index)
     than=text(tcor(1),tcor(2),1.1,index,'FontSize',fs,...
-	'HorizontalAlignment','Center');
+	      'HorizontalAlignment','Center');
   elseif iscell(index)
     newindex={};
     for n=1:length(index)
@@ -165,7 +162,7 @@ if nargin>2
     end
     index=newindex;
     than=text(tcor(1),tcor(2),1.1,index,'FontSize',fs,...
-	'HorizontalAlignment','Center');
+	      'HorizontalAlignment','Center');
   else
     if kees>=2
       than=text(tcor(1),tcor(2),1.1,num2str(index),...
@@ -175,14 +172,11 @@ if nargin>2
 		'FontSize',fs,'HorizontalAlignment','Center'); 
     end
   end
-  if nargout
-    varargout{1}=bhan;
-    varargout{2}=than;
-  end
+  varns={bhan,than};
 else
-    if nargout
-      varargout{1}=bcor;
-      varargout{2}=tcor;
-    end
+  varns={bcor,tcor};
 end
+
+% Optional output
+varargout=varns(1:nargout);
 
