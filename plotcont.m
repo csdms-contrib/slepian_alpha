@@ -19,6 +19,7 @@ function varargout=plotcont(c11,cmn,res,ofs,pcol,lolax)
 %        9 Plot this on the two-dimensional cubed sphere
 %        10 Global Mollweide projection centered on Greenwich
 %        11 Three-dimensional flattened obstructed view centered on an axis
+%           [defaulted: looking down upon Guyot Hall]
 % ofs    Longitude offset, e.g. 360 degrees [only for 0,1,5,6,7]
 % pcol   The patch color in case option 7 is chosen [default: grey]
 % lolax  Longitude and latitude of the view axis when res==11
@@ -32,6 +33,7 @@ function varargout=plotcont(c11,cmn,res,ofs,pcol,lolax)
 %        option Mollweide, also the handle to the box around it
 % XYZ    The actual data points plotted (2D or 3D)
 % xyze   The equatorial data points plotted (2D or 3D)
+% az,el  Azimuth and elevation of the VIEW axis 
 %
 % AUSTRALIA:
 % plotcont([90 10],[180 -60])
@@ -41,7 +43,7 @@ function varargout=plotcont(c11,cmn,res,ofs,pcol,lolax)
 %
 % SEE ALSO: MAPROTATE, SPHAREA, PHICURVE, RCENTER
 %
-% Last modified by fjsimons-at-alum.mit.edu, 03/23/2020
+% Last modified by fjsimons-at-alum.mit.edu, 06/01/2022
 
 % Saved matrix as space-saving unsigned integer 
 % - but that translates the NaN's into some  high number - take that out.
@@ -53,8 +55,8 @@ defval('res',0)
 defval('ofs',0)
 defval('pcol',grey)
 defval('xyze',nan(1,3))
-% Guyot Hall
-defval('lolax',[-74.6548   40.3458])
+% Guyot Hall see guyotphysics(0)
+defval('lolax',[-74.6548 40.3458])
 
 switch res
  case 5
@@ -130,8 +132,8 @@ switch res
 	 min(lat([~isnan(lon) & ~isnan(lat)]))...
 	 max(lat([~isnan(lon) & ~isnan(lat)]))];
   XYZ=[lon+ofs lat];
-  % For the filled patches only
  case 7
+  % For the filled patches only
   % Collect the data
   lon=cont(:,1); lat=cont(:,2);
   % To use fill, eliminate all the NaNs
@@ -154,6 +156,7 @@ switch res
   tri=101;
   lon=lon([1:fdem(tri)-1 fdem(tri+1)+1:end]);
   lat=lat([1:fdem(tri)-1 fdem(tri+1)+1:end]);
+  lon=lon+ofs;
   XYZ=[lon+ofs lat];
   % And partitioning again
   fdem=find(isnan(lon));
@@ -250,8 +253,11 @@ switch res
   delete(pva)
 end
 
+defval('AZ',NaN)
+defval('EL',NaN)
+
 % Generate output
-vars={axlim,handl,XYZ,xyze};
+vars={axlim,handl,XYZ,xyze,AZ,EL};
 varargout=vars(1:nargout);
 
 % Last-minute cosmetic adjustment
