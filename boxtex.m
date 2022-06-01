@@ -39,12 +39,20 @@ function varargout=boxtex...
 % EXAMPLE II:
 %
 % load clown; image(X)
-% b=boxtex('ul',gca,'This is a clown',12)
+% b=boxtex('ul',gca,'This is a clown',12);
 % set(b,'FaceColor','y','EdgeColor','b')
+% 
+% EXAMPLE III:
+%
+% load clown; subplot(121); image(X); subplot(122); image(X)
+% subplot(121); axis image; b=boxtex('ul',gca,sprintf('This is\na clown'),12);
+% set(b,'FaceColor','y','EdgeColor','b'); 
+% subplot(122); axis image; c=boxtex('ul',gca,{'This is','a clown'},12);
+% set(c,'FaceColor','g','EdgeColor','c'); 
 % 
 % See also: LABEL, FILLBOX
 %
-% Tested on 8.3.0.532 (R2014a) and 9.0.0.341360 (R2016a)
+% Tested on 8.3.0.532 (R2014a), 9.0.0.341360 (R2016a) and 9.8.0.1359463 (R2020a)
 % Last modified by ytamama-at-alumni.princeton.edu, 10/25/2021
 % Last modified by fjsimons-at-alum.mit.edu, 06/01/2022
 
@@ -66,7 +74,7 @@ ryl=max(xl)-min(xl);
 %-----------------------------------------------
 % Specify height and width of box and margins
 % in proportion of the FS (default 20)
-if isstr(index)
+if isstr(index) | iscell(index)
   watis=index;
 else
   watis= 'M';
