@@ -16,7 +16,8 @@ function varargout=plotplm(data,lon,lat,meth,degres,th0,sres,cax)
 % m              A single angular order
 % cosi           1 A unit expansion coefficient for the cosine [default] 
 %                2 A unit expansion coefficient for the sine harmonic 
-% lon,lat        2-D grid in radians [default (0,2pi) and (-pi/2,pi/2)]
+% lon,lat        2-D plaid grid specified as two 1-D vectors in radians
+%                [default (0,2pi) and (-pi/2,pi/2)]
 % meth           1  Mollweide projection [default]
 %                2  3-D sphere, no topography
 %                3  Plots the spectrum (only if lmcosi specified)
@@ -44,12 +45,16 @@ function varargout=plotplm(data,lon,lat,meth,degres,th0,sres,cax)
 %
 % EXAMPLE:
 %
+% load topo; topo=flipud(topo); plotplm(topo,[],[],1)
 % load topo; topo=flipud(topo); plotplm(topo,[],[],2)
+% load topo; topo=flipud(topo); plotplm(topo,[],[],4)
+% load topo; topo=flipud(topo); plotplm(topo,[],[],5)
+% load topo; topo=flipud(topo); plotplm(topo,[],[],6)
 %
 % See also PLOTONSPHERE, PLOTONEARTH, CPX2RSH, RSH2CPX, ADDCB.
 %
-% Last modified by fjsimons-at-alum.mit.edu, 01/21/2021
 % Last modified by charig-at-princeton.edu, 05/14/2015
+% Last modified by fjsimons-at-alum.mit.edu, 04/27/2022
 
 defval('meth',1)
 defval('degres',[])
@@ -166,8 +171,7 @@ switch meth
     Y=linspace(1,-1,length(lat));
   end
   warning off MATLAB:griddata:DuplicateDataPoints
-  % Watch out: the POLE is a new problem with the latest version of
-  % Matlab; need to fake this entirely. See POLARGRID and LORIS1. 
+  % Need to fake this entirely. See POLARGRID and LORIS1. 
   y(1,:)=y(2,:)/2;
   x(1,:)=x(2,:)/2;
   Z=griddata(x,y,data(1:length(lat),:),X,Y(:));
@@ -199,11 +203,11 @@ switch meth
   [LON,LAT]=meshgrid(lon,lat);
   % Radius from 0 to 1; longitude is azimuth
   r=cos(LAT);
-  x=r.*cos(LON+pi/2);
-  y=r.*sin(LON+pi/2);
-  % Resolution of upper hemispheric projection
+  x=r.*cos(LON);
+  y=r.*sin(LON);
+  % Resolution of lower hemispheric projection
   if sres==0
-    % Only project the upper hemisphere
+    % Only project the lower hemisphere
     X=linspace(-1,1,500);
     Y=linspace(1,-1,500);
   else
@@ -211,8 +215,7 @@ switch meth
     Y=linspace(1,-1,length(lat));
   end
   warning off MATLAB:griddata:DuplicateDataPoints
-  % Watch out: the POLE is a new problem with the latest version of
-  % Matlab; need to fake this entirely
+  % Need to fake this entirely. See POLARGRID and LORIS1.
   y(1,:)=y(2,:)/2;
   x(1,:)=x(2,:)/2;
   Z=griddata(x,y,data(1:length(lat),:),X,Y(:));
@@ -222,7 +225,7 @@ switch meth
   % colormap(gray(10)); hold on
   % IMAGEFNAN indexes the color map directly
   defval('cax',minmax(Z(:)));
-  imagefnan([-1 1],[1 -1],Z,kelicol,cax)
+  imagefnan([-1 -1],[1 1],Z,kelicol,cax)
   colormap(kelicol); hold on
   ph(1)=circ(1); 
   ph(2)=circ(sin(th0*pi/180));
@@ -230,11 +233,12 @@ switch meth
   set(ph(2),'LineS','--')
   axis([-1.0100    1.0100   -1.0100    1.0100])
   axis off
-  [axlim,handl,XYZ]=plotcont([0 90],[360 -90],11);
+  [axlim,handl,XYZ,~,az,el]=plotcont([0 90],[360 -90],11,[],[],[10 -90]);
   delete(handl)
   hold on
   ch=plot(XYZ(:,1),XYZ(:,2),'k-','LineWidth',1);
   data=Z;
+  view(2)
  otherwise
   error('Not a valid method')
 end
@@ -242,4 +246,3 @@ end
 % Prepare desired output
 varns={data,ch,ph,lon,lat};
 varargout=varns(1:nargout);
-
