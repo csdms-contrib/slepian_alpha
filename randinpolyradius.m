@@ -7,11 +7,11 @@ function varargout=randinpolyradius(dom,N,satrad,varalt,rotcoords)
 %
 % INPUT:
 %
-% dom 		   Named region such as eurasia, namerica, samerica, etc. OR
+% dom          Named region such as eurasia, namerica, samerica, etc. OR
 %                Radius of the concentration region (degrees) OR
 %                Two Radii (outer then inner) of the concentration region 
 %                  which will be a donut (degrees)
-% N 		   Number of points to generate. The resulting number will be
+% N            Number of points to generate. The resulting number will be
 %                close but not exact
 % satrad       The mean satellite radius for your data
 % varalt       The full range of the radius interval for your data. You will
@@ -21,7 +21,7 @@ function varargout=randinpolyradius(dom,N,satrad,varalt,rotcoords)
 %
 % OUTPUT:
 %
-% rad		Radius of the random points
+% rad	    Radius of the random points
 % theta     Co-latitudes of the random points (radians)
 % phi       Longitude of the random points (radians)
 %
@@ -29,7 +29,7 @@ function varargout=randinpolyradius(dom,N,satrad,varalt,rotcoords)
 %
 % randinpolyradius('demo1')
 % 
-% Last modified by charig@arizona.edu, 6/11/2022
+% Last modified by charig@arizona.edu, 6/16/2022
 % Last modified by plattner-at-alumni.ethz.ch, 6/27/2016
 
 
