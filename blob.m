@@ -14,7 +14,9 @@ function varargout=blob(N,Nj)
 %
 % RANDCIRC
 %
-% Last modified by fjsimons-at-alum.mit.edu, 10/06/2008
+% Tested on 8.3.0.532 (R2014a) and 9.0.0.341360 (R2016a)
+%
+% Last modified by fjsimons-at-alum.mit.edu, 08/04/2022
 
 defval('N',100)
 defval('Nj',10);
@@ -47,8 +49,7 @@ for index = 1:N
   yold=y;
 end
 
-varn={'xx','yy'};
-for index=1:nargout
-  varargout{index}=eval(varn{index});
-end
+% Optional output
+varns={'xx','yy'};
+varargout=varns(1:nargout);
   
