@@ -2,8 +2,7 @@ function varargout=blob(N,Nj)
 % BLOB(N,nj)
 % [x,y]=BLOB(N,nj)
 %
-% Makes (moving) picture of a random blob by superposition of random
-% circles. 
+% Makes (moving) picture of a random blobs. 
 %
 % INPUT:
 %
@@ -50,6 +49,6 @@ for index = 1:N
 end
 
 % Optional output
-varns={'xx','yy'};
+varns={xx,yy};
 varargout=varns(1:nargout);
   
