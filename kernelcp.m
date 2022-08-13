@@ -120,7 +120,7 @@ if ~isstr(Lmax)
   if exist(fnpl1,'file')==2 && ~isstr(ngl)
     % Check the KERNELC directory
     load(fnpl1)
-    disp(sprintf('%s loaded by %s',fnpl1),upper(mfilename))
+    disp(sprintf('%s loaded by %s',fnpl1,upper(mfilename)))
   elseif exist(fnpl2,'file')==2 && ~isstr(ngl)
     % Check if you have a file in the old KERNELCP directory
     load(fnpl2)
