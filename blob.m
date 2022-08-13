@@ -2,19 +2,24 @@ function varargout=blob(N,Nj)
 % BLOB(N,nj)
 % [x,y]=BLOB(N,nj)
 %
-% Makes (moving) picture of a random blob by superposition of random
-% circles. 
+% Makes (moving) picture of smoothly deforming random blobs. 
 %
 % INPUT:
 %
 % N     Number of loops for, and if movie [default: 100]
 % Nj    Smoothness, roughly
 %
+% OUTPUT:
+%
+% x,y  Horizontal and vertical coordinates
+%
 % SEE ALSO:
 %
 % RANDCIRC
 %
-% Last modified by fjsimons-at-alum.mit.edu, 10/06/2008
+% Tested on 8.3.0.532 (R2014a) and 9.0.0.341360 (R2016a)
+%
+% Last modified by fjsimons-at-alum.mit.edu, 08/04/2022
 
 defval('N',100)
 defval('Nj',10);
@@ -25,6 +30,7 @@ if nargout==0
   figure(gcf)
 end
 
+% Loop and plot
 for index = 1:N
   [x,y]=randcirc(0,0,1,0.2,10);                                             
   col=rand(1,3);
@@ -47,8 +53,7 @@ for index = 1:N
   yold=y;
 end
 
-varn={'xx','yy'};
-for index=1:nargout
-  varargout{index}=eval(varn{index});
-end
+% Optional output
+varns={xx(:),yy(:)};
+varargout=varns(1:nargout);
   

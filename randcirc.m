@@ -25,7 +25,7 @@ function [x,y]=randcirc(xm,ym,r,dr,N)
 % BLOB
 %
 % Tested on 8.3.0.532 (R2014a) and 9.0.0.341360 (R2016a)
-% Last modified by fjsimons-at-alum.mit.edu, 06/21/2016
+% Last modified by fjsimons-at-alum.mit.edu, 08/04/2022
 
 defval('xm',0)
 defval('ym',0)
@@ -51,6 +51,7 @@ else
   rr=interp1(t,r,tt,'pchip');
 end
 
+% Ouput
 x=xm+rr.*cos(tt);
 y=ym+rr.*sin(tt);
 
