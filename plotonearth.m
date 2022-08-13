@@ -54,7 +54,7 @@ surface(x,y,z,'FaceColor','texture','Cdata',data);
 % Cosmetics
 axis image
 shading flat
-view(140,30)
+view(350,45)
 
 % Optional outputs
 varns={pc};

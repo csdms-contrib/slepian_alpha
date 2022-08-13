@@ -45,7 +45,7 @@ switch fmt
 end
 
 % Do the standard plotting routine
-defval('meth',4)
+defval('meth',1)
 defval('degres',1)
 % This should be renormalized!!
 [data,ch,ph]=plotplm(lmcosi,[],[],meth,degres);
