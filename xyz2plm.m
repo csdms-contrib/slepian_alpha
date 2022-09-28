@@ -1,5 +1,5 @@
-function [lmcosi,dw]=xyz2plm(fthph,L,method,lat,lon,cnd)
-% [lmcosi,dw]=XYZ2PLM(fthph,L,method,lat,lon,cnd)
+function [lmcosi,dw,L2err]=xyz2plm(fthph,L,method,lat,lon,cnd)
+% [lmcosi,dw,L2err]=XYZ2PLM(fthph,L,method,lat,lon,cnd)
 %
 % Forward real spherical harmonic transform in the 4pi normalized basis.
 %
@@ -44,6 +44,7 @@ function [lmcosi,dw]=xyz2plm(fthph,L,method,lat,lon,cnd)
 %
 % lmcosi        Matrix listing l,m,cosine and sine coefficients
 % dw            Eigenvalue spectrum in the irregular case
+% L2err         L2 error in the irregular case
 %
 % Note that the MEAN of the input data deviates from C(1), as sampled
 % fields lose the orthogonality. The inversion approaches should recover
@@ -63,10 +64,11 @@ defval('lon',[])
 defval('lat',[])
 defval('dw',[])
 defval('cnd',[])
+defval('L2err',[])
 
 as=0;
 % If no grid is specified, assumes equal spacing and complete grid
-if isempty(lat) & isempty(lon)
+if isempty(lat) && isempty(lon)
   % Test if data is 2D, and periodic over longitude
   fthph=reduntest(fthph);
   polestest(fthph)
@@ -101,6 +103,14 @@ elseif isempty(lon)
   nlon=size(fthph,2);
   dphi=2*pi/nlon;
   Lnyq=min([ceil((nlon-1)/2) ceil(pi/dtheta)]);
+elseif length(lon)==2 && length(lat)==2 && ...
+      lat(1)==90 && lat(2)==-90 && diff(lon)==360
+  % This is a rotated complete map over
+    keyboard
+    fthph=maprotate(fthph,[lon(1) lat(1) lon(2) lat(2)]);
+    [lmcosi,dw]=xyz2plm(fthph,L,[],[],[],[]);
+  return
+  % Is it a square? Force that to irregular method...
 else
   % Irregularly sampled data
   fthph=fthph(:);
@@ -257,7 +267,7 @@ end
 lmcosi(abs(lmcosi(:,3))<eps,3)=0;
 lmcosi(abs(lmcosi(:,4))<eps,4)=0;
 
-%disp(sprintf('XYZ2PLM (Analysis)  took %8.4f s',etime(clock,t0)))
+disp(sprintf('XYZ2PLM (Analysis using %s)  took %8.4f s',method,etime(clock,t0)))
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function grd=reduntest(grd)
