@@ -23,11 +23,17 @@ function varargout=randinpoly(dom,N)
 
 defval('dom','namerica')
 defval('N',100)
+defval('pars',10)
 
 if ~strncmp(dom,'demo',4)
 
-    % Get the XY coordinates
-    XY=eval(sprintf('%s()',dom));
+    if iscell(dom)
+        % A region with a buffer. Get the XY coordinates
+        XY=eval(sprintf('%s(%i,%f)',dom{1},pars,dom{2}));
+    else
+       % Get the XY coordinates
+       XY=eval(sprintf('%s()',dom));
+    end
 
     % Get the center of mass
     [lonc,latc] = rcenter(XY);

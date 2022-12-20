@@ -42,9 +42,13 @@ defval('rotcoords',[])
 
 % Now generate random points within target region
 
-if ischar(dom) && ~strncmp(dom,'demo',4)
+if (ischar(dom) && ~strncmp(dom,'demo',4)) || iscell(dom)
     % a region
-    [lon,lat]=randinpoly(dom,N);
+    if strcmp(dom,'global')
+        [lon,lat]=randsphere(N);
+    else
+        [lon,lat]=randinpoly(dom,N);
+    end
     % Transform latitude into colatitude:
     cola=90-lat;
 
