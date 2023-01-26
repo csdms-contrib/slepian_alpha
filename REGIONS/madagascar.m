@@ -17,7 +17,7 @@ function varargout=madagascar(res,scal)
 %
 % XY       Closed-curved coordinates of the island
 %
-% Last modified by fjsimons-at-alum.mit.edu, September 28, 2014
+% Last modified by fjsimons-at-alum.mit.edu, 01/26/2023
 
 defval('res',0)
 defval('buf',0)

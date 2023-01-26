@@ -16,7 +16,7 @@ function varargout=baffin(res,buf)
 %
 % XY       Closed-curved coordinates of the continent
 %
-% Last modified by fjsimons-at-alum.mit.edu, 09/23/2014
+% Last modified by fjsimons-at-alum.mit.edu, 09/25/2014
 
 defval('res',0)
 defval('buf',0)

@@ -17,7 +17,7 @@ function varargout=honshu(res,buf)
 %
 % XY       Closed-curved coordinates of the island
 %
-% Last modified by fjsimons-at-alum.mit.edu, 09/24/2014
+% Last modified by fjsimons-at-alum.mit.edu, 09/25/2014
 
 defval('res',0)
 defval('buf',0)

@@ -23,8 +23,8 @@ function varargout=contshelves(res,rotb)
 % latc     The amount by which you need to rotate it back over y
 %
 % Written by Jarno Saarimaki and Ciaran Beggan, 2011
-% Last modified by fjsimons-at-alum.mit.edu, 07/12/2012
 % Last modified by charig-at-princeton.edu, 06/27/2016
+% Last modified by fjsimons-at-alum.mit.edu, 01/26/2023
 
 defval('res',0)
 defval('rotb',0)

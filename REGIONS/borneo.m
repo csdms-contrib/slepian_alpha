@@ -24,7 +24,7 @@ defval('buf',0)
 
 % Parameters that make this the region in question
 regn='borneo';
-c11=[108 9];
+c11=[108  9];
 cmn=[120 -5];
 xunt=[12:57];
 ofs=0;
