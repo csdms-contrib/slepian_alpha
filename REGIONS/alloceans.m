@@ -15,7 +15,7 @@ function varargout=alloceans(res)
 %
 % OUTPUT:
 %
-% XY       Closed-curved coordinates of the world's ocean
+% XY       Closed-curved coordinates of the world's oceans
 %
 % SEE ALSO: EQBAND
 %
