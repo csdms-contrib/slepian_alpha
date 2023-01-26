@@ -22,7 +22,7 @@ lmcosi(tocofs+ronm)=G(:,wot);
 % Renormalize so that when multiplied with 4pi-harmonics they have the
 % same integral. Note that this has nothing special for the m=0 zonal
 % coefficients - it's simply the last mile of the normalization. Check
-% this using Fibonacci_grid as suggested in GALPHA.
+% this using FIBONACCIGRID as suggested in GALPHA.
 lmcosi(:,3:4)=lmcosi(:,3:4)/sqrt(4*pi);
 
 % Remember that if you were to use YLM for rendering you'd have to add
