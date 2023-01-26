@@ -1,5 +1,4 @@
 function varargout=blob(N,Nj)
-% BLOB(N,nj)
 % [x,y]=BLOB(N,nj)
 %
 % Makes (moving) picture of smoothly deforming random blobs. 
@@ -7,23 +6,27 @@ function varargout=blob(N,Nj)
 % INPUT:
 %
 % N     Number of loops for, and if movie [default: 100]
-% Nj    Smoothness, roughly
+% Nj    Smoothness, roughly [default: 10]
 %
 % OUTPUT:
 %
-% x,y  Horizontal and vertical coordinates
+% x,y    Horizontal and vertical coordinates. Figure is being created
+%        only no output requested.
 %
 % SEE ALSO:
 %
 % RANDCIRC
 %
-% Tested on 8.3.0.532 (R2014a) and 9.0.0.341360 (R2016a)
+% Tested on 8.3.0.532 (R2014a), 9.0.0.341360 (R2016a), 9.7.0.1190202 (R2019b)
 %
-% Last modified by fjsimons-at-alum.mit.edu, 08/04/2022
+% Last modified by fjsimons-at-alum.mit.edu, 01/26/2023
 
+% Defaulted
 defval('N',100)
 defval('Nj',10);
+% Makes the ur-random circle
 [xold,yold]=randcirc(0,0,1,1,10);
+% Discretize the radius perturbation
 r=linspace(0,1,Nj+1);
 rm=1-r;
 if nargout==0
