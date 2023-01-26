@@ -1,7 +1,8 @@
 function XY=regselect(regn,c11,cmn,xunt,res,buf,ofs)
 % XY=REGSELECT(regn,c11,cmn,xunt,res,buf,ofs)
 %
-% Returns coordinates of a certain named specified region
+% Returns coordinates of a certain named specified region, and will
+% help you make an appropriate (buffered) selection before saving it. 
 % 
 % INPUT:
 %
@@ -24,7 +25,7 @@ function XY=regselect(regn,c11,cmn,xunt,res,buf,ofs)
 % 
 % Last modified by charig-at-email.arizona.edu, 12/05/2017
 % Last modified by maxvonhippel@email.arizona.edu, 12/05/2017
-% Last modified by fjsimons-at-alum.mit.edu, 06/13/2015
+% Last modified by fjsimons-at-alum.mit.edu, 01/26/2022
 
 % The directory where you keep the coordinates
 whereitsat=fullfile(getenv('IFILES'),'COASTS');
@@ -150,15 +151,15 @@ else
   % Do we want to buffer out or buffer inside the curve?
   if buf ~= 0
     if buf > 0
-      inout='outPlusInterior';
+        % Here we assume you now have a 2015 or later version of MATLAB
+        % so we can interpret positive buffers as outPlusInterior. In
+        % prior versions, this used to be just 'out' and require a fix.
+        inout='outPlusInterior';
     else
       inout='in';
     end
     % Make some buffered coordinates and save them for later use
     disp('Buffering the coastlines... this may take a while');
-
-    % Here we assume you now have a 2015 or later version of Matlab
-    % so we can interpret positive buffers as outPlusInterior
 
     % You might look into REDUCEM to make this easier
     % Note that BUFFERM has gone through quite a few revisions
