@@ -4,7 +4,7 @@ function varargout=alloceans3(res,inclang)
 %
 % Finds the coordinates of some of the worlds' oceans so we can combine
 % its localization kernel with those for the missing continents to turn
-% into Slepian eigenfunctions for all of the world's oceans
+% into Slepian eigenfunctions for all of the world's oceans.
 %
 % INPUT:
 %
