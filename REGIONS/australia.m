@@ -25,7 +25,7 @@ defval('buf',0)
 % Parameters that make this the region in question
 regn='australia';
 c11=[112 -10.5];
-cmn=[154 -39];
+cmn=[154 -39  ];
 xunt=2:166;
 
 % Do it! Make it, load it, save it

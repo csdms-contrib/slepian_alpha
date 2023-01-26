@@ -24,8 +24,8 @@ defval('buf',0)
 
 % Parameters that make this the region in question
 regn='africa';
-c11=[0 37.5 ; 342.5 36.5];
-cmn=[52 -35 ; 360 3.5];
+c11=[ 0  37.5 ; 342.5 36.5];
+cmn=[52 -35   ; 360    3.5];
 xunt=[261:307 110:260 339:399];
 ofs=[360 0];
 

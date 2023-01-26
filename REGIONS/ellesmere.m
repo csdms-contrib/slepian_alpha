@@ -25,7 +25,6 @@ defval('buf',0)
 % Parameters that make this the region in question
 regn='ellesmere';
 c11=[267 85];
-%cmn=[300 76];
 cmn=[300 74];
 xunt=[61:245];
 

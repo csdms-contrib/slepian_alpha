@@ -24,7 +24,7 @@ defval('buf',0)
 
 % Parameters that make this the region in question
 regn='england';
-c11=[353 59 ; 0 59];
+c11=[353 59    ; 0 59   ];
 cmn=[360 49.75 ; 2 49.75];
 xunt=[61:68 9:60 72:80];
 ofs=[0 360];

@@ -24,7 +24,7 @@ defval('buf',0)
 
 % Parameters that make this the region in question
 regn='newguinea';
-c11=[130 0];
+c11=[130  0 ];
 cmn=[151 -13];
 xunt=[1:70];
 ofs=0;

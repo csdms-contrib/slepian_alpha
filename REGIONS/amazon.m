@@ -24,7 +24,7 @@ defval('buf',0)
 
 % Parameters that make this the region in question
 regn='amazon';
-c11=[280 5];
+c11=[280   5];
 cmn=[310 -25];
 xunt=[];
 

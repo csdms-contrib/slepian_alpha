@@ -24,8 +24,8 @@ defval('buf',0)
 
 % Parameters that make this the region in question
 regn='eurasia';
-c11=[0 77.5 ; 350 50 ; 180 69];
-cmn=[180 8; 360 36 ; 190 64];
+c11=[  0 77.5 ; 350 50];
+cmn=[180  8   ; 360 36];
 xunt=[420:827 914:1023 1556:1605 1030:1548 1607:1639];
 ofs=[360 0 360];
 

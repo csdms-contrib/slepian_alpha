@@ -24,7 +24,7 @@ defval('buf',0)
 
 % Parameters that make this the region in question
 regn='orinoco';
-c11=[260 15];
+c11=[260  15];
 cmn=[345 -60];
 xunt=[];
 

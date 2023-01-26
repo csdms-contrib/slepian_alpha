@@ -28,7 +28,7 @@ defval('nearby',0)
 % Parameters that make this the region in question
 regn='greenland';
 c11=[286.7 83.75];
-cmn=[349 59.75];
+cmn=[349   59.75];
 xunt=1:352;
 
 % Do it! Make it, load it, save it

@@ -38,7 +38,7 @@ defval('rotb',0)
 if ~isstr(res)
     
   % Some setup
-  c11=[0 -62];
+  c11=[0   -62];
   cmn=[360 -83];
     
   % Do it! Make it, load it, save it

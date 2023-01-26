@@ -24,7 +24,7 @@ defval('buf',0)
 % Parameters that make this the region in question
 regn='france';
 c11=[-10 50];
-cmn=[10 30];
+cmn=[ 10 30];
 xunt=[];
 
 % This admittedly is a special case

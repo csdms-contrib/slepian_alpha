@@ -24,8 +24,8 @@ defval('buf',0)
 
 % Parameters that make this the region in question
 regn='namerica';
-c11=[191 74.5];
-cmn=[304.5 12];
+c11=[191   74.5];
+cmn=[304.5 12  ];
 xunt=[385:717 721:1004];
 
 % Do it! Make it, load it, save it

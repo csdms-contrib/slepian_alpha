@@ -24,7 +24,7 @@ defval('buf',0)
 
 % Parameters that make this the region in question
 regn='sumatra';
-c11=[94 6];
+c11=[ 94  6];
 cmn=[108 -6];
 xunt=[4:42];
 ofs=0;
