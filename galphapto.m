@@ -3,11 +3,11 @@ function varargout=...
 % [Gar,V,N,J,phi0,theta0,omega,theta,phi,TH,L,Glma,EL,EM]=...
 %          GALPHAPTO(TH,L,phi0,theta0,omega,theta,phi,J,irr,Glma,V,N,EL,EM)
 %
-% This function returns an (alpha)X(r) matrix with the spatially expanded
-% BANDLIMITED or PASSBAND Slepian functions of the SINGLE CAP as rotated
-% to a desired location and azimuthally by a certain amount. The
-% evaluation points can be a regular grid or an irregular collection of
-% points. In the first case, the column dimension is
+% This function returns an (alpha)X(r) matrix with the spatially
+% expanded BANDLIMITED or PASSBAND Slepian functions of the SINGLE CAP
+% as rotated to a desired location and azimuthally by a certain
+% amount. The evaluation points can be a regular grid or an irregular
+% collection of points. In the first case, the column dimension is
 % length(theta)*length(phi) and in the second case, it is length(theta). 
 % The normalization is as in Simons, Wieczorek and Dahlen, eq. (3.15)/(5.7)
 %
