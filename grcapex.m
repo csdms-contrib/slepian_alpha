@@ -17,7 +17,7 @@ function [latmax,lonmax]=grcapex(lat1,lon1,lat2,lon2)
 
 % Calculates the great circle distance between two points, in radians
 % d = acos(sin(lat1).*sin(lat2)+cos(lat1).*cos(lat2).*cos(lon1-lon2));
-d=grcdist([lon1 lat1]*180/pi,[lon2 lat2]*180/pi)/6371;
+d=grcdist([lon1 lat1]*180/pi,[lon2 lat2]*180/pi)/fralmanac('Radius')*1000;
 
 % Calculates the true course at the point d on the line
 tc1 = acos((sin(lat2)-sin(lat1).*cos(d))./(sin(d).*cos(lat1)));
