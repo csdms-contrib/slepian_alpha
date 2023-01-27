@@ -1,7 +1,7 @@
 function [x,y]=randcirc(xm,ym,r,dr,N)
 % [x,y]=randcirc(xm,ym,r,dr,N)
 %
-% Gives the coordinates of a random blobby circle.
+% Makes the coordinates of a random blobby circle.
 %
 % INPUT:
 %
