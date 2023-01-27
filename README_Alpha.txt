@@ -38,7 +38,6 @@ functions such as KERNELCP will take advantage of the parallel
 computing resources and run much faster than otherwise.
 
 
-
 Other important stuff
 
 This software is distributed under the GNU Public License v2, which can be
