@@ -39,7 +39,7 @@ function [longclatgc,delta]=grcircle(lon1lat1,lon2lat2,longr,latgr)
 %                  StLouis(2)*180/pi,StLouis(1)*180/pi,[],'degrees',100);
 % norm(norm([LON+360 LAT]-[ lola*180/pi]))
 %
-% Last modified by fjsimons-at-alum.mit.edu, 02/24/2017
+% Last modified by fjsimons-at-alum.mit.edu, 01/26/2023
 
 defval('longr',100);
 
@@ -49,7 +49,7 @@ defval('longr',100);
 lon1=lon1+(lon1<0)*2*pi;
 lon2=lon2+(lon2<0)*2*pi;
 
-[latmax,lonmax]=apex(lat1,lon1,lat2,lon2);
+[latmax,lonmax]=grcapex(lat1,lon1,lat2,lon2);
 
 if nargin<=3 & round(longr)==longr 
   % Fixed number of points
