@@ -27,7 +27,7 @@ function varargout=grcazim(lonlat,dlta,angl,spheroid)
 %
 % grcazim('demo1')
 %
-% Last modified by fjsimons-at-alum.mit.edu, 06/03/2020
+% Last modified by fjsimons-at-alum.mit.edu, 01/26/2023
 
 % Some default values
 defval('lonlat',[100 20])
