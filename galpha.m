@@ -254,7 +254,7 @@ elseif strcmp(TH,'demo3')
   TH=40; L=12; [G,V,EM,GK,VK,NA,N,~,~,Glma]=...
      galpha(TH,L,sord,linspace(0,pi,50),linspace(0,2*pi,100),'global');
   % Approximate normalization
-  [lon,lat]=Fibonacci_grid;
+  [lon,lat]=fibonaccigrid;
   Gf=galpha(TH,L,sord,pi/2-lat*pi/180,lon*pi/180,'global',[],[],[],[],1);
   
   % To give a nice visual
