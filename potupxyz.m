@@ -85,12 +85,14 @@ if ~ischar(coefin) && (addmoff(Lmax) == size(coefin,1) || ~isempty(Lrange))
     % the field coefficients, to get the new fields evluated at our points
     % Don't forget the ems
     if (size(coefin,1)==length(bigl))
-        for i=1:size(coefin,2) 
-            dataout(:,i) = sum(A.*YA.*coefin(:,i),1)';
-        end
+        %for i=1:size(coefin,2) 
+        %    dataout(:,i) = sum(A.*YA.*coefin(:,i),1)';
+        %end
+        dataout = (A.*YA)'*coefin;
     else
         error('Number of coefin entries does not match Lrange')
     end
+
 
     varns={dataout};
     varargout=varns(1:nargout);
