@@ -15,9 +15,9 @@ function [lon2,lat2]=caploc(lonlat,TH,N,method)
 %
 % [lon2,lat2]      The requested points [degrees or Mollweide]
 %
-% See also: LATITUDE, LONGITUDE
+% See also: LATITUDE, LONGITUDE, CAPLOX
 %
-% Last modified by fjsimons-at-alum.mit.edu, 11/05/2010
+% Last modified by fjsimons-at-alum.mit.edu, 05/21/2023
 
 defval('lonlat',[55 20])
 defval('TH',15)
