@@ -21,25 +21,24 @@ function [longclatgc,delta]=grcircle(lon1lat1,lon2lat2,longr,latgr)
 %
 % LaJolla=[242.7340 32.8660]*pi/180; StLouis=[269.8160 38.6280]*pi/180; 
 % Harvard=[288.4420 42.5060]*pi/180; LosAngeles=[241.6330 34.0830]*pi/180;
-%% Calculate great circle on a grid
+% % Calculate great circle on a grid
 % longr=linspace(0,2*pi,100); latgr=linspace(-pi/2,pi/2,100);
 % [lola,delta]=grcircle(Harvard,LosAngeles,longr,latgr);
 % plot(lola(:,1)*180/pi,lola(:,2)*180/pi,'b+'); hold on
 % [lo,la]=meshgrid(longr,latgr); fridplot(lo*180/pi,la*180/pi)
-%% or calculate just a number of points
+% % or calculate just a number of points
 % [lola,delta]=grcircle(LaJolla,StLouis,100);
 % plot(lola(:,1)*180/pi,lola(:,2)*180/pi,'ro');
-% plotcont([220 60],[320 20]); hold off; axis image; axis([220 320 20
-% 60])
+% plotcont([220 60],[320 20]); hold off; axis image; axis([220 320 20 60])
 %
 % EXAMPLE:
 %
-%%Compare with:
+% %Compare with:
 % [LAT,LON]=track2(LaJolla(2)*180/pi,LaJolla(1)*180/pi,...
 %                  StLouis(2)*180/pi,StLouis(1)*180/pi,[],'degrees',100);
 % norm(norm([LON+360 LAT]-[ lola*180/pi]))
 %
-% Last modified by fjsimons-at-alum.mit.edu, 01/26/2023
+% Last modified by fjsimons-at-alum.mit.edu, 06/08/2023
 
 defval('longr',100);
 
