@@ -15,8 +15,9 @@ function varargout=plm2spec(lmcosi,norma,in,ot)
 %                          This gives the proper power spectral density
 %                          as we've come to know it
 %                      3 none, i.e. a scaling factor of 1
-% in                   Index to minimum degree to consider for the spectral fit [defaulted]                 
-% ot                   Index to maximum degree to consider for the spectral fit [defaulted]                 
+% in                   Index to minimum degree for the spectral fit [defaulted]
+% ot                    ...  to maximum degree for the spectral fit [defaulted]
+%                       ...  in a linearly indexed lmin:lmax array
 %
 % OUTPUT:
 %
@@ -33,16 +34,15 @@ function varargout=plm2spec(lmcosi,norma,in,ot)
 %
 % [sdl,l,bta,lfit,logy,logpm]=plm2spec(fralmanac('EGM96'));
 %
-% SEE ALSO: ACTSPEC
-%
 % The normalization by (2l+1) is what's required when the spherical
 % harmonics are normalized to 4pi. See DT p. 858. A "delta"-function then
 % retains a flat spectrum. See Dahlen and Simons 2008.
 % See papers by Hipkin 2001, Kaula 1967, Lowes 1966, 1974, Nagata 1965
 % (Lowes, JGR 71(8), 2179 [1966])
 % (Nagata, JGeomagGeoel 17, 153-155 [1965])
+% See the enlightening discussion by Langel and Hinze!
 %
-% Last modified by fjsimons-at-alum.mit.edu, 03/18/2020
+% Last modified by fjsimons-at-alum.mit.edu, 06/12/2023
 
 defval('norma',2)
 lmin=lmcosi(1);
@@ -72,20 +72,19 @@ end
 sdl=normfac.*sdl;
 sdl=sdl(:);
 
-% Figure out the range over which to make the fit
-l=lmin:lmax; 
-l=l(:);
-if lmin==0
-  defval('in',3);
-elseif lmin==1
-  defval('in',2);
-else
-  defval('in',1);
-end
-defval('ot',lmax)
-lfit=l(in:ot);
-
 if nargout>=3
+    % Figure out the range over which to make the fit
+    l=lmin:lmax; 
+    l=l(:);
+    if lmin==0
+        defval('in',3);
+    elseif lmin==1
+        defval('in',2);
+    else
+        defval('in',1);
+    end
+    defval('ot',length(l))
+    lfit=l(in:ot);
   % Calculate spectral slope
   [bt,E]=polyfit(log10(lfit),log10(sdl(in:ot)),1);
   bta=bt(1);
