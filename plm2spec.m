@@ -72,19 +72,20 @@ end
 sdl=normfac.*sdl;
 sdl=sdl(:);
 
+l=lmin:lmax; 
+l=l(:);
+
 if nargout>=3
-    % Figure out the range over which to make the fit
-    l=lmin:lmax; 
-    l=l(:);
-    if lmin==0
-        defval('in',3);
-    elseif lmin==1
-        defval('in',2);
-    else
-        defval('in',1);
-    end
-    defval('ot',length(l))
-    lfit=l(in:ot);
+   % Figure out the range over which to make the fit
+   if lmin==0
+       defval('in',3);
+   elseif lmin==1
+       defval('in',2);
+   else
+       defval('in',1);
+   end
+   defval('ot',length(l))
+   lfit=l(in:ot);
   % Calculate spectral slope
   [bt,E]=polyfit(log10(lfit),log10(sdl(in:ot)),1);
   bta=bt(1);
