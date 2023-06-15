@@ -13,7 +13,7 @@ function [S,b,e]=shsin(lmcosi,l)
 %
 % See also SHCOS
 %
-% Last modified by fjsimons-at-alum.mit.edu, Feb 16th 2004
+% Last modified by fjsimons-at-alum.mit.edu, 06/15/2023
 
 % Vector or matrix?
 if size(lmcosi,2)==1
