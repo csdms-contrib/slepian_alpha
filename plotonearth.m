@@ -55,6 +55,7 @@ surface(x,y,z,'FaceColor','texture','Cdata',data);
 axis image
 shading flat
 view(350,45)
+%view(370,0)
 
 % Optional outputs
 varns={pc};
