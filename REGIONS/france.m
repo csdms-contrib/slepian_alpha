@@ -16,15 +16,13 @@ function varargout=france(res,buf)
 %
 % XY       Closed-curved coordinates of the continent
 %
-% Last modified by fjsimons-at-alum.mit.edu, 01/26/2023
+% Last modified by fjsimons-at-alum.mit.edu, 09/20/2023
 
 defval('res',0)
 defval('buf',0)
 
 % Parameters that make this the region in question
 regn='france';
-c11=[-10 50];
-cmn=[ 10 30];
 xunt=[];
 
 % This admittedly is a special case
