@@ -1,8 +1,8 @@
-function varargout=orinoco(res,buf)  
-% XY=ORINOCO(res,buf)
-% ORINOCO(...) % Only makes a plot
+function varargout=ukraine(res,buf)
+% XY=UKRAINE(res,buf)
+% UKRAINE(...) % Only makes a plot
 %
-% Finds the coordinates of Orinoco, potentially buffered by some amount.
+% Finds the coordinates of Ukraine, potentially buffered by some amount.
 %
 % INPUT:
 %
@@ -16,7 +16,6 @@ function varargout=orinoco(res,buf)
 %
 % XY       Closed-curved coordinates of the continent
 %
-% Last modified by charig-at-princeton.edu, 11/23/2011
 % Last modified by fjsimons-at-alum.mit.edu, 09/20/2023
 
 defval('res',0)

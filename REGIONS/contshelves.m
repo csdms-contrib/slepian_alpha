@@ -24,7 +24,7 @@ function varargout=contshelves(res,rotb)
 %
 % Written by Jarno Saarimaki and Ciaran Beggan, 2011
 % Last modified by charig-at-princeton.edu, 06/27/2016
-% Last modified by fjsimons-at-alum.mit.edu, 01/26/2023
+% Last modified by fjsimons-at-alum.mit.edu, 09/20/2023
 
 defval('res',0)
 defval('rotb',0)
@@ -41,7 +41,7 @@ if ~isstr(res)
   end
 
   if rotb==1
-    XY=load(fullfile(whereitsat,'ContShelves.txt'));
+    XY=load(fullfile(whereitsat,'contshelves'));
     XY(:,1)=XY(:,1)+[XY(:,1)<0]*360;
     [X,Y]=penlift(XY(:,1),XY(:,2));
     XY=[X Y];
@@ -60,7 +60,7 @@ if ~isstr(res)
       % There are two continuous regions in the data separated by a row
       % of NaNs. The other region is defined in two (by NaNs) so that the
       % original XY could be plotted as continuous lines.
-      XY=load(fullfile(whereitsat,'ContShelves.txt'));
+      XY=load(fullfile(whereitsat,'contshelves'));
     
       % Get rid of NaN between North America and asia and leave the one
       % between North America and Antarctica

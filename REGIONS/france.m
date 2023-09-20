@@ -22,13 +22,13 @@ defval('res',0)
 defval('buf',0)
 
 % Parameters that make this the region in question
-regn='france';
+regn=mfilename;
 xunt=[];
 
-% This admittedly is a special case
-XY=load(fullfile(getenv('IFILES'),'COASTS','france'));
+% This admittedly is a special preloaded case
+XY=load(fullfile(getenv('IFILES'),'COASTS',regn));
 
-% Do it! Make it, load it, save it
+% Modify and resave it
 XY=regselect(regn,XY(:,1),XY(:,2),xunt,res,buf);
 
 if nargout==0

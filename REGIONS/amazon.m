@@ -17,21 +17,19 @@ function varargout=amazon(res,buf)
 % XY       Closed-curved coordinates of the continent
 %
 % Last modified by charig-at-princeton.edu, 11/23/2011
-% Last modified by fjsimons-at-alum.mit.edu, 11/23/2011
+% Last modified by fjsimons-at-alum.mit.edu, 09/20/2023
 
 defval('res',0)
 defval('buf',0)
 
 % Parameters that make this the region in question
-regn='amazon';
-c11=[280   5];
-cmn=[310 -25];
+regn=mfilename;
 xunt=[];
 
-% This admittedly is a special case
-XY=load(fullfile(getenv('IFILES'),'COASTS','amazon'));
+% This admittedly is a special preloaded case
+XY=load(fullfile(getenv('IFILES'),'COASTS',regn));
 
-% Do it! Make it, load it, save it
+% Modify and resave it
 XY=regselect(regn,XY(:,1),XY(:,2),xunt,res,buf);
 
 if nargout==0
