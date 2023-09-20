@@ -23,9 +23,9 @@ function varargout=difer(V,tolex,sev,goods)
 %
 % SEE ALSO: 
 %
-% ISEQUAL
+% DIFERM, ISEQUAL
 %
-% Last modified by fjsimons-at-alum.mit.edu, 10/08/2014
+% Last modified by fjsimons-at-alum.mit.edu, 09/23/2023
 
 % Which one is the calling program?
 [path,name,ext]=star69;
