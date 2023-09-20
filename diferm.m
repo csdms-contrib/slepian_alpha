@@ -10,7 +10,11 @@ function diferm(a,b,tolex,sev)
 %           1 produces ERROR upon failure 
 %           2 invokes KEYBOARD upon failure
 %
-% Last modified by fjsimons-at-alum.mit.edu, 03/20/2020
+% SEE ALSO: 
+%
+% DIFER, ISEQUAL
+%
+% Last modified by fjsimons-at-alum.mit.edu, 09/20/2023
 
 % Any second input
 defval('b',0)
