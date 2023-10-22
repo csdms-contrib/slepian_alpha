@@ -355,7 +355,6 @@ elseif strcmp(TH,'demo4')
     title(sprintf('%s = %8.3f','\lambda',V(index)))
     drawnow
   end
-  
   % Cosmetic adjustments
   longticks(ah); deggies(ah)
   fig2print(gcf,'landscape')
