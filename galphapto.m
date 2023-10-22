@@ -58,7 +58,7 @@ function varargout=...
 %
 % SEE ALSO:
 %
-% GALPHA, GLMALPHA, GLMALPHAPTO, PTOSLEP, SDWCAP
+% GALPHA, GLMALPHA, GLMALPHAPTO, PTOSLEP, SDWCAP, GLM2LMCOSI
 %
 % Last modified by fjsimons-at-alum.mit.edu, 10/22/2023
 
@@ -88,19 +88,20 @@ if ~isstr(TH)
 	  || exist('EL')~=1 ||  exist('EM')~=1
       % Construct the rotated basis in the spectral domain
       [Glma,V,EL,EM,N]=glmalphapto(TH,L,phi0,theta0,omega);
-      % This used to be out of the loop, which was wrong, incoming from XYZ2SLEP
-      % Sort the tapers globally and potentially restrict their number
-      % Note that GRUNBAUM individually will be inversely sorted, and that,
-      % depending on numerical precision, the new sorting maybe slightly
-      % counterintuitive. 
-      [V,i]=sort(V,'descend');
-      Glma=Glma(:,i); Glma=Glma(:,1:J); 
-      % Don't cut these off but return them all, see SPIE2009_1 and SPIE2009_9
-      % V=V(1:J);
   end
-  
+
   % Default truncation is at the Shannon number
   defval('J',round(N))
+
+  % Sort the tapers globally and potentially restrict their number
+  % Note that GRUNBAUM individually will be inversely sorted, and that,
+  % depending on numerical precision, the new sorting maybe slightly
+  % counterintuitive. 
+  [V,i]=sort(V,'descend');
+  Glma=Glma(:,i); Glma=Glma(:,1:J); 
+
+  % Don't cut these off but return them all, see SPIE2009_1 and SPIE2009_9
+  % V=V(1:J);
   % Note that the transpose of the orthogonality is lost in case you no
   % longer have a full matrix...
 
@@ -114,10 +115,9 @@ if ~isstr(TH)
   % Perform the expansion, watching out for the phase factor
   % See the demos in GLMALPHAPTO for an alternative
   % This should be done in GALPHA also though it can wait
+  % I'm now going to call the alternative GLM2LMCOSI
   Glmap=Glma.*repmat((-1).^EM,1,size(Glma,2));
   Gar=Glmap'*Y;
-  
-  % I'm now going to call the alternative GLM2LMCOSI
   
   % Provide output - with the original Glma!
   varns={Gar,V,N,J,phi0,theta0,omega,theta,phi,TH,L,Glma,EL,EM};
@@ -293,7 +293,7 @@ elseif strcmp(TH,'demo5')
 end
 
 % Some subroutines useful for the demos above
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function ploco(c11cmn,theta0,phi0,TH)
 % Plot the continents - note the Greenwich trick
 yesorno=360*[c11cmn(1)<0 0];
@@ -314,12 +314,7 @@ grid on
 hold off
 drawnow
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function data=setnans(data)
-% Cut out the smallest values for ease of visualization
-data(abs(data)<max(abs(data(:)))/1000)=NaN;
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function cosmo(ah,ha,H)
 % Cosmetic adjustments
 longticks(ah); deggies(ah)
