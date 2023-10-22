@@ -34,7 +34,7 @@ function varargout=glmalphapto(TH,L,phi,theta,omega)
 % 
 % SEE ALSO: GLMALPHA, PTOSLEP, GALPHA
 %
-% Last modified by fjsimons-at-alum.mit.edu, 01/17/2010
+% Last modified by fjsimons-at-alum.mit.edu, 10/23/2023
 
 % This becomes troublesome at large (>100) spherical-harmonic
 % bandwidths. Obviously, there we enter the domain of the Cartesian
