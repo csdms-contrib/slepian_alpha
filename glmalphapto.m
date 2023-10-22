@@ -128,7 +128,7 @@ if ~isstr(TH)
     difer(N-ldim*(1-cos(TH/180*pi))/2,[],[],NaN);
     
     % Compute the sum over all orders of the squared coefficients
-    % Thus works when they have not been blocksorted yet. 
+    % This works when they have not been blocksorted yet. 
     GM2AL=repmat(0,ldim,maxL+1);
     for l=0:maxL
       b=(l-1+1)^2+1;
