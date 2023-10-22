@@ -72,7 +72,7 @@ if ~isstr(TH)
   defval('theta0',70)
   defval('omega',10)
   defval('theta',[max(theta0-2*TH,0):1:min(theta0+2*TH,180)]*pi/180)
-  defval('phi',[max(phi0-2*TH,0):1:min(phi0+2*TH,180)]*pi/180)
+  defval('phi',[max(phi0-2*TH,-180):1:min(phi0+2*TH,180)]*pi/180)
   defval('irr',0)
 
   % Basic error check
@@ -195,6 +195,7 @@ elseif strcmp(TH,'demo3')
   phi0=15;
   theta0=70;
   L=[17 72];
+
   [Gar,V,N,J,phi0,theta0,omega,theta,phi,TH,L,Glma]=...
       galphapto(TH,L,phi0,theta0);   
 
