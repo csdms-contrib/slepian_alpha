@@ -71,7 +71,9 @@ if ~isstr(TH)
 			     TH,L,phi,theta,omega));
     end
   else
-    fname='neveravailable';
+      % Make a hash, who cares if it's human-readable?
+      fname='neveravailable';
+      fname=fullfile(getenv('IFILES'),'GLMALPHAPTO',hash([TH L phi theta omega],'sha1'));
   end
 
   % Initialize ordering matrices
