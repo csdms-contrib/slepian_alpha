@@ -60,7 +60,7 @@ function varargout=...
 %
 % GALPHA, GLMALPHA, GLMALPHAPTO, PTOSLEP, SDWCAP
 %
-% Last modified by fjsimons-at-alum.mit.edu, 07/11/2012
+% Last modified by fjsimons-at-alum.mit.edu, 10/23/2023
 
 % Supply default values
 defval('TH',15)
@@ -71,10 +71,9 @@ if ~isstr(TH)
   defval('phi0',15)
   defval('theta0',70)
   defval('omega',10)
-  defval('theta',[theta0-2*TH:1:theta0+2*TH]*pi/180)
-  defval('phi',[phi0-2*TH:1:phi0+2*TH]*pi/180)
+  defval('theta',[max(theta0-2*TH,0):1:min(theta0+2*TH,180)]*pi/180)
+  defval('phi',[max(phi0-2*TH,0):1:min(phi0+2*TH,180)]*pi/180)
   defval('irr',0)
-
 
   % Basic error check
   if irr==1 & ~all(size(theta)==size(phi))
@@ -196,7 +195,6 @@ elseif strcmp(TH,'demo3')
   phi0=15;
   theta0=70;
   L=[17 72];
-
   [Gar,V,N,J,phi0,theta0,omega,theta,phi,TH,L,Glma]=...
       galphapto(TH,L,phi0,theta0);   
 
