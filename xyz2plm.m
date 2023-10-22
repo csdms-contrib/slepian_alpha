@@ -55,7 +55,7 @@ function [lmcosi,dw,L2err]=xyz2plm(fthph,L,method,lat,lon,cnd)
 %
 % See also PLM2XYZ, PLM2SPEC, PLOTPLM, etc.
 %
-% Last modified by fjsimons-at-alum.mit.edu, 09/04/2014
+% Last modified by fjsimons-at-alum.mit.edu, 10/22/2023
 
 t0=clock;
 
@@ -69,7 +69,7 @@ defval('L2err',[])
 as=0;
 % If no grid is specified, assumes equal spacing and complete grid
 if isempty(lat) && isempty(lon)
-  % Test if data is 2D, and periodic over longitude
+  % Test if data is 2D, and periodic over longitude... but not for 'irr'
   fthph=reduntest(fthph);
   polestest(fthph)
   % Make a complete grid
@@ -104,12 +104,12 @@ elseif isempty(lon)
   dphi=2*pi/nlon;
   Lnyq=min([ceil((nlon-1)/2) ceil(pi/dtheta)]);
 elseif length(lon)==2 && length(lat)==2 && ...
-      lat(1)==90 && lat(2)==-90 && diff(lon)==360
-  % This is a rotated complete map over
+        lat(1)==90 && lat(2)==-90 && diff(lon)==360
+    % This is a rotated complete map and requires fixing
     keyboard
     fthph=maprotate(fthph,[lon(1) lat(1) lon(2) lat(2)]);
     [lmcosi,dw]=xyz2plm(fthph,L,[],[],[],[]);
-  return
+    return
   % Is it a square? Force that to irregular method...
 else
   % Irregularly sampled data
