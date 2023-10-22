@@ -77,7 +77,6 @@ if ~isstr(TH)
   % Initialize ordering matrices
   MTAP=repmat(0,1,ldim);
   IMTAP=repmat(0,1,ldim);
-
  
   if exist(fname,'file')==2 
     load(fname)
@@ -98,7 +97,7 @@ if ~isstr(TH)
   
     % For AXISYMMETRIC REGIONS
     % For the SINGLE CAP ONLY
-    for m=-L:L
+    for m=-maxL:maxL
       disp(sprintf(...
 	  'Figure out how to work with abs(m) instead - now %i',m))
 
