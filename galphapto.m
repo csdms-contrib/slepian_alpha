@@ -60,13 +60,12 @@ function varargout=...
 %
 % GALPHA, GLMALPHA, GLMALPHAPTO, PTOSLEP, SDWCAP
 %
-% Last modified by fjsimons-at-alum.mit.edu, 10/23/2023
+% Last modified by fjsimons-at-alum.mit.edu, 10/22/2023
 
 % Supply default values
 defval('TH',15)
 
 if ~isstr(TH)
-
   defval('L',36)
   defval('phi0',15)
   defval('theta0',70)
@@ -83,29 +82,27 @@ if ~isstr(TH)
   % Figure out if it's lowpass or bandpass
   lp=length(L)==1;
   bp=length(L)==2;
-
   maxL=max(L);
   
   if exist('Glma')~=1 ||  exist('V')~=1 ||  exist('N')~=1 ...
-	|| exist('EL')~=1 ||  exist('EM')~=1
-    % Construct the rotated basis in the spectral domain
-    [Glma,V,EL,EM,N]=glmalphapto(TH,L,phi0,theta0,omega);
+	  || exist('EL')~=1 ||  exist('EM')~=1
+      % Construct the rotated basis in the spectral domain
+      [Glma,V,EL,EM,N]=glmalphapto(TH,L,phi0,theta0,omega);
+      % This used to be out of the loop, which was wrong, incoming from XYZ2SLEP
+      % Sort the tapers globally and potentially restrict their number
+      % Note that GRUNBAUM individually will be inversely sorted, and that,
+      % depending on numerical precision, the new sorting maybe slightly
+      % counterintuitive. 
+      [V,i]=sort(V,'descend');
+      Glma=Glma(:,i); Glma=Glma(:,1:J); 
+      % Don't cut these off but return them all, see SPIE2009_1 and SPIE2009_9
+      % V=V(1:J);
   end
   
   % Default truncation is at the Shannon number
   defval('J',round(N))
-  
   % Note that the transpose of the orthogonality is lost in case you no
   % longer have a full matrix...
-
-  % Sort the tapers globally and potentially restrict their number
-  % Note that GRUNBAUM individually will be inversely sorted, and that,
-  % depending on numerical precision, the new sorting maybe slightly
-  % counterintuitive. 
-  [V,i]=sort(V,'descend');
-  Glma=Glma(:,i); Glma=Glma(:,1:J); 
-  % Don't cut these off but return them all, see SPIE2009_1 and SPIE2009_9
-  % V=V(1:J);
 
   % Get the real spherical harmonics in the right places
   [Y,t,p]=ylm([0 maxL],[],theta,phi,[],[],[],irr);
