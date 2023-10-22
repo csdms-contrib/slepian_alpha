@@ -22,7 +22,7 @@ function varargout=...
 % phi      Longitude vector (0<=phi<=2*pi) [default: 2TH around cap]
 %          Unless irr=1, we assume you mean a 2-D (theta,phi) grid.
 %          But if irr=1, length(theta(:)) must equal length(phi(:)).
-% J        How many of the best eigenfunctions do you want? [default: N]
+% J        How many of the best eigenfunctions do you want? [default: N, all: Inf]
 % irr      0 Regular grid, no matter how you input theta and phi [default]
 %          1 Irregular grid, input interpreted as distinct pairs of theta, phi
 % Glma     The spectral eigenfunctions in case you already have them
@@ -93,6 +93,10 @@ if ~isstr(TH)
   % Default truncation is at the Shannon number
   defval('J',round(N))
 
+  if isinf(J)
+      J=size(Glma,2);
+  end
+  
   % Sort the tapers globally and potentially restrict their number
   % Note that GRUNBAUM individually will be inversely sorted, and that,
   % depending on numerical precision, the new sorting maybe slightly
