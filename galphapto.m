@@ -202,14 +202,15 @@ elseif strcmp(TH,'demo3')
   % Make a decent plot
   clf
   [ah,ha,H]=krijetem(subnum(3,3));
+  ofs=0;
   for index=1:length(ah)
     axes(ah(index))
     % Extract the data directly from the expansion
-    data=reshape(Gar(index,:),length(theta),length(phi));
+    data=reshape(Gar(index+ofs,:),length(theta),length(phi));
     c11cmn=[phi(1) pi/2-theta(1) phi(end) pi/2-theta(end)]*180/pi;
     imagefnan(c11cmn(1:2),c11cmn(3:4),setnans(data))
     ploco(c11cmn,theta0,phi0,TH)
-    title(sprintf('%s = %8.3f','\lambda',V(index)))
+    title(sprintf('%s_{%i} = %8.3f','\lambda',index+ofs,V(index+ofs)))
   end
   % Cosmetic adjustments
   cosmo(ah,ha,H)
