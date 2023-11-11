@@ -3,7 +3,7 @@ function varargout=...
 % [G,V,EM,GK,VK,NA,N,theta,phi,Glma,EL]=...
 %           GALPHA(TH,L,sord,theta,phi,srt,upco,resc,blox,J,irr)
 %
-% Constructs a matrix of axisymmetric-polar-cap Slepian eigenfunctions
+% Constructs a matrix of AXISYMMETRIC-POLAR-CAP Slepian eigenfunctions
 % evaluated at a set of spatial locations. Normalization is to UNITY over
 % the surface of the entire sphere.
 %
@@ -14,6 +14,7 @@ function varargout=...
 % sord        1 Single polar cap of radius TH [default]
 %             2 Double polar cap, each of radius TH
 %             3 Equatorial belt of width 2TH
+%             [NOTE: CAN I PUT IN ALL THE POSSIBLE INPUTS TO GMALPHA?]
 % theta       colatitude (0 <= theta <= pi) [default: 720 linearly spaced]
 % phi         longitude (0 <= theta <= 2*pi)  [default: 0], if NaN, get Xlm
 % srt         'global' Global sorting of eigenvalues across all orders
@@ -61,7 +62,7 @@ function varargout=...
 % 
 % See also DOUBLECAP
 %
-% Last modified by fjsimons-at-alum.mit.edu, 07/11/2012
+% Last modified by fjsimons-at-alum.mit.edu, 11/11/2023
 
 % If the output was on a Driscoll-Healey or HEALPIX grid (and maybe I
 % should think about doing that), this would be an orthogonal matrix, but
