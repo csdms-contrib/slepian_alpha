@@ -29,17 +29,16 @@ function varargout=antarctica(res,buf,rotb)
 % See also PLM2ROT, GEOBOXCAP, KLMLMP2ROT, GLMALPHA
 % 
 % Last modified by charig@princeton.edu, 06/24/2016
-% Last modified by fjsimons@princeton.edu, 11/11/2023
+% Last modified by fjsimons@princeton.edu, 07/01/2016
 
 defval('res',0)
 defval('buf',0)
 defval('rotb',0)
 
-
 if ~isstr(res)
     
   % Some setup
-  c11=[0 -62];
+  c11=[0   -62];
   cmn=[360 -83];
     
   % Do it! Make it, load it, save it
@@ -59,8 +58,8 @@ if ~isstr(res)
 
   % Do we return rotated coordinates?
   if rotb==1
-      [thetap,phip,rotmats]=rottp((90-XY(:,2))*pi/180,XY(:,1)/180*pi,...
-                                  -lonc*pi/180,latc*pi/180,0);
+     [thetap,phip,rotmats]=rottp((90-XY(:,2))*pi/180,XY(:,1)/180*pi,...
+				 -lonc*pi/180,latc*pi/180,0);
      XY = [phip*180/pi 90-thetap*180/pi];
   end
 
@@ -75,14 +74,13 @@ if ~isstr(res)
 elseif strcmp(res,'rotated')
     % Return a 1 flag as output, indicating the region is a rotated region
     varargout={1};
-
 elseif strcmp(res,'demo1')
     % Make a simple plot
     XY=antarctica();
     plot(XY(:,1),XY(:,2),'k-'); axis equal; grid on
     axis([-30-lonc 30-lonc -30 20])
-
 end
+
 
 
 
