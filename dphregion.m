@@ -65,7 +65,7 @@ elseif strcmp(th,'demo1')
   plot(XL,[90-TH 90-TH],'k--')
   p=plot(phint,90-TH,'o');
   set(p,'MarkerE','k','MarkerF','y')
-  t=title(num2str(length(phint)),'FontS',30);
+  t=title(num2str(length(phint)),'FontSize',30);
   hold off
   if nargout==1
     phint=dphi;
@@ -128,9 +128,9 @@ elseif strcmp(th,'demo2')
     end
     if ~isempty(p)
       set(p,'MarkerE','k','MarkerF','y')
-      % t=text(362,58,num2str(L(ind)),'FontS',30);
-      t=title(num2str(L(ind)),'FontS',30);
-      pause
+      % t=text(362,58,num2str(L(ind)),'FontSize',30);
+      t=title(num2str(L(ind)),'FontSize',30);
+      pause(0.25)
       delete([l p t]); p=[];
     end
   end
