@@ -32,9 +32,11 @@ function varargout=glmalphapto(TH,L,phi,theta,omega)
 % glmalphapto('demo3') % One way of doing the spatial expansion
 % glmalphapto('demo4') % Another way of doing the spatial expansion
 % 
-% SEE ALSO: GLMALPHA, PTOSLEP, GALPHA
+% SEE ALSO:
 %
-% Last modified by fjsimons-at-alum.mit.edu, 10/23/2023
+% GLMALPHA, PTOSLEP, GALPHA, LOCALIZATION
+%
+% Last modified by fjsimons-at-alum.mit.edu, 11/11/2023
 
 % This becomes troublesome at large (>100) spherical-harmonic
 % bandwidths. Obviously, there we enter the domain of the Cartesian
@@ -73,14 +75,15 @@ if ~isstr(TH)
   else
       % Make a hash, who cares if it's human-readable?
       fname='neveravailable';
-      fname=fullfile(getenv('IFILES'),'GLMALPHAPTO',hash([TH L phi theta omega],'sha1'));
+      fname=fullfile(getenv('IFILES'),'GLMALPHAPTO',...
+                     sprintf('%s.mat',hash([TH L phi theta omega],'sha1')));
   end
 
   % Initialize ordering matrices
   MTAP=repmat(0,1,ldim);
   IMTAP=repmat(0,1,ldim);
  
-  if exist(fname,'file')==2 
+  if exist(fname,'file')==2
     load(fname)
     disp(sprintf('Loading %s',fname))
   else
