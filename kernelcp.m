@@ -331,9 +331,10 @@ if ~isstr(Lmax)
 	  phint=phint*pi/180;
 	end
       else
-	% Now we may have multiple pairs
-	phint=dphregion(acos(x)*180/pi,[],XY); % Changed "dom" to "XY" here CTH
-	phint=phint*pi/180;
+	  % Now we may have multiple pairs
+          % Changed "dom" to "XY" here CTH
+	  phint=dphregion(acos(x)*180/pi,[],XY); 
+	  phint=phint*pi/180;
       end
 
       % The number of elements that will be calculated is
