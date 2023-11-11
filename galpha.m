@@ -60,7 +60,7 @@ function varargout=...
 %
 % G=galpha(40,18,1,linspace(0,pi,180),linspace(0,2*pi,360),'global');
 % 
-% See also DOUBLECAP
+% See also DOUBLECAP, LOCALIZATION
 %
 % Last modified by fjsimons-at-alum.mit.edu, 11/11/2023
 
