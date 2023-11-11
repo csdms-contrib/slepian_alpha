@@ -275,10 +275,10 @@ if ~(ischar(TH) && ~isempty(strfind(TH(:)','demo')))
       end
 
       % Check if the expansion of a basis function is indeed either 1 or 0
-      if xver==1
+      if lp && xver==1
         disp('Excessive verification')
         % Is the area right? Don't be too demanding
-        difer(Klmlmp(1)-(anti-spharea(TH)),4,[],mesg)
+        difer(Klmlmp(1)-abs(anti-spharea(TH)),4,[],mesg)
         % This is a bit double up... but it's only for excessive verification
         [V1,C,~,~,~,K,GG]=localization(L,TH,sord);
         difer(V(:)-V1(:),[],[],mesg)
