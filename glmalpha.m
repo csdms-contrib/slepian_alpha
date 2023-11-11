@@ -3,7 +3,7 @@ function varargout=glmalpha(TH,L,sord,blox,upco,resc,J,anti)
 %
 % Returns an (lm)X(alpha) matrix with unit-normalized spherical harmonic
 % coefficients of the BANDLIMITED or PASSBAND Slepian functions of the
-% SINGLE or DOUBLE polar cap, or of a geographical region of
+% SINGLE or DOUBLE polar cap, or of a GEOGRAPHICAL region of
 % interest. Only in the geographical case are the eigenvalues automatically
 % sorted; if not, the column dimension is always block-ordered by virtue of the
 % construction. The matrix G is orthogonal, G'*G is the identity. In column
@@ -59,10 +59,11 @@ function varargout=glmalpha(TH,L,sord,blox,upco,resc,J,anti)
 %
 % glmalpha('demo1') % Illustrates the block sorting and checks unitarity
 % glmalpha('demo2') % Makes a coupling kernel a la BCOUPLING
+% glmalpha('demo3') % Calculates something and uses PLOTSLEP to plot
 %
 % SEE ALSO:
 %
-% GLMALPHAPTO, ADDMOUT, ADDMON, KERNELC, LOCALIZATION, GALPHA, DLMLMP, GLM2LMCOSI
+% GLMALPHAPTO, ADDMOUT, ADDMON, KERNELC, GALPHA, DLMLMP, GLM2LMCOSI, LOCALIZATION
 %
 % Region functions such as ANTARCTICA have a default behavior to indicate if
 % their eigenfunctions should be rotated (e.g. back to a pole). If you want
@@ -86,10 +87,11 @@ if ~(ischar(TH) && ~isempty(strfind(TH(:)','demo')))
   defval('L',18)
   defval('dom',[]);
   % This is only relevant for the axisymmetric cap
-  defval('blox',0);
-  defval('upco',0);
-  defval('resc',0);
-  defval('anti',0);
+  defval('blox',0)
+  defval('upco',0)
+  defval('resc',0)
+  defval('anti',0)
+  defval('rotb',0)
 
   defval('mesg','GLMALPHA Check passed')
   % Hold all messages
@@ -178,7 +180,7 @@ if ~(ischar(TH) && ~isempty(strfind(TH(:)','demo')))
 
   if exist(fname,'file')==2
     load(fname)
-    disp(sprintf('Loading %s',fname))
+    disp(sprintf('%s Loading %s',upper(mfilename),fname))
   else
     % Initialize matrices
     G=repmat(0,(maxL+1)^2,ldim);
@@ -202,7 +204,6 @@ if ~(ischar(TH) && ~isempty(strfind(TH(:)','demo')))
     if isstr(TH) || length(TH)>1
       % Calculates the localization kernel for this domain
       % See if we can run this calculation in parallel
-      % license?
       tl = license('test','distrib_computing_toolbox'); 
       if tl
         if verLessThan('matlab', '8.2')
@@ -210,19 +211,19 @@ if ~(ischar(TH) && ~isempty(strfind(TH(:)','demo')))
             s=matlabpool('size');
             if s
               disp('Running KERNELCP (parallel)');
-              [Klmlmp]=kernelcp(maxL,TH,sord);
+              Klmlmp=kernelcp(maxL,TH,sord);
             else
               disp('No open matlabpool. Running KERNELC (non-parallel).');
-              [Klmlmp]=kernelc(maxL,TH,sord);
+              Klmlmp=kernelc(maxL,TH,sord);
             end    
         else
             % For MATLAB 8.2 and newer, a parpool should start automatically
             disp('Running KERNELCP (parallel)');
-            [Klmlmp]=kernelcp(maxL,TH,sord);
+            Klmlmp=kernelcp(maxL,TH,sord);
         end
       else
         disp('No Parallel Computing License. Running KERNELC (non-parallel).');
-        [Klmlmp]=kernelc(maxL,TH,sord);  
+        Klmlmp=kernelc(maxL,TH,sord);  
       end
       
       if anti==1
@@ -273,22 +274,25 @@ if ~(ischar(TH) && ~isempty(strfind(TH(:)','demo')))
       % Check if the expansion of a basis function is indeed either 1 or 0
       if xver==1
         disp('Excessive verification')
-        % Is the area right?
+        % Is the area right? Don't be too demanding
         difer(Klmlmp(1)-(anti-spharea(TH)),4,[],mesg)
-
         % This is a bit double up... but it's only for excessive verification
-        [V1,C]=localization(L,TH,sord);
+        [V1,C,~,~,~,K,GG]=localization(L,TH,sord);
         difer(V(:)-V1(:),[],[],mesg)
+	% A test by expansion and orthogonality
         for index=1:length(C)
 	  salpha=G'*C{index}(R2);
 	  % Only one of these functions should get "hit"
-	  difer(sum(abs(salpha)>1e-9)-1,[],[],mesg)
+	  difer(sum(abs(salpha)>1e-8)-1,[],[],mesg)
         end
+	 % Yet another way, see LOCALIZATION
+	[~,~,~,~,~,~,~,~,R1,R2]=addmon(L);
+	% It's only a matter of indexing and ordering
+	difer(GG(R1,:)-G)
       end
     
       % Lets check if we need to do a rotation. The function for your
       % coordinates should have this functionality if it's needed.
-      defval('rotb',0);
       try
 	rotb=eval(sprintf('%s(''rotated'')',dom));    
       end
@@ -321,9 +325,9 @@ if ~(ischar(TH) && ~isempty(strfind(TH(:)','demo')))
       G=G(:,1:J);
       V=V(1:J);
       try
-	      save(fname,'-v7.3','G','V','EL','EM','N')
+	  save(fname,'-v7.3','G','V','EL','EM','N')
       catch
-        save(fname,'G','V','EL','EM','N')
+          save(fname,'G','V','EL','EM','N')
       end
     else
       % For AXISYMMETRIC REGIONS
@@ -455,14 +459,14 @@ if ~(ischar(TH) && ~isempty(strfind(TH(:)','demo')))
         EL=EL(blkm);
       end
       if ~strcmp(fname,'neveravailable') 
-        % Save the results if it isn't a geographical region
-        % If the variable is HUGE you must use the -v7.3 flag, if not, you
-        % can safely omit it and get more backwards compatibility      
-	try 
-	  save(fname,'-v7.3','G','V','EL','EM','N','GM2AL','MTAP','IMTAP')
-  catch
-     save(fname,'G','V','EL','EM','N','GM2AL','MTAP','IMTAP')
-	end
+          % Save the results if it isn't a geographical region
+          % If the variable is HUGE you must use the -v7.3 flag, if not, you
+          % can safely omit it and get more backwards compatibility      
+	  try 
+	      save(fname,'-v7.3','G','V','EL','EM','N','GM2AL','MTAP','IMTAP')
+          catch
+              save(fname,'G','V','EL','EM','N','GM2AL','MTAP','IMTAP')
+	  end
       end
     end
   end
@@ -517,4 +521,6 @@ elseif strcmp(TH,'demo2')
 	    'ytick',[0 0.05 1],'ygrid','on')
     pause
   end
+elseif strcmp(TH,'demo3')
+  plotslep(glmalpha,randi(18));
 end
