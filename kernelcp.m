@@ -63,7 +63,7 @@ function varargout=kernelcp(Lmax,dom,pars,ngl,rotb)
 %
 % Last modified by charig-at-princeton.edu, 09/23/2016
 % Last modified by plattner-at-alumni.ethz.ch, 05/26/2017
-% Last modified by fjsimons-at-alum.mit.edu, 05/11/2022
+% Last modified by fjsimons-at-alum.mit.edu, 11/11/2023
 
 t0=clock;
 defval('Lmax',12); 
