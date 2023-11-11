@@ -58,9 +58,9 @@ function varargout=...
 %
 % SEE ALSO:
 %
-% GALPHA, GLMALPHA, GLMALPHAPTO, PTOSLEP, SDWCAP, GLM2LMCOSI
+% GALPHA, GLMALPHA, GLMALPHAPTO, PTOSLEP, SDWCAP, GLM2LMCOSI, LOCALIZATION
 %
-% Last modified by fjsimons-at-alum.mit.edu, 10/22/2023
+% Last modified by fjsimons-at-alum.mit.edu, 11/11/2023
 
 % Supply default values
 defval('TH',15)
