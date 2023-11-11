@@ -168,7 +168,10 @@ if ~(ischar(TH) && ~isempty(strfind(TH(:)','demo')))
       defval('xver',0)
     end
   else
-    fname='neveravailable';
+     % Make a hash, who cares if it's human-readable?
+      fname='neveravailable';
+      fname=fullfile(getenv('IFILES'),'GLMALPHAPTO',...
+                     sprintf('%s.mat',hash([TH L phi theta omega],'sha1')));
     % For excessive verification of the upco'd case
     defval('xver',1) 
   end
