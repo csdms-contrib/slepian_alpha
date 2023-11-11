@@ -28,7 +28,7 @@ function varargout=dphregion(th,N,region)
 % dphregion('demo2',[],'eurasia')
 % dphregion('demo2',10)
 %
-% Last modified by fjsimons-at-alum.mit.edu, 07/11/2012
+% Last modified by fjsimons-at-alum.mit.edu, 11/11/2023
 
 if ~isstr(th)
   % First, get the coordinates of region; these are sorted
