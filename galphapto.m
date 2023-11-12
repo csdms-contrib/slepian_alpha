@@ -112,14 +112,10 @@ if ~isstr(TH)
   % Get the real spherical harmonics in the right places
   [Y,t,p]=ylm([0 maxL],[],theta,phi,[],[],[],irr);
 
-  % Could, in here, also allow for the expansion using PLM2XYZ or
-  % course. Should write routine to go back and forth Glma -> lmcosi
-  % as sometimes, due to memory restrictions, this will be the only thing 
-  
   % Perform the expansion, watching out for the phase factor
   % See the demos in GLMALPHAPTO for an alternative
   % This should be done in GALPHA also - DONE 11/12/2023
-  % I'm now going to call the alternative GLM2LMCOSI
+  % The alternatives would be PLM2XYZ, GLM2LMCOSI, and PLOTSLEP
   Glmap=Glma.*repmat((-1).^EM,1,size(Glma,2));
   Gar=Glmap'*Y;
   
