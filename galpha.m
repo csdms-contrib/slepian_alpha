@@ -124,8 +124,11 @@ if ~isstr(TH)
   % Get the coefficients and the orders etc
   % The EM's are for the tapers! the EMrows disappear later
   if exist('Glma')~=1 ||  exist('V')~=1 ||  exist('N')~=1 ...
-	|| exist('EL')~=1 ||  exist('EM')~=1
-    [Glma,V,EL,EMrow,N,GAL,EM]=glmalpha(THo,L,sordo,blox,upco,resc);
+	  || exist('EL')~=1 ||  exist('EM')~=1
+      [Glma,V,EL,EMrow,N,GAL,EM]=glmalpha(THo,L,sordo,blox,upco,resc);
+      svit=0;
+  else
+      svit=1;
   end
   
   % Calculate N/A and rounded Shannon number
@@ -154,9 +157,14 @@ if ~isstr(TH)
   if strcmp(lower(srt),'belt') || sord==3
     V=1-V;
   end
+
   if strcmp(lower(srt),'global') || strcmp(lower(srt),'belt')
     [V,i]=sort(V,'descend');
-    Glma=Glma(:,i); EM=EM(i);
+    Glma=Glma(:,i);
+    % Don't touch the EM if they were given to you in the first place
+    if ~svit
+        EM=EM(i);
+    end
   end
   % Truncation? If past Shannon number, do it from here on, if not, wait
   % But doing the spectral truncation before the spatial expansion saves time
@@ -169,6 +177,8 @@ if ~isstr(TH)
   % Expand - it's just here that the block ordering matters
   % i.e. for the EMrow which we won't need anymore. The EM are always block
   % sorted to begin with, since the GLMALPHA matrix is filled order by order.
+  % Phase factor as in GALPHAPTO - DONE 11/12/2023
+  % The alternatives would be PLM2XYZ, GLM2LMCOSI, and PLOTSLEP
   Glmap=Glma.*repmat((-1).^EM,1,size(Glma,2));
   G=Glmap'*XYlmr;
 
