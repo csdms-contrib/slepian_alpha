@@ -40,12 +40,12 @@ switch fmt
   lmcosi(2*length(lmcosi)+ronm)=G(:,i);
  case 2
   % Construct from the KERNELC standard-ordered coefficients
-  % See LM2LMCOSI
+  % See GLM2LMCOSI
   lmcosi(:,3:4)=reshape(insert(G(:,i),0,mzin),2,length(dems))';
 end
 
 % Do the standard plotting routine
-defval('meth',1)
+defval('meth',4)
 defval('degres',1)
 % This should be renormalized!!
 [data,ch,ph]=plotplm(lmcosi,[],[],meth,degres);
