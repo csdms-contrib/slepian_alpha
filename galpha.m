@@ -37,7 +37,7 @@ function varargout=...
 %
 % OUTPUT:
 %
-% G           A matrix with dimensions
+% G           The spatial eigenfunctions in a matrix with dimensions
 %               (L+1)^2 x (length(theta)*length(phi))
 % V           A vector with the eigenvalues 
 % EM          If axisymmetric, the order on which the taper is based
@@ -147,10 +147,6 @@ if ~isstr(TH)
   else
     XYlmr=ylm([0 maxL],[],theta,phi,0,0,blox,irr);
   end
-  % I believe this should get the (-1)^m in there also because if not it
-  % won't conform to how PLM2XYZ would do it should you use GLM2LMCOSI...
-  % But this can wait - not a critical function. GALPHAPTO already does
-  % it. 
 
   % Default truncation is none at all, so the 'srt' option has power
   defval('J',ldim)
@@ -173,7 +169,8 @@ if ~isstr(TH)
   % Expand - it's just here that the block ordering matters
   % i.e. for the EMrow which we won't need anymore. The EM are always block
   % sorted to begin with, since the GLMALPHA matrix is filled order by order.
-  G=Glma'*XYlmr;
+  Glmap=Glma.*repmat((-1).^EM,1,size(Glma,2));
+  G=Glmap'*XYlmr;
 
   [GK,VK]=deal([]);
   if nargout>=4
