@@ -182,6 +182,7 @@ elseif strcmp(TH,'demo2')
   o=0;
   [G,V,EL,EM,N,GM2AL,MTAP,IMTAP]=glmalphapto(20,L,p,t,o);
   % Collect the output into a format that PLM2XYZ knows how to interpret
+  % See also GLM2LMCOSI
   [~,~,~,lmcosi,~,mzo,~,~,rinm,ronm]=addmon(L);
   % Create the blanks
   cosi=lmcosi(:,3:4);
@@ -190,11 +191,11 @@ elseif strcmp(TH,'demo2')
   cosi(ronm)=G(:,wot);
   % Construct the full matrix
   lmcosi(:,3:4)=cosi;
-  plotplm(lmcosi,[],[],4,1)
+  plotplm(lmcosi,[],[],4,1);
   undeggies(gca)
-  set(gca,'xtick',p,'xtickl',p)
-  set(gca,'ytick',90-t,'ytickl',90-t); grid on
-  deggies(gca)
+  set(gca,'xtick',p,'XtickLabel',p)
+  set(gca,'ytick',90-t,'YtickLabel',90-t); grid on
+  try deggies(gca); end
   title(sprintf('L = %i ; i = %i',L,wot))
 elseif strcmp(TH,'demo3')
   TH=15;
@@ -202,7 +203,7 @@ elseif strcmp(TH,'demo3')
   theta0=70;
   L=36;
   
-  defval('meth',1);
+  defval('meth',1+[randi(2)-1]);
   defval('degres',1);
 
   % Construct the rotated basis
@@ -236,12 +237,13 @@ elseif strcmp(TH,'demo3')
     % PLM2ROT/PLM2XYZ/KERNELC don't include it whereas YLM/XLM do.
     G=G.*repmat((-1).^EM,1,size(G,2));
     Gspace=[G'*XYlmr]';
+    disp(sprintf('\nMethod II\n'))
   end
   
   for index=1:length(ah)
     axes(ah(index))
     switch meth
-     case 1 % FIRST METHOD
+     case 1 % FIRST METHOD - SEE ALSO GLM2LMCOSI
         % Stick in the coefficients of the indexth eigentaper
 	cosi(ronm)=G(:,index);
 	% Construct the full matrix
@@ -277,7 +279,7 @@ elseif strcmp(TH,'demo3')
   end
   
   % Cosmetic adjustments
-  longticks(ah); deggies(ah)
+  longticks(ah); try deggies(ah); end
   fig2print(gcf,'landscape')
   nolabels(ah(1:6),1)
   nolabels(ha(4:9),2)
@@ -288,7 +290,7 @@ elseif strcmp(TH,'demo4')
   theta0=35;
   L=36;
 
-  defval('meth',2);
+  defval('meth',1+[randi(2)-1]);
   defval('degres',1);
 
   % Construct the rotated basis
@@ -308,7 +310,7 @@ elseif strcmp(TH,'demo4')
   
   % The next thing is now part of GALPHAPTO
   switch meth
-   case 1 % FIRST METHOD
+   case 1 % FIRST METHOD - SEE ALSO GLM2LMCOSI
      % Generate indices that PLOTPLM/PLM2XYZ know how to interpret
      [a1,a2,a3,lmcosi,a5,mzo,a7,a8,rinm,ronm]=addmon(L);
      % Create the blanks
@@ -327,7 +329,7 @@ elseif strcmp(TH,'demo4')
   for index=1:length(ah)
     axes(ah(index))
     switch meth
-     case 1 % FIRST METHOD
+     case 1 % FIRST METHOD - SEE ALSO GLM2LMCOSI
         % Stick in the coefficients of the indexth eigentaper
 	cosi(ronm)=G(:,index);
 	% Construct the full matrix
