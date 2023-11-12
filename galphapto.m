@@ -118,7 +118,7 @@ if ~isstr(TH)
   
   % Perform the expansion, watching out for the phase factor
   % See the demos in GLMALPHAPTO for an alternative
-  % This should be done in GALPHA also though it can wait
+  % This should be done in GALPHA also - DONE 11/12/2023
   % I'm now going to call the alternative GLM2LMCOSI
   Glmap=Glma.*repmat((-1).^EM,1,size(Glma,2));
   Gar=Glmap'*Y;
@@ -317,7 +317,6 @@ set(gca,'xlim',phi0+2*TH*[-1 1],'ylim',90-theta0+2*TH*[-1 1],...
 grid on
 hold off
 drawnow
-
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function cosmo(ah,ha,H)
 % Cosmetic adjustments
