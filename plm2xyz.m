@@ -53,7 +53,8 @@ function varargout=plm2xyz(lmcosi,degres,c11cmn,lmax,latmax,Plm)
 % See also XYZ2PLM, PLM2SPEC, TH2PL, PL2TH, YLM
 %
 % Special thanks to kwlewis-at-princeton.edu for spotting a bug.
-% Last modified by fjsimons-at-alum.mit.edu, 12/07/2018
+% Last modified by fjsimons-at-alum.mit.edu, 11/20/2023
+
 if ~isstr(lmcosi)
   t0=clock;
   % Lowest degree of the expansion
@@ -197,11 +198,11 @@ if ~isstr(lmcosi)
 	delete(h)
       end
       if length(c11cmn)==4 && all(c11cmn==[0 90 360 -90])
-        try
-	        save(fnpl,'Plm','-v7.3')
-        catch
-          save(fnpl,'Plm')
-        end
+          try
+	      save(fnpl,'Plm','-v7.3')
+          catch
+              save(fnpl,'Plm')
+          end
 	disp(sprintf('Saved %s',fnpl))
       end
     end
