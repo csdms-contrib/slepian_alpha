@@ -15,7 +15,9 @@ function [lmcosi,dw,L2err]=xyz2plm(fthph,L,method,lat,lon,cnd)
 %               defined by lat,lon as described below, OR
 %               [2] an MNx1 vector of values corrsponding to a set of
 %               latitude and longitude values given by lat,lon as below
-% L             Maximum degree of the expansion (Nyquist checked)
+% L             Bandwidth (maximum angular degree) or passband (two degrees)
+%               Bandpass only implemented for method 'irr'
+%               The maximum degree of the expansion is Nyquist checked
 % method        'im'         By inversion (fast, accurate, preferred),
 %                            uses FFT on equally spaced longitudes, ok to
 %                            specify latitudes only as long as nat>=(L+1),
@@ -55,7 +57,7 @@ function [lmcosi,dw,L2err]=xyz2plm(fthph,L,method,lat,lon,cnd)
 %
 % See also PLM2XYZ, PLM2SPEC, PLOTPLM, etc.
 %
-% Last modified by fjsimons-at-alum.mit.edu, 10/22/2023
+% Last modified by fjsimons-at-alum.mit.edu, 11/20/2023
 
 t0=clock;
 
@@ -65,6 +67,16 @@ defval('lat',[])
 defval('dw',[])
 defval('cnd',[])
 defval('L2err',[])
+
+% Figure out if it's lowpass or bandpass
+lp=length(L)==1;
+bp=length(L)==2;
+maxL=max(L);
+if bp
+    minL=min(L);
+else
+    minL=0;
+end
 
 as=0;
 % If no grid is specified, assumes equal spacing and complete grid
@@ -106,11 +118,11 @@ elseif isempty(lon)
 elseif length(lon)==2 && length(lat)==2 && ...
         lat(1)==90 && lat(2)==-90 && diff(lon)==360
     % This is a rotated complete map and requires fixing
-    keyboard
+    error('needs fixing')
     fthph=maprotate(fthph,[lon(1) lat(1) lon(2) lat(2)]);
     [lmcosi,dw]=xyz2plm(fthph,L,[],[],[],[]);
     return
-  % Is it a square? Force that to irregular method...
+    % Is it a square? Force that to irregular method...
 else
   % Irregularly sampled data
   fthph=fthph(:);
@@ -126,24 +138,30 @@ else
 end
 
 % Decide on the Nyquist frequency
-defval('L',Lnyq);
+defval('maxL',Lnyq);
 % Never use Libbrecht algorithm... found out it wasn't that good
 defval('libb',0)
 %disp(sprintf('Lnyq= %i ; expansion out to degree L= %i',Lnyq,L))
 
-if L>Lnyq | nlat<(L+1)
+if maxL>Lnyq | nlat<(maxL+1)
   warning('XYZ2PLM: Function undersampled. Aliasing will occur.')
 end
 
 % Make cosine and sine matrices
-[m,l,mz]=addmon(L);
+[m,l,mz]=addmon(maxL);
 lmcosi=[l m zeros(length(l),2)];
+
+if bp
+    lmcosi=lmcosi(addmup(L(1)-1)+1:end,:);
+    % The l gets reused in the loop below but the m needs adapting
+    m=m(addmup(L(1)-1)+1:end,:);
+end
 
 % Define evaluation points
 switch method
  case 'gl'
-  % Highest degree of integrand will always be 2*L
-  [w,x]=gausslegendrecof(2*L,[],[-1 1]);
+  % Highest degree of integrand will always be 2*maxL
+  [w,x]=gausslegendrecof(2*maxL,[],[-1 1]);
   % Function interpolated at Gauss-Legendre latitudes; 2D no help
   fthph=interp1(theta,fthph,acos(x),'spline');
  case {'irr','simpson','im'}
@@ -153,20 +171,26 @@ switch method
   error('Specify valid method')
 end
 
-fnpl=sprintf('%s/LSSM-%i-%i.mat',...
-	       fullfile(getenv('IFILES'),'LEGENDRE'),L,length(x));
- 
+if lp
+    fnpl=sprintf('%s/LSSM-%i-%i.mat',...
+	         fullfile(getenv('IFILES'),'LEGENDRE'),L,length(x));
+else
+    fnpl=sprintf('%s/LSSM-%i-%i-%i.mat',...
+	         fullfile(getenv('IFILES'),'LEGENDRE'),L(1),L(2),length(x));
+end
+
 if exist(fnpl,'file')==2 & as==1
   load(fnpl)
 else  
   % Evaluate Legendre polynomials at selected points
-  Plm=repmat(NaN,length(x),addmup(L));
-  if L>200
+  Plm=repmat(NaN,length(x),size(lmcosi,1));
+  if maxL>200
     h=waitbar(0,'Evaluating all Legendre polynomials');
   end
   in1=0;
-  in2=1;
-  for l=0:L
+  in2=minL+1;
+  % Loop over the degrees
+  for l=minL:maxL
     if libb==0
       Plm(:,in1+1:in2)=(legendre(l,x(:)','sch')*sqrt(2*l+1))';
     else
@@ -178,7 +202,7 @@ else
       waitbar((l+1)/(L+1),h)
     end
   end
-  if L>200
+  if maxL>200
     delete(h)
   end
   if as==1
@@ -218,49 +242,52 @@ switch method
   a=real(gfft);
   b=-imag(gfft);
   in1=0;
-  in2=1;
+  in2=minL+1;
  otherwise
   error('Specify valid method')
 end
 
 switch method
  case 'im'
-  % Loop over the orders. This speeds it up versus 'irr'
-  for ord=0:L
-    a(:,1)=a(:,1)/2;
-    b(:,1)=b(:,1)/2;
-    Pm=Plm(:,mz(ord+1:end)+ord)*pi;
-    [lmcosi(mz(ord+1:end)+ord,3)]=datafit(Pm,a(:,ord+1),[],[],cnd);
-    [lmcosi(mz(ord+1:end)+ord,4)]=datafit(Pm,b(:,ord+1),[],[],cnd);
-  end
+   if bp; error('needs fixing'); end
+   % Loop over the orders. This speeds it up versus 'irr'
+   for ord=0:L
+       a(:,1)=a(:,1)/2;
+       b(:,1)=b(:,1)/2;
+       Pm=Plm(:,mz(ord+1:end)+ord)*pi;
+       [lmcosi(mz(ord+1:end)+ord,3)]=datafit(Pm,a(:,ord+1),[],[],cnd);
+       [lmcosi(mz(ord+1:end)+ord,4)]=datafit(Pm,b(:,ord+1),[],[],cnd);
+   end
  case 'simpson'
-  % Loop over the degrees. Could go up to l=nlon if you want
-  for l=0:L,
-    % Integrate over theta using Simpson's rule
-    clm=simpson(theta,...
-		repmat(sin(theta(:)),1,l+1).*a(:,1:l+1).*Plm(:,in1+1:in2));
-    slm=simpson(theta,...
-		repmat(sin(theta(:)),1,l+1).*b(:,1:l+1).*Plm(:,in1+1: ...
-						  in2));
-    in1=in2;
-    in2=in1+l+2;
-    % And stick it in a matrix [l m Ccos Csin]
-    lmcosi(addmup(l-1)+1:addmup(l),3)=clm(:)/4/pi;
-    lmcosi(addmup(l-1)+1:addmup(l),4)=slm(:)/4/pi;
-  end
- case 'gl'
-  % Loop over the degrees. Could go up to l=nlon if you want
-  for l=0:L,
-    % Integrate over theta using Gauss-Legendre integration
-    clm=sum(a(:,1:l+1).*(diag(w)*Plm(:,in1+1:in2)));
-    slm=sum(b(:,1:l+1).*(diag(w)*Plm(:,in1+1:in2)));
-    in1=in2;
-    in2=in1+l+2;
-    % And stick it in a matrix [l m Ccos Csin]
-    lmcosi(addmup(l-1)+1:addmup(l),3)=clm(:)/4/pi;
-    lmcosi(addmup(l-1)+1:addmup(l),4)=slm(:)/4/pi;
-  end
-  rnk=[]; 
+   if bp; error('needs fixing'); end
+   % Loop over the degrees. Could go up to l=nlon if you want
+   for l=0:L,
+       % Integrate over theta using Simpson's rule
+       clm=simpson(theta,...
+		   repmat(sin(theta(:)),1,l+1).*a(:,1:l+1).*Plm(:,in1+1:in2));
+       slm=simpson(theta,...
+		   repmat(sin(theta(:)),1,l+1).*b(:,1:l+1).*Plm(:,in1+1: ...
+						                in2));
+       in1=in2;
+       in2=in1+l+2;
+       % And stick it in a matrix [l m Ccos Csin]
+       lmcosi(addmup(l-1)+1:addmup(l),3)=clm(:)/4/pi;
+       lmcosi(addmup(l-1)+1:addmup(l),4)=slm(:)/4/pi;
+   end
+  case 'gl'
+    if bp; error('needs fixing'); end
+    % Loop over the degrees. Could go up to l=nlon if you want
+    for l=0:L,
+        % Integrate over theta using Gauss-Legendre integration
+        clm=sum(a(:,1:l+1).*(diag(w)*Plm(:,in1+1:in2)));
+        slm=sum(b(:,1:l+1).*(diag(w)*Plm(:,in1+1:in2)));
+        in1=in2;
+        in2=in1+l+2;
+        % And stick it in a matrix [l m Ccos Csin]
+        lmcosi(addmup(l-1)+1:addmup(l),3)=clm(:)/4/pi;
+        lmcosi(addmup(l-1)+1:addmup(l),4)=slm(:)/4/pi;
+    end
+    rnk=[]; 
 end
 
 % Get rid of machine precision error
@@ -269,7 +296,7 @@ lmcosi(abs(lmcosi(:,4))<eps,4)=0;
 
 disp(sprintf('XYZ2PLM (Analysis using %s)  took %8.4f s',method,etime(clock,t0)))
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function grd=reduntest(grd)
 % Tests if last longitude repeats last (0,360)
 % and removes last data column
@@ -279,7 +306,7 @@ if sum(abs(grd(:,1)-grd(:,end))) >= size(grd,2)*eps*10
 end
 grd=grd(:,1:end-1);
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function polestest(grd)
 % Tests if poles (-90,90) are identical over longitudes 
 var1=var(grd(1,:));
