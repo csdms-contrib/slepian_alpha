@@ -130,7 +130,7 @@ if ~isstr(TH)
   else
       svit=1;
   end
-  
+
   % Calculate N/A and rounded Shannon number
   NA=ldim/(4*pi);
   
