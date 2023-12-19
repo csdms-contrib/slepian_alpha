@@ -163,7 +163,7 @@ if ~isstr(TH)
     Glma=Glma(:,i);
     % Don't touch the EM if they were given to you in the first place
     if ~svit
-        EM=EM(i(:));
+        EM=EM(i);
     end
   end
   % Truncation? If past Shannon number, do it from here on, if not, wait
@@ -179,7 +179,7 @@ if ~isstr(TH)
   % sorted to begin with, since the GLMALPHA matrix is filled order by order.
   % Phase factor as in GALPHAPTO - DONE 11/12/2023
   % The alternatives would be PLM2XYZ, GLM2LMCOSI, and PLOTSLEP
-  Glmap=Glma.*repmat((-1).^EM,1,size(Glma,2));
+  Glmap=Glma.*repmat((-1).^EMrow,1,size(Glma,2));
   G=Glmap'*XYlmr;
 
   [GK,VK]=deal([]);
@@ -227,11 +227,11 @@ if ~isstr(TH)
 elseif strcmp(TH,'demo1')
   disp('Checking that internal block sorting has no effect whatsoever')
   for srt={'global' 'local' 'belt'}
-    disp(srt)
+      disp(srt)
     [G0,V0,EM0,GK0,VK0,NA0,N0,theta0]=galpha([],[],1,[],[],srt,[],[],0);
     [G1,V1,EM1,GK1,VK1,NA1,N1,theta1]=galpha([],[],1,[],[],srt,[],[],1);
-    difer([G0(:);V0(:);EM0(:);GK0(:);VK0(:);NA0(:);N0(:);theta0(:)]-...
-	  [G1(:);V1(:);EM1(:);GK1(:);VK1(:);NA1(:);N1(:);theta1(:)])
+    difer([G0(:);V0(:);EM0(:);GK0(:);VK0(:);NA0;N0;theta0(:)]-...
+	  [G1(:);V1(:);EM1(:);GK1(:);VK1(:);NA1;N1;theta1(:)])
     TH=44; L=23; 
     [G,V,EM,GK,VK,NA,N,th]=galpha(TH,L,1,[],[],srt);
     % This should be the Shannon number everywhere
