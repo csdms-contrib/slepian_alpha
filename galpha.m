@@ -62,7 +62,7 @@ function varargout=...
 % 
 % See also DOUBLECAP, LOCALIZATION
 %
-% Last modified by fjsimons-at-alum.mit.edu, 11/11/2023
+% Last modified by fjsimons-at-alum.mit.edu, 12/19/2023
 
 % If the output was on a Driscoll-Healey or HEALPIX grid (and maybe I
 % should think about doing that), this would be an orthogonal matrix, but
@@ -163,7 +163,7 @@ if ~isstr(TH)
     Glma=Glma(:,i);
     % Don't touch the EM if they were given to you in the first place
     if ~svit
-        EM=EM(i);
+        EM=EM(i(:));
     end
   end
   % Truncation? If past Shannon number, do it from here on, if not, wait
