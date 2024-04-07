@@ -15,13 +15,13 @@ function [gcdkm,delta]=grcdist(lon1lat1,lon2lat2)
 %
 % No ellipticity correction.
 %
-% Last modified by fjsimons-at-alum.mit.edu, 06/28/2016
+% Last modified by fjsimons-at-alum.mit.edu, 04/08/2024
 % 
 % Use this in conjunction with SETVAR.PL and other tools
 
-% Second location is Guyot Hall
+% Second location is Guyot Hall, see GUYOTPHYSICS also
 % Search for N40.34585 W74.65475 in Google
-defval('lon2lat2',[-74.65475 40.34585])
+defval('lon2lat2',guyotphysics(0))
 
 % Conversion to radians
 lon1lat1=lon1lat1*pi/180;
@@ -34,6 +34,7 @@ lon2lat2=lon2lat2*pi/180;
 dist=2*asin(sqrt((sin((lat1-lat2)/2)).^2 + ...
     cos(lat1).*cos(lat2).*(sin((lon1-lon2)/2)).^2));
 
+% Distance in two units
 gcdkm=dist*fralmanac('Radius')/1000;
 delta=dist*180/pi;
 
