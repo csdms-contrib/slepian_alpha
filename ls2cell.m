@@ -7,7 +7,7 @@ function cls=ls2cell(ddir,fullpath)
 %
 % ddir      A directory name string, (some) wildcards possible
 % fullpath  1 if you would like the full file path output
-%             in this case include the filespe in the directory name
+%             in this case include the filesep in the directory name
 %           0 returns just the file names [default]
 %
 % OUTPUT:

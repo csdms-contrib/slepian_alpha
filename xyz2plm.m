@@ -68,15 +68,7 @@ defval('dw',[])
 defval('cnd',[])
 defval('L2err',[])
 
-% Figure out if it's lowpass or bandpass
-lp=length(L)==1;
-bp=length(L)==2;
-maxL=max(L);
-if bp
-    minL=min(L);
-else
-    minL=0;
-end
+
 
 as=0;
 % If no grid is specified, assumes equal spacing and complete grid
@@ -142,6 +134,18 @@ defval('maxL',Lnyq);
 % Never use Libbrecht algorithm... found out it wasn't that good
 defval('libb',0)
 %disp(sprintf('Lnyq= %i ; expansion out to degree L= %i',Lnyq,L))
+
+% Figure out if it's lowpass or bandpass
+defval('L',maxL)
+lp=length(L)==1;
+bp=length(L)==2;
+maxL=max(L);
+if bp
+    minL=min(L);
+else
+    minL=0;
+end
+
 
 if maxL>Lnyq | nlat<(maxL+1)
   warning('XYZ2PLM: Function undersampled. Aliasing will occur.')

@@ -16,7 +16,7 @@ function varargout=france(res,buf)
 %
 % XY       Closed-curved coordinates of the continent
 %
-% Last modified by fjsimons-at-alum.mit.edu, 09/20/2023
+% Last modified by fjsimons-at-alum.mit.edu, 06/04/2024
 
 defval('res',0)
 defval('buf',0)
@@ -26,7 +26,7 @@ regn=mfilename;
 xunt=[];
 
 % This admittedly is a special preloaded case
-XY=load(fullfile(getenv('IFILES'),'COASTS',regn));
+XY=load(fullfile(getenv('IFILES'),'COASTS',regn),'-ascii');
 
 % Modify and resave it
 XY=regselect(regn,XY(:,1),XY(:,2),xunt,res,buf);

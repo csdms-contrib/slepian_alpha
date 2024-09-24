@@ -150,7 +150,8 @@ switch meth
  case 4
    imagef([0 90],[360 -90],data)
    [ax1,ch,XY1]=plotcont([],[],1);
-   [ph,XY2]=plotplates([],[],1);
+   %[ph,XY2]=plotplates([],[],1);
+   ph=[];
    axis image
  case 5
   % Project northern hemisphere only
