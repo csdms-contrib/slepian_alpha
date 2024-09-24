@@ -48,7 +48,7 @@ end
 defval('meth',4)
 defval('degres',1)
 % This should be renormalized!!
-[data,ch,ph]=plotplm(lmcosi,[],[],meth,degres);
+[data,ch,ph]=plotplm(lmcosi,[],[],[],degres);
 
 % Prepare output if needed
 varns={data,ch,ph};

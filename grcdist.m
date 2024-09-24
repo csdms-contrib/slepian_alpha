@@ -21,7 +21,7 @@ function [gcdkm,delta]=grcdist(lon1lat1,lon2lat2)
 
 % Second location is Guyot Hall, see GUYOTPHYSICS also
 % Search for N40.34585 W74.65475 in Google
-defval('lon2lat2',guyotphysics(0))
+defval('lon2lat2',[-74.65475 40.34585])
 
 % Conversion to radians
 lon1lat1=lon1lat1*pi/180;
