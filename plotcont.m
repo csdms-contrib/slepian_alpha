@@ -43,7 +43,7 @@ function varargout=plotcont(c11,cmn,res,ofs,pcol,lolax)
 %
 % SEE ALSO: MAPROTATE, SPHAREA, PHICURVE, RCENTER
 %
-% Last modified by fjsimons-at-alum.mit.edu, 06/01/2022
+% Last modified by fjsimons-at-alum.mit.edu, 12/19/2024
 
 % Saved matrix as space-saving unsigned integer 
 % - but that translates the NaN's into some  high number - take that out.
@@ -174,7 +174,8 @@ switch res
   % Convert to spherical coordinates
   lon=cont(:,1)/180*pi;
   lat=cont(:,2)/180*pi;
-  rad=repmat(1.001,size(lat));
+  % This used to be 1.001
+  rad=repmat(1.01,size(lat));
   % Convert to Cartesian coordinates
   [xx,yy,zz]=sph2cart(lon,lat,rad);
   XYZ=[xx yy zz];
@@ -183,7 +184,7 @@ switch res
   end
   % Now need to take out the annoying connecting lines
   XYZ=penlift(XYZ);
-  
+
   % And plot this, too
   handl=plot3(XYZ(:,1),XYZ(:,2),XYZ(:,3),'k');
   axlim=[];
