@@ -11,7 +11,7 @@ function XY=regselect(regn,c11,cmn,xunt,res,buf,ofs)
 %          or a [lon(:)] set of coordinates for a region
 % cmn      The (lon,lat) coordinates of the bottom right corner
 %          or a [lat(:)] set of coordinates for a region
-% xunt     The particuluar indices required for this region
+% xunt     The particular indices required for this region
 % res      0 The standard, default values
 %          N Splined values at N times the resolution
 % buf      Distance in degrees that the region outline will be enlarged
@@ -74,7 +74,7 @@ else
       c11=[min(XY(:,1)) max(XY(:,2))];
       cmn=[max(XY(:,1)) min(XY(:,2))];
     end
-        
+
     % Get rid of common NaNs
     XY=XY(~isnan(XY(:,1)) & ~isnan(XY(:,2)),:);
     
@@ -143,7 +143,7 @@ else
     axis equal 
 
     % Check this out %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    hold on ; curvecheck(XY(:,1),XY(:,2),spd); hold off
+    %    hold on ; curvecheck(XY(:,1),XY(:,2),spd); hold off
   else
     XY=bezier(eval(sprintf('%s(0)',regn)),res);
   end
