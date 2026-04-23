@@ -55,6 +55,7 @@ function varargout=plotplm(data,lon,lat,meth,degres,th0,sres,cax)
 %
 % Last modified by charig-at-princeton.edu, 05/14/2015
 % Last modified by fjsimons-at-alum.mit.edu, 04/27/2022
+% Last modified by plattner-at-alumni.ethz.ch, 4/23/2026
 
 defval('meth',1)
 defval('degres',[])
@@ -190,10 +191,15 @@ switch meth
   set(ph(2),'LineS','--')
   axis([-1.0100    1.0100   -1.0100    1.0100])
   axis off
-  [axlim,handl,XYZ]=plotcont([0 90],[360 -90],4);
-  delete(handl)
-  hold on
-  ch=plot(XYZ(:,1),XYZ(:,2),'k-','LineWidth',1);
+  try
+    [axlim,handl,XYZ]=plotcont([0 90],[360 -90],4);
+    delete(handl)
+    hold on
+    ch=plot(XYZ(:,1),XYZ(:,2),'k-','LineWidth',1);
+  catch
+    warning('plotting continents in this projection is currently broken')
+    ch = [];
+  end
   data=Z;
  case 6
   % Project southern hemisphere only
